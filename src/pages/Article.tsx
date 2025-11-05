@@ -89,16 +89,24 @@ const Article = () => {
                   className="article-content"
                   dangerouslySetInnerHTML={{ 
                     __html: article.content.split('\n').map(line => {
+                      // Handle H2 headings
                       if (line.startsWith('## ')) {
-                        return `<h2>${line.substring(3)}</h2>`;
-                      } else if (line.startsWith('**') && line.endsWith('**')) {
-                        return `<h3>${line.substring(2, line.length - 2)}</h3>`;
-                      } else if (line.startsWith('- ')) {
-                        return `<li>${line.substring(2)}</li>`;
-                      } else if (line.trim() === '') {
+                        return `<h2 class="text-2xl font-bold mt-8 mb-4">${line.substring(3)}</h2>`;
+                      } 
+                      // Handle list items
+                      else if (line.startsWith('- ')) {
+                        const listContent = line.substring(2);
+                        const formatted = listContent.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                        return `<li class="ml-6 mb-2">${formatted}</li>`;
+                      } 
+                      // Handle empty lines
+                      else if (line.trim() === '') {
                         return '';
-                      } else {
-                        return `<p>${line}</p>`;
+                      } 
+                      // Handle paragraphs with bold text
+                      else {
+                        const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold">$1</strong>');
+                        return `<p class="mb-4 leading-relaxed">${formatted}</p>`;
                       }
                     }).join('')
                   }}
