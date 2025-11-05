@@ -4,6 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Download, Share2, TrendingUp, Users, Zap, Target, AlertCircle, Lightbulb } from "lucide-react";
+import microtransitImage from "@/assets/microtransit-city.jpg";
+import accessibleBusImage from "@/assets/accessible-bus.jpg";
+import technologyImage from "@/assets/technology-dashboard.jpg";
+import electricBusImage from "@/assets/electric-bus.jpg";
+import autonomousImage from "@/assets/autonomous-vehicle.jpg";
+import partnershipImage from "@/assets/transit-partnership.jpg";
 
 const Report = () => {
   return (
@@ -110,7 +116,15 @@ const Report = () => {
             <div className="max-w-6xl mx-auto space-y-8">
               
               {/* Microtransit */}
-              <Card>
+              <Card className="overflow-hidden">
+                <div className="relative aspect-video lg:aspect-[21/9] overflow-hidden">
+                  <img 
+                    src={microtransitImage} 
+                    alt="Modern city transit and microtransit services"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-background/20" />
+                </div>
                 <CardHeader>
                   <div className="flex items-center gap-2 mb-2">
                     <Zap className="h-5 w-5 text-primary" />
@@ -150,7 +164,15 @@ const Report = () => {
               </Card>
 
               {/* Paratransit */}
-              <Card>
+              <Card className="overflow-hidden">
+                <div className="relative aspect-video lg:aspect-[21/9] overflow-hidden">
+                  <img 
+                    src={accessibleBusImage} 
+                    alt="Accessible paratransit bus services"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-background/20" />
+                </div>
                 <CardHeader>
                   <div className="flex items-center gap-2 mb-2">
                     <Users className="h-5 w-5 text-primary" />
@@ -188,7 +210,15 @@ const Report = () => {
               </Card>
 
               {/* Technology */}
-              <Card>
+              <Card className="overflow-hidden">
+                <div className="relative aspect-video lg:aspect-[21/9] overflow-hidden">
+                  <img 
+                    src={technologyImage} 
+                    alt="Transportation data analytics and technology"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-background/20" />
+                </div>
                 <CardHeader>
                   <div className="flex items-center gap-2 mb-2">
                     <Target className="h-5 w-5 text-primary" />
@@ -219,7 +249,15 @@ const Report = () => {
               {/* Two Column Layout for Partnerships and Autonomous */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Partnerships */}
-                <Card>
+                <Card className="overflow-hidden">
+                  <div className="relative aspect-video overflow-hidden">
+                    <img 
+                      src={partnershipImage} 
+                      alt="Transit industry partnerships and collaboration"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-background/20" />
+                  </div>
                   <CardHeader>
                     <CardTitle className="text-xl">Industry Partnerships & M&A</CardTitle>
                   </CardHeader>
@@ -247,7 +285,15 @@ const Report = () => {
                 </Card>
 
                 {/* Autonomous */}
-                <Card>
+                <Card className="overflow-hidden">
+                  <div className="relative aspect-video overflow-hidden">
+                    <img 
+                      src={autonomousImage} 
+                      alt="Autonomous vehicles and future mobility"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-background/20" />
+                  </div>
                   <CardHeader>
                     <CardTitle className="text-xl">Autonomous & Future Mobility</CardTitle>
                   </CardHeader>
