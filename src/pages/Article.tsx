@@ -46,6 +46,17 @@ const Article = () => {
 
         {/* Article Header */}
         <section className="border-b bg-muted/30">
+          {/* Article Image */}
+          {article.imageUrl && (
+            <div className="w-full h-96 overflow-hidden">
+              <img
+                src={article.imageUrl}
+                alt={article.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+          
           <div className="section-container py-12 lg:py-16">
             <div className="max-w-4xl">
               <Badge variant="secondary" className="mb-4">
@@ -141,15 +152,24 @@ const Article = () => {
                   <Link 
                     key={relatedArticle.id} 
                     to={`/article/${relatedArticle.slug}`}
-                    className="block p-4 border rounded-lg hover:border-primary transition-colors bg-card"
+                    className="block border rounded-lg hover:border-primary transition-colors bg-card overflow-hidden"
                   >
-                    <Badge variant="outline" className="mb-2">{relatedArticle.category.title}</Badge>
-                    <h3 className="font-semibold mb-2 hover:text-primary transition-colors">
-                      {relatedArticle.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {relatedArticle.description}
-                    </p>
+                    {relatedArticle.imageUrl && (
+                      <img
+                        src={relatedArticle.imageUrl}
+                        alt={relatedArticle.title}
+                        className="w-full h-40 object-cover"
+                      />
+                    )}
+                    <div className="p-4">
+                      <Badge variant="outline" className="mb-2">{relatedArticle.category.title}</Badge>
+                      <h3 className="font-semibold mb-2 hover:text-primary transition-colors">
+                        {relatedArticle.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {relatedArticle.description}
+                      </p>
+                    </div>
                   </Link>
                 ))}
             </div>

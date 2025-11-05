@@ -53,49 +53,66 @@ const Index = () => {
                 {articles.map((article) => (
                   <article 
                     key={article.id} 
-                    className="border border-border rounded-lg p-6 hover:border-primary transition-colors"
+                    className="border border-border rounded-lg overflow-hidden hover:border-primary transition-colors"
                   >
-                    {/* Author Info */}
-                    <div className="flex space-x-3 mb-4">
-                      <div className="shrink-0">
-                        <img
-                          alt=""
-                          src={article.author.imageUrl}
-                          className="size-10 rounded-full bg-muted"
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-semibold">
-                          {article.author.name}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          <time dateTime={article.datetime}>{article.date}</time>
-                          {' · '}
-                          <span>{article.author.role}</span>
-                        </p>
-                      </div>
-                    </div>
+                    <div className="flex flex-col lg:flex-row gap-6">
+                      {/* Article Image */}
+                      {article.imageUrl && (
+                        <div className="lg:w-80 shrink-0">
+                          <Link to={`/article/${article.slug}`}>
+                            <img
+                              src={article.imageUrl}
+                              alt={article.title}
+                              className="w-full h-48 lg:h-full object-cover hover:opacity-90 transition-opacity"
+                            />
+                          </Link>
+                        </div>
+                      )}
+                      
+                      <div className="p-6 flex-1">
+                        {/* Author Info */}
+                        <div className="flex space-x-3 mb-4">
+                          <div className="shrink-0">
+                            <img
+                              alt=""
+                              src={article.author.imageUrl}
+                              className="size-10 rounded-full bg-muted"
+                            />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-semibold">
+                              {article.author.name}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              <time dateTime={article.datetime}>{article.date}</time>
+                              {' · '}
+                              <span>{article.author.role}</span>
+                            </p>
+                          </div>
+                        </div>
 
-                    {/* Article Content */}
-                    <div className="mb-3">
-                      <Badge variant="outline">{article.category.title}</Badge>
-                    </div>
-                    
-                    <div className="group">
-                      <h3 className="text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                        <Link to={`/article/${article.slug}`}>
-                          {article.title}
-                        </Link>
-                      </h3>
-                      <p className="text-muted-foreground mb-4 line-clamp-3">
-                        {article.description}
-                      </p>
-                      <Link to={`/article/${article.slug}`}>
-                        <Button variant="ghost" size="sm">
-                          Read Full Article
-                          <ArrowRight className="ml-2 h-3 w-3" />
-                        </Button>
-                      </Link>
+                        {/* Article Content */}
+                        <div className="mb-3">
+                          <Badge variant="outline">{article.category.title}</Badge>
+                        </div>
+                        
+                        <div className="group">
+                          <h3 className="text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                            <Link to={`/article/${article.slug}`}>
+                              {article.title}
+                            </Link>
+                          </h3>
+                          <p className="text-muted-foreground mb-4 line-clamp-3">
+                            {article.description}
+                          </p>
+                          <Link to={`/article/${article.slug}`}>
+                            <Button variant="ghost" size="sm">
+                              Read Full Article
+                              <ArrowRight className="ml-2 h-3 w-3" />
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </article>
                 ))}

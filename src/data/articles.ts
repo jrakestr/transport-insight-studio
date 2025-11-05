@@ -1,3 +1,10 @@
+import chicagoCTA from "@/assets/chicago-cta-train.jpg";
+import contactlessPayment from "@/assets/contactless-payment.jpg";
+import transitSecurity from "@/assets/transit-security.jpg";
+import taxiFleet from "@/assets/taxi-fleet.jpg";
+import cityBus from "@/assets/city-bus.jpg";
+import microtransitShuttle from "@/assets/microtransit-shuttle.jpg";
+
 export const articles = [
   {
     id: 1,
@@ -9,6 +16,7 @@ export const articles = [
     category: { title: "Policy & Funding", href: "/category/policy-funding" },
     sourceUrl: "https://www.cbsnews.com/chicago/news/illinois-transit-transit-funding-bill-passed/",
     sourceName: "CBS News Chicago",
+    imageUrl: chicagoCTA,
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -43,6 +51,7 @@ State rescue packages typically include technology modernization provisions. Ill
     category: { title: "Technology", href: "/category/technology" },
     sourceUrl: "https://itsmarta.com/better-breeze-coming.aspx",
     sourceName: "MARTA Press Release",
+    imageUrl: contactlessPayment,
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -75,6 +84,7 @@ Contactless payment integration is now baseline requirement, not competitive dif
     category: { title: "Safety & Security", href: "/category/safety-security" },
     sourceUrl: "https://www.rtd-denver.com/community/news/rtd-detective-bureau-set-to-investigate-crimes-with-today-s-official-launch",
     sourceName: "RTD Denver",
+    imageUrl: transitSecurity,
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -114,6 +124,7 @@ RTD's model represents growing trend toward transit-specific law enforcement req
     category: { title: "Technology Partnerships", href: "/category/partnerships" },
     sourceUrl: "https://www.autocab.com/blog/autocab-and-ztrip-announce-landmark-partnership-to-power-3-600-vehicles-across-20-us-states",
     sourceName: "Autocab",
+    imageUrl: taxiFleet,
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -150,6 +161,7 @@ The taxi-to-TNC platform integration validates demand response software provider
     category: { title: "RFPs & Procurement", href: "/category/rfps" },
     sourceUrl: "https://www.kcata.org/about_kcata/entries/current_opportunities",
     sourceName: "KCATA Procurement",
+    imageUrl: cityBus,
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -197,6 +209,7 @@ Response deadline typically allows 60-90 days. Prime vendor shortlist likely est
     category: { title: "Market Trends", href: "/category/trends" },
     sourceUrl: "https://communityimpact.com/houston/sugar-land-missouri-city/transportation/2025/10/20/sugar-land-announces-2nd-microtransit-service-area-expansion/",
     sourceName: "Community Impact",
+    imageUrl: microtransitShuttle,
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
