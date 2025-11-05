@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, ArrowLeft } from "lucide-react";
+import { Calendar, ArrowLeft, ExternalLink } from "lucide-react";
 import { articles } from "@/data/articles";
 
 const Article = () => {
@@ -68,9 +68,22 @@ const Article = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                <time dateTime={article.datetime}>{article.date}</time>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  <time dateTime={article.datetime}>{article.date}</time>
+                </div>
+                {article.sourceUrl && (
+                  <a 
+                    href={article.sourceUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 hover:text-primary transition-colors"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    <span>View Original Source ({article.sourceName})</span>
+                  </a>
+                )}
               </div>
             </div>
           </div>

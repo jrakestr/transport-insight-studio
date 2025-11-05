@@ -7,6 +7,8 @@ export const articles = [
     date: "Oct 31, 2025",
     datetime: "2025-10-31",
     category: { title: "Policy & Funding", href: "/category/policy-funding" },
+    sourceUrl: "https://www.cbsnews.com/chicago/news/illinois-transit-transit-funding-bill-passed/",
+    sourceName: "CBS News Chicago",
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -39,6 +41,8 @@ State rescue packages typically include technology modernization provisions. Ill
     date: "Oct 30, 2025",
     datetime: "2025-10-30",
     category: { title: "Technology", href: "/category/technology" },
+    sourceUrl: "https://itsmarta.com/better-breeze-coming.aspx",
+    sourceName: "MARTA Press Release",
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -69,6 +73,8 @@ Contactless payment integration is now baseline requirement, not competitive dif
     date: "Oct 17, 2025",
     datetime: "2025-10-17",
     category: { title: "Safety & Security", href: "/category/safety-security" },
+    sourceUrl: "https://www.rtd-denver.com/community/news/rtd-detective-bureau-set-to-investigate-crimes-with-today-s-official-launch",
+    sourceName: "RTD Denver",
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -106,6 +112,8 @@ RTD's model represents growing trend toward transit-specific law enforcement req
     date: "Oct 28, 2025",
     datetime: "2025-10-28",
     category: { title: "Technology Partnerships", href: "/category/partnerships" },
+    sourceUrl: "https://www.autocab.com/blog/autocab-and-ztrip-announce-landmark-partnership-to-power-3-600-vehicles-across-20-us-states",
+    sourceName: "Autocab",
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -140,6 +148,8 @@ The taxi-to-TNC platform integration validates demand response software provider
     date: "Oct 21, 2025",
     datetime: "2025-10-21",
     category: { title: "RFPs & Procurement", href: "/category/rfps" },
+    sourceUrl: "https://www.kcata.org/about_kcata/entries/current_opportunities",
+    sourceName: "KCATA Procurement",
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
@@ -185,6 +195,8 @@ Response deadline typically allows 60-90 days. Prime vendor shortlist likely est
     date: "Oct 15, 2025",
     datetime: "2025-10-15",
     category: { title: "Market Trends", href: "/category/trends" },
+    sourceUrl: "https://communityimpact.com/houston/sugar-land-missouri-city/transportation/2025/10/20/sugar-land-announces-2nd-microtransit-service-area-expansion/",
+    sourceName: "Community Impact",
     author: {
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
