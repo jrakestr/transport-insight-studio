@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { articles } from "@/data/articles";
 import { ArrowRight } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const Index = () => {
   return (
@@ -72,13 +73,11 @@ const Index = () => {
                       <div className="p-6 flex-1">
                         {/* Author Info */}
                         <div className="flex space-x-3 mb-4">
-                          <div className="shrink-0">
-                            <img
-                              alt=""
-                              src={article.author.imageUrl}
-                              className="size-10 rounded-full bg-muted"
-                            />
-                          </div>
+                          <Avatar className="size-10">
+                            <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                              JR
+                            </AvatarFallback>
+                          </Avatar>
                           <div className="min-w-0 flex-1">
                             <p className="text-sm font-semibold">
                               {article.author.name}

@@ -21,7 +21,6 @@ export const articles = [
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
       href: "#",
-      imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     content: `Illinois lawmakers approved a historic $1.5 billion transit funding package that saves the Chicago Transit Authority, Metra, and Pace from severe service cuts and potential collapse. The legislation establishes new oversight committees and generates $1.5 billion in funding without creating new taxes.
 
@@ -56,7 +55,6 @@ State rescue packages typically include technology modernization provisions. Ill
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
       href: "#",
-      imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     content: `MARTA completed comprehensive fare collection system modernization working with INIT Innovations in Transportation—one of the largest fare infrastructure overhauls in U.S. transit history. The Spring 2026 completion represents a complete system replacement: new Breeze cards, next-generation faregates, modern validators, intelligent fareboxes with contactless payment, upgraded vending machines, and full-featured mobile app.
 
@@ -89,7 +87,6 @@ Contactless payment integration is now baseline requirement, not competitive dif
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
       href: "#",
-      imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     content: `Denver's Regional Transportation District established an in-house detective bureau covering 8 counties and 40 municipalities—a significant shift in transit law enforcement strategy. Previously, RTD relied on a patchwork of local police departments with varying response times and transit crime expertise.
 
@@ -129,7 +126,6 @@ RTD's model represents growing trend toward transit-specific law enforcement req
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
       href: "#",
-      imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     content: `Autocab and zTrip announced technology partnership powering 3,600 vehicles and 4,000 drivers across 20 states—the largest taxi fleet operator in the United States. Integration includes Uber platform, iGo mobility platform, and NTEP-certified soft meter technology (first U.S. approval for software-based metering).
 
@@ -166,7 +162,6 @@ The taxi-to-TNC platform integration validates demand response software provider
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
       href: "#",
-      imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     content: `Kansas City Area Transportation Authority (KCATA) released RFP F25-5016-34B for complete fare payment system replacement—estimated $15-30M opportunity. Project encompasses contactless payment integration, mobile ticketing application, account-based ticketing, validator hardware replacement, farebox modernization, vending machine upgrades, and backend processing systems.
 
@@ -214,7 +209,6 @@ Response deadline typically allows 60-90 days. Prime vendor shortlist likely est
       name: "TransitIntel Editorial",
       role: "Market Intelligence Team",
       href: "#",
-      imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     content: `October 2025 witnessed accelerating municipal microtransit adoption: ABQ Ride (Albuquerque) launched "ABQ RIDE GO!" mobile app, New Braunfels (TX) launching "Ride the Rio!" with 47-mile service area November 18, Salisbury (NC) approved $2.8M microtransit contract, Sugar Land (TX) announced second expansion, Newport News (VA) Hampton Roads Transit expanding regional program, Sedona (AZ) Shuttle Connect celebrating first-year success.
 

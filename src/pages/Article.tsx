@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowLeft, ExternalLink } from "lucide-react";
 import { articles } from "@/data/articles";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const Article = () => {
   const { slug } = useParams();
@@ -68,11 +69,11 @@ const Article = () => {
               </h1>
 
               <div className="flex items-center gap-4 mb-6">
-                <img
-                  alt={article.author.name}
-                  src={article.author.imageUrl}
-                  className="size-12 rounded-full bg-muted"
-                />
+                <Avatar className="size-12">
+                  <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-lg">
+                    JR
+                  </AvatarFallback>
+                </Avatar>
                 <div>
                   <div className="font-semibold">{article.author.name}</div>
                   <div className="text-sm text-muted-foreground">{article.author.role}</div>
