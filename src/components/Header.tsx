@@ -71,11 +71,6 @@ export const Header = () => {
                   Early-Stage Opportunities
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/rfps" className="cursor-pointer">
-                  RFP Database
-                </Link>
-              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           
@@ -177,13 +172,6 @@ export const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Early-Stage Opportunities
-              </Link>
-              <Link
-                to="/rfps"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                RFP Database
               </Link>
             </div>
             
