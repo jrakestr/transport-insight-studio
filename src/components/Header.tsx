@@ -13,8 +13,6 @@ export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigation = [
-    { name: "Market Reports", href: "/reports" },
-    { name: "Industry News", href: "/news" },
     { name: "RFP Database", href: "/rfps" },
   ];
 
@@ -30,6 +28,35 @@ export const Header = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex md:gap-x-8 md:items-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              Industry News
+              <ChevronDown className="h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-background border shadow-lg z-50">
+              <DropdownMenuItem asChild>
+                <Link to="/news" className="cursor-pointer">
+                  Latest News
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/news?filter=trending" className="cursor-pointer">
+                  Trending
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/news?filter=archived" className="cursor-pointer">
+                  Archived
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/reports" className="cursor-pointer">
+                  Market Reports
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
           {navigation.map((item) => (
             <Link
               key={item.name}
@@ -39,12 +66,13 @@ export const Header = () => {
               {item.name}
             </Link>
           ))}
+          
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               Sales Opportunities
               <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-background border shadow-lg">
+            <DropdownMenuContent className="bg-background border shadow-lg z-50">
               <DropdownMenuItem asChild>
                 <Link to="/opportunities/government" className="cursor-pointer">
                   Government Procurement
@@ -86,6 +114,40 @@ export const Header = () => {
       {mobileMenuOpen && (
         <div className="md:hidden border-t">
           <div className="space-y-1 px-4 pb-3 pt-2">
+            <div className="border-b pb-2 mb-2">
+              <div className="px-3 py-2 text-xs font-semibold text-muted-foreground">
+                Industry News
+              </div>
+              <Link
+                to="/news"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Latest News
+              </Link>
+              <Link
+                to="/news?filter=trending"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Trending
+              </Link>
+              <Link
+                to="/news?filter=archived"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Archived
+              </Link>
+              <Link
+                to="/reports"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Market Reports
+              </Link>
+            </div>
+            
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -96,6 +158,7 @@ export const Header = () => {
                 {item.name}
               </Link>
             ))}
+            
             <div className="border-t pt-2 mt-2">
               <div className="px-3 py-2 text-xs font-semibold text-muted-foreground">
                 Sales Opportunities

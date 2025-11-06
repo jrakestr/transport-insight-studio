@@ -4,8 +4,8 @@ import { TrendingUp } from "lucide-react";
 export const Footer = () => {
   const footerNavigation = {
     content: [
-      { name: "Market Reports", href: "/reports" },
       { name: "Industry News", href: "/news" },
+      { name: "Market Reports", href: "/reports" },
       { name: "RFP Database", href: "/rfps" },
       { name: "Sales Opportunities", href: "/opportunities" },
     ],
