@@ -6,10 +6,12 @@ export const Footer = () => {
     content: [
       { name: "Industry News", href: "/news" },
       { name: "Market Reports", href: "/reports" },
-      { name: "RFP Database", href: "/rfps" },
       { name: "Sales Opportunities", href: "/opportunities" },
+      { name: "RFP Database", href: "/rfps" },
     ],
     resources: [
+      { name: "NTD Database", href: "/ntd-database" },
+      { name: "Industry Links", href: "/industry-links" },
       { name: "Newsletter", href: "/newsletter" },
       { name: "Events", href: "/events" },
       { name: "Whitepapers", href: "/whitepapers" },
