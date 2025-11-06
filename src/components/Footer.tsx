@@ -4,34 +4,27 @@ import { TrendingUp } from "lucide-react";
 export const Footer = () => {
   const footerNavigation = {
     content: [
-      { name: "Market Reports", href: "#" },
-      { name: "Latest News", href: "#" },
-      { name: "RFPs", href: "#" },
-      { name: "Analysis", href: "#" },
-    ],
-    company: [
-      { name: "About Us", href: "#" },
-      { name: "Contact", href: "#" },
-      { name: "Careers", href: "#" },
-      { name: "Press", href: "#" },
+      { name: "Market Reports", href: "/reports" },
+      { name: "Industry News", href: "/news" },
+      { name: "RFP Database", href: "/rfps" },
+      { name: "Sales Opportunities", href: "/opportunities" },
     ],
     resources: [
-      { name: "Newsletter", href: "#" },
-      { name: "Events", href: "#" },
-      { name: "Whitepapers", href: "#" },
-      { name: "FAQ", href: "#" },
+      { name: "Newsletter", href: "/newsletter" },
+      { name: "Events", href: "/events" },
+      { name: "Whitepapers", href: "/whitepapers" },
+      { name: "FAQ", href: "/faq" },
     ],
     legal: [
       { name: "Privacy Policy", href: "#" },
       { name: "Terms of Service", href: "#" },
-      { name: "Cookie Policy", href: "#" },
     ],
   };
 
   return (
     <footer className="border-t bg-muted/50">
       <div className="section-container py-12 lg:py-16">
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           <div className="col-span-2">
             <Link to="/" className="flex items-center gap-2 font-bold text-xl mb-4">
               <TrendingUp className="h-6 w-6 text-primary" />
@@ -47,28 +40,12 @@ export const Footer = () => {
             <ul className="space-y-3">
               {footerNavigation.content.map((item) => (
                 <li key={item.name}>
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold mb-4">Company</h3>
-            <ul className="space-y-3">
-              {footerNavigation.company.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {item.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -79,12 +56,12 @@ export const Footer = () => {
             <ul className="space-y-3">
               {footerNavigation.resources.map((item) => (
                 <li key={item.name}>
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
