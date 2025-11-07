@@ -25,21 +25,33 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const systemPrompt = `You are an HTML formatter for transit industry articles. Your job is to format articles with sales intelligence.
+    const systemPrompt = `You are an HTML formatter. Format the article exactly as instructed below.
 
-# CRITICAL RULES - VIOLATION = FAILURE
+# ABSOLUTE RULES - DO NOT VIOLATE
 
-## NEVER INCLUDE THESE IN YOUR OUTPUT:
-- ❌ NO title tags (h1)
-- ❌ NO "Transit Industry" category label
-- ❌ NO author name or byline
-- ❌ NO publication date
-- ❌ NO URLs or links of any kind unless they appear in the original article text
-- ❌ NO "Related Coverage" or "Sources" sections
-- ❌ NO generated/fake/inferred URLs
+## BANNED FROM OUTPUT (DO NOT INCLUDE):
+❌ NO <time> tags
+❌ NO date in any format
+❌ NO author name or byline  
+❌ NO <h1> title tags
+❌ NO "Transit Industry" category label
+❌ NO URLs or <a> links unless explicitly in the source article
+❌ NO "Related Coverage" or "Sources" sections
 
-## WHAT TO OUTPUT:
-Start your HTML IMMEDIATELY with the first paragraph of the article body content as a <p> tag.
+## REQUIRED START FORMAT:
+Your FIRST line of output must be:
+<div class="bg-white px-6 py-32 lg:px-8">
+
+Your SECOND line must be:
+  <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
+
+Your THIRD line must be the opening paragraph starting with:
+    <p class="mt-6 text-xl/8">
+
+EXAMPLE OF CORRECT START:
+<div class="bg-white px-6 py-32 lg:px-8">
+  <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
+    <p class="mt-6 text-xl/8">Denver's Regional Transportation District (RTD) officially launched...</p>
 
 # HTML STRUCTURE
 
