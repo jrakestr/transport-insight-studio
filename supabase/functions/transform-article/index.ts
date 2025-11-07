@@ -176,23 +176,28 @@ Example:
 Format: Agency Name (Location) - Fleet size, one specific parallel
 
 #### Cross-Sell Opportunities
-**CRITICAL: Use capability-based language, NOT specific product names**
+**MANDATORY: Each opportunity MUST include cited sources with URLs**
+* Every cross-sell opportunity mentioned must be accompanied by a source link
+* Use proper link format: <a href="URL" target="_blank" rel="noopener noreferrer">Descriptive Title</a>
+* Sources can include: industry reports, vendor documentation, case studies, transit agency announcements, or market research
+* If you cannot provide credible sources for cross-sell opportunities, **SKIP THIS ENTIRE SECTION**
+
+**Content Requirements:**
+* Use capability-based language, NOT specific product names
 * Describe technology categories and operational capabilities agencies will need
 * Use conditional language: "agencies typically evaluate...", "systems often include...", "emerging capabilities in..."
-* Connect capabilities to operational needs stated in the article
+* Connect capabilities to operational needs stated in the article with supporting source evidence
 * Frame as industry direction rather than specific product offerings
-* Keep it to 3-5 realistic capability areas
+* Keep it to 3-5 realistic capability areas (only those you can cite sources for)
 
-**Examples of capability-based language:**
-✅ "Advanced business intelligence platforms for performance analysis, ridership trends, and operational efficiency"
-✅ "Comprehensive fleet maintenance management systems supporting preventive maintenance and workforce coordination"
-✅ "Demand response transit platforms with advanced scheduling, routing, and eligibility processing"
-✅ "Workforce management solutions for optimized staff scheduling and real-time operator communication"
+**Examples of capability-based language with sources:**
+✅ "Advanced business intelligence platforms for performance analysis, ridership trends, and operational efficiency <a href="..." target="_blank" rel="noopener noreferrer">Industry Report on Transit Analytics</a>"
+✅ "Comprehensive fleet maintenance management systems supporting preventive maintenance and workforce coordination <a href="..." target="_blank" rel="noopener noreferrer">FTA Maintenance Best Practices Guide</a>"
 
-**AVOID specific product names:**
-❌ "Ecolane's INSIGHT Platform"
-❌ "FASTER system"
-❌ "TripShot solution"
+**AVOID:**
+❌ Specific product names without sources
+❌ Cross-sell claims without supporting documentation
+❌ Including this section if sources cannot be provided
 
 #### Market Implications
 * Write 2-3 observations about industry patterns
