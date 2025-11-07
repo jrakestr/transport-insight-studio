@@ -39,37 +39,40 @@ STRUCTURE (4 sections):
 3. SALES INTELLIGENCE (use these exact subheaders with Tailwind styling)
 <h3 class="text-lg font-semibold mt-6 mb-3">Buying Triggers</h3>
 <ul class="list-disc pl-6 space-y-2">
-<li>Technology categories for RFPs within 6-18 months with specific timing</li>
-<li>Budget cycle implications (federal deadlines, fiscal constraints)</li>
-<li>Organizational readiness signals</li>
+<li>Technology categories likely needed for procurement (no fabricated timeframes)</li>
+<li>Budget cycle implications based on article details</li>
+<li>Organizational readiness signals from the article</li>
 </ul>
 
 <h3 class="text-lg font-semibold mt-6 mb-3">Lookalike Prospects</h3>
 <ul class="list-disc pl-6 space-y-2">
-<li>Comparable agencies with location, fleet size, parallel challenges</li>
-<li>Procurement timing signals</li>
+<li>Comparable agencies with actual location, fleet size, parallel challenges</li>
+<li>Procurement signals based on similar real deployments</li>
 </ul>
 
 <h3 class="text-lg font-semibold mt-6 mb-3">Cross-Sell Opportunities</h3>
 <ul class="list-disc pl-6 space-y-2">
-<li>Complementary systems integrating with primary procurement</li>
+<li>Complementary systems that integrate with primary procurement</li>
 <li>Related operational solutions</li>
 </ul>
 
 4. MARKET IMPLICATIONS (final paragraph)
 - Industry adoption patterns
 - Vendor competitive positioning
-- Procurement timeline predictions
+- General procurement observations (no specific month ranges)
 - Technology architecture trends
 
-OUTPUT RULES:
+CRITICAL RULES:
+- DO NOT fabricate specific timeframes like "within 6-12 months" or "12-18 months"
+- Base ALL analysis on factual content from the article
+- Provide general insights without inventing timing windows
 - Use <p class="mb-4"> for paragraphs
 - Use <ul class="list-disc pl-6 space-y-2"><li> for lists
 - Use <strong> for emphasis within text
 - Use <h3 class="text-lg font-semibold mt-6 mb-3"> for section headers
 - DO NOT include article title, date, author, source links
 - DO NOT use ### markdown
-- Keep it professional and actionable
+- Keep it professional and grounded in facts
 
 Transform this article:`;
 
