@@ -72,11 +72,6 @@ export const Header = () => {
                   Market Reports
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/news?filter=archived" className="cursor-pointer">
-                  Archived
-                </Link>
-              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           
@@ -210,13 +205,6 @@ export const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Market Reports
-              </Link>
-              <Link
-                to="/news?filter=archived"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Archived
               </Link>
             </div>
             
