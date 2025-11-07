@@ -1,11 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, ExternalLink } from "lucide-react";
 import { useArticles } from "@/hooks/useArticles";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { format } from "date-fns";
 
 const Article = () => {
@@ -59,86 +57,72 @@ const Article = () => {
           </div>
         </section>
 
-        {/* Article Header */}
-        <section className="border-b bg-muted/30">
-          {/* Article Image */}
-          {article.image_url && (
-            <div className="w-full h-96 overflow-hidden">
-              <img
-                src={article.image_url}
-                alt={article.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
-          
-          <div className="section-container py-12 lg:py-16">
-            <div className="max-w-4xl">
-              {article.category && (
-                <Badge variant="secondary" className="mb-4">
-                  {article.category}
-                </Badge>
+        {/* Article Content - Rich Layout */}
+        <div className="bg-background px-6 py-16 lg:px-8 lg:py-24">
+          <div className="mx-auto max-w-3xl text-base/7 text-foreground">
+            {article.category && (
+              <p className="text-base/7 font-semibold text-primary">
+                {article.category}
+              </p>
+            )}
+            
+            <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty sm:text-5xl">
+              {article.title}
+            </h1>
+            
+            <div className="mt-6 flex items-center gap-4 text-sm text-muted-foreground">
+              <time dateTime={article.published_at}>
+                {format(new Date(article.published_at), 'MMMM d, yyyy')}
+              </time>
+              {article.author_name && (
+                <>
+                  <span>•</span>
+                  <span>
+                    {article.author_name}
+                    {article.author_role && ` – ${article.author_role}`}
+                  </span>
+                </>
               )}
-              
-              <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-                {article.title}
-              </h1>
+            </div>
 
-              <div className="flex items-center gap-4 mb-6">
-                <Avatar className="size-12">
-                  <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-lg">
-                    {article.author_name ? article.author_name.split(' ').map(n => n[0]).join('').toUpperCase() : 'TT'}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <div className="font-semibold">{article.author_name || 'Transit Technologies'}</div>
-                  {article.author_role && (
-                    <div className="text-sm text-muted-foreground">{article.author_role}</div>
-                  )}
-                </div>
+            {article.source_url && (
+              <div className="mt-4">
+                <a 
+                  href={article.source_url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  View Original Source{article.source_name && ` from ${article.source_name}`}
+                </a>
               </div>
+            )}
 
-              <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
-                  <time dateTime={article.published_at}>
-                    {format(new Date(article.published_at), 'MMMM d, yyyy')}
-                  </time>
-                </div>
-                {article.source_url && (
-                  <a 
-                    href={article.source_url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-primary transition-colors"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    <span>View Original Source{article.source_name && ` (${article.source_name})`}</span>
-                  </a>
-                )}
-              </div>
+            {article.image_url && (
+              <figure className="mt-10">
+                <img
+                  alt={article.title}
+                  src={article.image_url}
+                  className="aspect-video rounded-xl bg-muted object-cover w-full"
+                />
+              </figure>
+            )}
+            
+            <p className="mt-10 text-xl/8 text-muted-foreground">
+              {article.description}
+            </p>
+            
+            <div className="mt-10 max-w-2xl">
+              {article.content && (
+                <article 
+                  className="article-content prose prose-lg dark:prose-invert max-w-none"
+                  dangerouslySetInnerHTML={{ __html: article.content }}
+                />
+              )}
             </div>
           </div>
-        </section>
-
-        {/* Article Content */}
-        <section className="py-12 lg:py-20">
-          <div className="section-container">
-            <div className="max-w-4xl mx-auto">
-              <article className="article-content">
-                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                  {article.description}
-                </p>
-                
-                {article.content && (
-                  <div 
-                    dangerouslySetInnerHTML={{ __html: article.content }}
-                  />
-                )}
-              </article>
-            </div>
-          </div>
-        </section>
+        </div>
 
         {/* Related Articles */}
         <section className="border-t bg-muted/30 py-12">
@@ -152,7 +136,7 @@ const Article = () => {
                   <Link 
                     key={relatedArticle.id} 
                     to={`/article/${relatedArticle.slug}`}
-                    className="block border rounded-lg hover:border-primary transition-colors bg-card overflow-hidden"
+                    className="group block border rounded-lg hover:border-primary transition-colors bg-card overflow-hidden"
                   >
                     {relatedArticle.image_url && (
                       <img
@@ -163,9 +147,9 @@ const Article = () => {
                     )}
                     <div className="p-4">
                       {relatedArticle.category && (
-                        <Badge variant="outline" className="mb-2">{relatedArticle.category}</Badge>
+                        <span className="text-sm font-semibold text-primary">{relatedArticle.category}</span>
                       )}
-                      <h3 className="font-semibold mb-2 hover:text-primary transition-colors">
+                      <h3 className="font-semibold mt-2 mb-2 group-hover:text-primary transition-colors">
                         {relatedArticle.title}
                       </h3>
                       <p className="text-sm text-muted-foreground line-clamp-2">
