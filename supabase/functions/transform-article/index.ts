@@ -149,13 +149,28 @@ Skip if no relevant sources exist.
 
 ## FORMATTING
 
-- NO html/head/body wrapper tags
-- Start with time datetime and author in p tags
-- Use h2 for major sections only
-- Default to p tags for paragraphs
-- Bold agency names with strong tags (don't overdo it)
-- Use ul/li for lists when needed
-- Clean 2-space indentation
+**CRITICAL: Use proper Tailwind CSS classes for professional article styling.**
+
+Required structure:
+- Outer wrapper: div with "bg-white px-6 py-32 lg:px-8"
+- Content container: div with "mx-auto max-w-3xl text-base/7 text-gray-700"
+- Category tag: p with "text-base/7 font-semibold text-indigo-600"
+- Title (h1): "mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl"
+- Lead paragraph: p with "mt-6 text-xl/8"
+- Main content wrapper: div with "mt-10 max-w-2xl text-gray-600"
+- Section headers (h2): "mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900"
+- Subsection headers (h3): "mt-8 text-xl font-semibold text-gray-900"
+- Regular paragraphs: p with "mt-6" or "mt-8"
+- Lists when needed: ul with "mt-8 max-w-xl space-y-8 text-gray-600"
+- List items: li with "flex gap-x-3" containing checkmark SVG
+- Bold agency names: strong with "font-semibold text-gray-900"
+- Links: a with "text-indigo-600 hover:text-indigo-500"
+
+SVG checkmark for lists:
+- Use: svg with "mt-1 size-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor"
+- Path: d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z"
+
+**NO html/head/body wrapper tags - output clean semantic HTML with Tailwind classes.**
 
 ---
 
