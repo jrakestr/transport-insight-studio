@@ -49,34 +49,55 @@ You must return a JSON object with two properties:
 ## PART 1: STRUCTURED ANALYSIS
 
 ### Metadata Extraction
-Identify and extract:
-- **Input validation**: character count, language, content structure, technical complexity
-- **Detected entities**: All organizations, agencies, people, systems mentioned
-- **Sentiment analysis**: Overall sentiment + sentiment by stakeholder group
-- **Topics**: Core themes and subject areas
-- **Segment importance scoring**: Rate each section 1-10
-- **Inter-segment relationships**: How different parts connect
-- **Domain-specific flags**: Technical accuracy, semantic preservation
+Extract and structure as follows:
+
+**metadata.input_validation:**
+- is_valid: boolean (true if processable)
+- language: string (e.g., "English")
+- character_count: integer
+- content_structure: array of strings describing article sections
+- technical_complexity: string describing complexity level
+
+**metadata.analysis_metadata:**
+- detected_entities: array of all organizations, agencies, people, systems mentioned
+- sentiment_analysis: object with "overall" sentiment and sentiment by stakeholder groups
+- topics: array of core themes
+- segment_importance_scoring: object mapping section names to importance scores (1-10)
+- inter_segment_relationships: array describing how sections connect
+- domain_specific_flags: object with technical_term_accuracy, preserved_semantics, needs_expert_validation
 
 ### Q&A Pair Generation
-Generate 10-16 question-answer pairs covering:
-- Factual questions (What, Who, When, Where, How much)
-- Conceptual questions (Why, What does this mean, What are implications)
-- Each Q&A must include:
-  - question: Clear, specific question
-  - answer: Concise, accurate answer extracted from article
-  - type: "factual" or "conceptual"
-  - confidence: 0.0-1.0 based on clarity of source material
-  - quality_score: 1-10 rating
-  - improvement_suggestions: null or specific suggestions
+Generate 10-16 question-answer pairs covering factual and conceptual questions.
 
-### Analysis Schema Structure
-Return a JSON object with these properties:
-- metadata.input_validation: is_valid, language, character_count, content_structure array, technical_complexity
-- metadata.analysis_metadata: detected_entities array, sentiment_analysis object, topics array, segment_importance_scoring object, inter_segment_relationships array, domain_specific_flags object
-- qa_pairs: array of objects with question, answer, type, confidence, quality_score, improvement_suggestions
-- integration_guidelines: import_instructions, conversation_flow array, fallback_handling, version_control
-- performance_metrics: processing_status, progress, timeout_occurred, optimization_notes
+**Each qa_pair object must include:**
+- question: string (clear, specific question)
+- answer: string (concise, accurate answer from article)
+- type: "factual" or "conceptual"
+- confidence: number 0.0-1.0 (based on source clarity)
+- quality_score: integer 1-10
+- improvement_suggestions: null or string with specific suggestions
+
+### Integration Guidelines Structure
+- import_instructions: string explaining how to import/use this data
+- conversation_flow: array of strings describing chatbot conversation patterns
+- fallback_handling: string describing fallback behavior
+- version_control: string with version tag and metadata
+
+### Performance Metrics Structure
+- processing_status: string (e.g., "complete")
+- progress: string (e.g., "100%")
+- timeout_occurred: boolean
+- optimization_notes: string with processing notes
+
+### Complete Analysis Schema
+The analysis object MUST be a valid JSON object with this exact structure:
+- Root level: "metadata", "qa_pairs", "integration_guidelines", "performance_metrics"
+- metadata contains: "input_validation" and "analysis_metadata"
+- input_validation has: is_valid, language, character_count, content_structure array, technical_complexity
+- analysis_metadata has: detected_entities, sentiment_analysis (with overall + stakeholder keys), topics, segment_importance_scoring, inter_segment_relationships, domain_specific_flags
+- qa_pairs is an array of objects each with: question, answer, type, confidence, quality_score, improvement_suggestions
+- integration_guidelines has: import_instructions, conversation_flow, fallback_handling, version_control
+- performance_metrics has: processing_status, progress, timeout_occurred, optimization_notes
 
 ---
 
