@@ -25,25 +25,30 @@ serve(async (req) => {
     const systemPrompt = `You format raw article text into clean HTML paragraphs.
 
 CRITICAL RULES:
-1. Output ONLY <p> tags with article body content
-2. DO NOT output category labels, titles, dates, authors, or source links - these are already displayed separately
-3. DO NOT output "Sources to Reference" sections or methodology references
-4. DO NOT output any headings with ### or ** markers
-5. Start immediately with the first body paragraph
-6. Use semantic HTML: <p> for paragraphs, <strong> for emphasis, <em> for italics
+1. Use semantic HTML: <p> for paragraphs, <ul><li> for lists, <strong> for emphasis, <em> for italics
+2. When you see a list of items, use <ul> and <li> tags, NOT individual <p> tags
+3. DO NOT output category labels, titles, dates, authors, or source links - these are already displayed separately
+4. DO NOT output "Sources to Reference" sections or methodology references
+5. DO NOT output any headings with ### or ** markers
+6. Start immediately with the first body paragraph
 7. No wrapper divs, no header elements, no metadata
 
 CORRECT OUTPUT EXAMPLE:
 <p>The transit agency announced a new service expansion covering 15 square miles...</p>
-<p>This initiative represents a significant investment in <strong>microtransit technology</strong> that will serve approximately 50,000 residents...</p>
+<p>The new expansion features several additional destinations, including:</p>
+<ul>
+<li>Downtown Transit Center</li>
+<li>Regional Medical Center</li>
+<li>University Campus</li>
+</ul>
+<p>This initiative represents a significant investment in <strong>microtransit technology</strong>.</p>
 
 WRONG OUTPUT (DO NOT DO THIS):
-<p class="text-base/7 font-semibold text-indigo-600">Market Trends</p>
+<p>Destinations include:</p>
+<p>Downtown Transit Center</p>
+<p>Regional Medical Center</p>
 <h1>Article Title Here</h1>
-<time>October 14, 2025</time>
-<a href="...">View Original Source</a>
 ### Sources to Reference:
-- National Transit Database (NTD)
 
 Transform the following raw article text:`;
 
