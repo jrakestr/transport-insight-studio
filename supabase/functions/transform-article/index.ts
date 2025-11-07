@@ -176,10 +176,23 @@ Example:
 Format: Agency Name (Location) - Fleet size, one specific parallel
 
 #### Cross-Sell Opportunities
-* Identify adjacent technologies logically connected to the article
-* Use natural language: "typically evaluate..." or "often procure alongside..."
-* Explain the connection - don't just list products
-* Keep it to 3-5 realistic opportunities
+**CRITICAL: Use capability-based language, NOT specific product names**
+* Describe technology categories and operational capabilities agencies will need
+* Use conditional language: "agencies typically evaluate...", "systems often include...", "emerging capabilities in..."
+* Connect capabilities to operational needs stated in the article
+* Frame as industry direction rather than specific product offerings
+* Keep it to 3-5 realistic capability areas
+
+**Examples of capability-based language:**
+✅ "Advanced business intelligence platforms for performance analysis, ridership trends, and operational efficiency"
+✅ "Comprehensive fleet maintenance management systems supporting preventive maintenance and workforce coordination"
+✅ "Demand response transit platforms with advanced scheduling, routing, and eligibility processing"
+✅ "Workforce management solutions for optimized staff scheduling and real-time operator communication"
+
+**AVOID specific product names:**
+❌ "Ecolane's INSIGHT Platform"
+❌ "FASTER system"
+❌ "TripShot solution"
 
 #### Market Implications
 * Write 2-3 observations about industry patterns
