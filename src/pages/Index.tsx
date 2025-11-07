@@ -3,11 +3,13 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { articles } from "@/data/articles";
-import { ArrowRight } from "lucide-react";
+import { useArticles } from "@/hooks/useArticles";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { format } from "date-fns";
 
 const Index = () => {
+  const { data: articles, isLoading } = useArticles();
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -51,18 +53,23 @@ const Index = () => {
               </div>
               
               <div className="space-y-8 border-t border-border pt-10">
-                {articles.map((article) => (
+                {isLoading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  </div>
+                ) : articles && articles.length > 0 ? (
+                  articles.map((article) => (
                   <article 
                     key={article.id} 
                     className="border border-border rounded-lg overflow-hidden hover:border-primary transition-colors"
                   >
                     <div className="flex flex-col lg:flex-row gap-6">
                       {/* Article Image */}
-                      {article.imageUrl && (
+                      {article.image_url && (
                         <div className="lg:w-80 shrink-0">
                           <Link to={`/article/${article.slug}`}>
                             <img
-                              src={article.imageUrl}
+                              src={article.image_url}
                               alt={article.title}
                               className="w-full h-48 lg:h-full object-cover hover:opacity-90 transition-opacity"
                             />
@@ -75,25 +82,33 @@ const Index = () => {
                         <div className="flex space-x-3 mb-4">
                           <Avatar className="size-10">
                             <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
-                              JR
+                              {article.author_name ? article.author_name.split(' ').map(n => n[0]).join('').toUpperCase() : 'TT'}
                             </AvatarFallback>
                           </Avatar>
                           <div className="min-w-0 flex-1">
                             <p className="text-sm font-semibold">
-                              {article.author.name}
+                              {article.author_name || 'Transit Technologies'}
                             </p>
                             <p className="text-sm text-muted-foreground">
-                              <time dateTime={article.datetime}>{article.date}</time>
-                              {' · '}
-                              <span>{article.author.role}</span>
+                              <time dateTime={article.published_at}>
+                                {format(new Date(article.published_at), 'MMM d, yyyy')}
+                              </time>
+                              {article.author_role && (
+                                <>
+                                  {' · '}
+                                  <span>{article.author_role}</span>
+                                </>
+                              )}
                             </p>
                           </div>
                         </div>
 
                         {/* Article Content */}
-                        <div className="mb-3">
-                          <Badge variant="outline">{article.category.title}</Badge>
-                        </div>
+                        {article.category && (
+                          <div className="mb-3">
+                            <Badge variant="outline">{article.category}</Badge>
+                          </div>
+                        )}
                         
                         <div className="group">
                           <h3 className="text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
@@ -114,7 +129,12 @@ const Index = () => {
                       </div>
                     </div>
                   </article>
-                ))}
+                  ))
+                ) : (
+                  <div className="text-center py-12 text-muted-foreground">
+                    No articles published yet.
+                  </div>
+                )}
               </div>
 
               {/* View Full Report CTA */}
