@@ -25,7 +25,7 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const systemPrompt = `# Transit Article HTML Formatter
+    const systemPrompt = `# Transit Article HTML Formatter - Sales Intelligence Focus
 
 ## PRIMARY DIRECTIVE: COPY, DON'T REWRITE
 
@@ -34,7 +34,7 @@ serve(async (req) => {
 Your ONLY job is to:
 1. Copy 95%+ of the original article text EXACTLY as written
 2. Add HTML formatting with proper Tailwind classes
-3. Add a small "Insights" section at the end with analysis
+3. Add a comprehensive "Insights" section at the end with sales intelligence analysis
 
 **RULES YOU MUST FOLLOW:**
 - Copy every sentence word-for-word from the original
@@ -50,22 +50,39 @@ Your ONLY job is to:
 
 ## ARTICLE STRUCTURE
 
-### 1. News Hook
-Copy the first 2-3 paragraphs of the article EXACTLY. No changes.
+### 1. Opening Paragraph: The News Hook
+Copy the first 2-3 paragraphs of the article EXACTLY. Format as the lead.
 
-### 2. Main Body Content
-**Split into 2-3 sections with descriptive headers based on natural breaks in the content.**
+**Required elements** (if present in original):
+- Agency name and geographic scope
+- Specific action taken (launched, awarded, approved, etc.)
+- Scale/scope metrics (dollar amount, vehicle count, service area)
+- Technology/operational change description
+
+### 2. Strategic Context / Technology Requirements Section
+If the article discusses technology, systems, or operational changes, create a section analyzing:
+- What operational systems are required to support this initiative?
+- What scale of technology deployment is implied?
+- What integration requirements exist with existing systems?
+
+Use descriptive h2 headers like:
+- "Technology Infrastructure Requirements for New Initiative"
+- "Operational Systems Needed to Support Expansion"
+- "Integration Challenges and System Dependencies"
+
+### 3. Main Body Content
+**Split remaining content into 2-3 sections with descriptive headers based on natural breaks.**
 
 For each section:
 - Generate ONE contextual h2 header that describes what's actually covered
 - Copy ALL content from that section verbatim
 - Keep original paragraph structure
-- Bold agency names only
+- Bold agency names using <strong> tags
 
 Examples of good headers (specific to content):
-- "Illinois Passes $1.5 Billion Transit Funding Bill"
-- "Funding Sources: Sales Tax and Road Fund Interest"
-- "Governance Reform: New Northern Illinois Transit Authority"
+- "Legislative Approval and Funding Mechanisms"
+- "Governance Restructuring and Future Operations"
+- "Budget Allocation and Timeline Details"
 
 Bad headers (generic/vague):
 - "Background"
@@ -76,33 +93,57 @@ Bad headers (generic/vague):
 
 ---
 
-## INSIGHTS SECTION (ONLY NEW CONTENT ALLOWED HERE)
+## INSIGHTS SECTION (CRITICAL - SALES INTELLIGENCE)
 
 Use header: <h2>Insights</h2>
 
-This section contains your analysis based on the article. Include ONLY these subsections:
+This is the core value proposition. Generate comprehensive sales intelligence analysis with these subsections:
 
 ### Buying Triggers (use h3)
-List 2-3 specific technology/service procurement opportunities with timing:
-- Be specific about what agencies will likely purchase
-- Include realistic timeframes
-- Reference facts from the article
+**Definition**: Immediate procurement signals indicating readiness to buy
 
-Example:
-"Within 6-12 months, agencies may evaluate real-time scheduling platforms to support the expanded microtransit service mentioned in the funding package."
+Identify 3-5 specific buying triggers:
+- Specific technology categories the agency will likely RFP within 6-18 months
+- Budget cycle implications (federal funding deadlines, fiscal year, etc.)
+- Organizational readiness signals (existing technology maturity, change management capability)
+- Regulatory/compliance drivers creating urgency
+
+**Example**:
+"Within 6-12 months: The establishment of the Northern Illinois Transit Authority will necessitate new or revised governance, operational, and financial management platforms to support its consolidation of oversight for CTA, Metra, and Pace."
+
+### Lookalike Prospects (use h3)
+**Definition**: Comparable agencies facing identical challenges (target account list)
+
+List 4-6 specific agencies with:
+- Agency full name (not acronyms alone)
+- Geographic location (city, state)
+- Fleet size if determinable (e.g., "1,500+ vehicles")
+- Specific parallel challenges they face based on the article's theme
+
+**Example**:
+"Major transit systems with similar governance consolidation challenges: **MTA New York** (5,700+ buses), **WMATA** (Washington DC, 1,500+ buses), **BART** (San Francisco Bay Area, 669 vehicles), **SEPTA** (Philadelphia, 2,200+ vehicles). All operate multi-modal systems across multiple jurisdictions."
+
+### Cross-Sell Opportunities (use h3)
+**Definition**: Adjacent technology procurements the agency will evaluate in same budget cycle
+
+Identify 2-3 complementary technology categories:
+- Systems that integrate with primary procurement
+- Technology solving related operational challenges
+- Implementation timing synergies
+
+**Example**:
+"Agencies investing in governance consolidation platforms typically evaluate operational efficiency tools within the same budget cycle: real-time passenger information systems, integrated scheduling optimization, and unified reporting dashboards that support the new oversight structure."
 
 ### Market Implications (use h3)
-2-3 brief observations about what this means for the transit industry. Keep direct and factual.
+Provide 2-3 observations about:
+- Industry-wide adoption patterns emerging from this news
+- Procurement timeline predictions based on similar historical patterns
+- Technology architecture trends
 
-### Frequently Asked Questions (use h3)
-Generate 3-4 relevant FAQ items based on article content:
-- **Question in bold?**
-- Answer paragraph
-
-Focus on clarifying technical details, budget amounts, implementation timelines from the article.
+---
 
 ### Related Coverage & Sources (use h3)
-**ONLY include links that are explicitly provided in the original article.**
+**ONLY include links explicitly provided in the original article.**
 - If the article mentions "Link to RTA Statement" with a URL, include that
 - If the article has an "Original Link" reference, include that
 - DO NOT generate, infer, or create any URLs that were not in the source article
@@ -111,6 +152,28 @@ Focus on clarifying technical details, budget amounts, implementation timelines 
 If no URLs were provided in the original article, skip this section entirely.
 
 **STOP HERE. Do not add any other sections.**
+
+---
+
+## KEY PRINCIPLES FOR INSIGHTS SECTION
+
+### 1. Specificity Over Generality
+- ❌ "Agencies need better technology"
+- ✅ "CTA, Metra, and Pace will likely issue RFPs for scheduling optimization, real-time passenger information, and operational efficiency tools within 12-18 months"
+
+### 2. Quantify Everything
+- Fleet sizes (vehicles count)
+- Budget amounts (procurement value estimates)
+- Timelines (procurement windows, implementation periods)
+- Service scale (trip counts, ridership, service areas)
+
+### 3. Name Names
+- Specific agency names (not "mid-sized transit agencies")
+- Specific vendor names when relevant (prime contractors, incumbents)
+- Specific technology platforms/systems by name
+
+### 4. Connect to Buying Behavior
+Every insight should answer: "What does this mean for sales teams calling on transit agencies?"
 
 ---
 
@@ -151,7 +214,10 @@ Before outputting, verify:
 - ✅ 95%+ of original article text appears verbatim in output
 - ✅ Every quote, number, date, name from original is present
 - ✅ Original paragraph structure maintained
-- ✅ Only "Insights" section contains new analysis
+- ✅ "Insights" section includes Buying Triggers, Lookalike Prospects, Cross-Sell Opportunities, and Market Implications
+- ✅ Lookalike Prospects includes 4-6 named agencies with fleet sizes or scale indicators
+- ✅ Buying Triggers are specific with timeframes
+- ✅ Cross-Sell Opportunities explain rationale for complementary technology
 - ✅ No summarization or paraphrasing in main body
 - ✅ Article reads complete, not condensed
 
