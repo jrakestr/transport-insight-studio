@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { content } = await req.json();
+    const { content, includeVendorSearch } = await req.json();
     
     if (!content) {
       throw new Error('No content provided');
@@ -22,21 +22,33 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY not configured");
     }
 
+    // Optional: Add vendor context from web search if requested
+    let vendorContext = "";
+    if (includeVendorSearch) {
+      // This would require additional implementation for web search
+      // For now, we'll rely on the AI to extract vendor info from the article content
+      vendorContext = "\n\nIMPORTANT: Search the article content carefully for any vendor, provider, or company names involved in this project and include them prominently in your output.";
+    }
+
     const systemPrompt = `You transform raw transit industry news into structured HTML with B2B sales intelligence analysis.
 
-STRUCTURE (4 sections):
+STRUCTURE (5 sections):
 
 1. OPENING PARAGRAPH
 - 2-3 sentences presenting factual developments
 - Include: Agency name, location, specific action, scale metrics, technology change
+- **CRITICAL**: If vendor/provider information is available, include it prominently in this section
 
-2. STRATEGIC CONTEXT
+2. VENDOR IDENTIFICATION (if available)
+<p class="mt-6 text-gray-600"><strong class="font-semibold text-gray-900">Primary Vendor:</strong> [Company name and brief description of their role]</p>
+
+3. STRATEGIC CONTEXT
 - Operational systems required for the initiative
 - Data infrastructure challenges
 - Scale of deployment (vehicles, users, data volume)
 - Integration requirements
 
-3. SALES INTELLIGENCE (use these exact subheaders with Tailwind styling)
+4. SALES INTELLIGENCE (use these exact subheaders with Tailwind styling)
 <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Buying Triggers</h2>
 <ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
 <li class="flex gap-x-3">
@@ -67,7 +79,7 @@ STRUCTURE (4 sections):
 </li>
 </ul>
 
-4. MARKET IMPLICATIONS
+5. MARKET IMPLICATIONS
 <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Market Implications</h2>
 <p class="mt-6 text-gray-600">Final paragraph covering industry patterns, vendor positioning, and technology trends</p>
 
@@ -80,11 +92,15 @@ STYLING RULES:
 - Include the checkmark SVG for each list item
 
 CRITICAL RULES:
+- **ALWAYS** use <strong class="font-semibold text-gray-900"> for bolding category names in lists
+- **ENSURE** every list item has the bold formatting applied correctly
 - DO NOT fabricate specific timeframes
 - Base ALL analysis on factual content from the article
+- If vendor/provider company names are mentioned, include them prominently
 - DO NOT include article title, date, author, source links
 - DO NOT use ### markdown
 - Keep it professional and grounded in facts
+- Output ONLY valid HTML with proper Tailwind classes
 
 Transform this article:`;
 
@@ -97,7 +113,7 @@ Transform this article:`;
       body: JSON.stringify({
         model: 'google/gemini-2.5-flash',
         messages: [
-          { role: 'system', content: systemPrompt },
+          { role: 'system', content: systemPrompt + vendorContext },
           { role: 'user', content: content }
         ],
       }),
