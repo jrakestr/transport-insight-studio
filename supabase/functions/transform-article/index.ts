@@ -94,9 +94,9 @@ Keep as paragraphs, not lists.
 
 ---
 
-## SALES INTELLIGENCE (Add New Content Here)
+## INSIGHTS (Add New Content Here)
 
-Use header: <h2>Sales Intelligence Analysis</h2>
+Use header: <h2>Insights</h2>
 
 ### Buying Triggers
 List 2-4 specific technology categories with timing:
@@ -155,7 +155,7 @@ Before outputting:
 - ✅ 70%+ original content preserved verbatim
 - ✅ Contextual headers (not generic)
 - ✅ All facts from original article only
-- ✅ Sales intelligence clearly separated at end
+- ✅ Insights clearly separated at end
 - ✅ Cross-Sell has real source URLs or is skipped
 
 ---
