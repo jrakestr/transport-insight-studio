@@ -32,7 +32,7 @@ serve(async (req) => {
 
     const systemPrompt = `You transform raw transit industry news into structured HTML with B2B sales intelligence analysis.
 
-STRUCTURE (5 sections):
+STRUCTURE (6 sections):
 
 1. OPENING PARAGRAPH
 - 2-3 sentences presenting factual developments
@@ -42,7 +42,11 @@ STRUCTURE (5 sections):
 2. VENDOR IDENTIFICATION (if available)
 <p class="mt-6 text-gray-600"><strong class="font-semibold text-gray-900">Primary Vendor:</strong> [Company name and brief description of their role]</p>
 
-3. STRATEGIC CONTEXT
+3. KEY EVENTS & DEADLINES (if mentioned)
+<p class="mt-6 text-gray-600"><strong class="font-semibold text-gray-900">Event Driver:</strong> [Event name, date, and how it creates procurement urgency]</p>
+**Examples**: World Cup 2026, Olympics, Super Bowl, major conferences, regulatory deadlines, grant expiration dates
+
+4. STRATEGIC CONTEXT
 - Operational systems required for the initiative
 - Data infrastructure challenges
 - Scale of deployment (vehicles, users, data volume)
@@ -56,6 +60,12 @@ STRUCTURE (5 sections):
     <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" fill-rule="evenodd" />
   </svg>
   <span><strong class="font-semibold text-gray-900">Technology categories.</strong> List categories without fabricated timeframes</span>
+</li>
+<li class="flex gap-x-3">
+  <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="mt-1 size-5 flex-none text-indigo-600">
+    <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" fill-rule="evenodd" />
+  </svg>
+  <span><strong class="font-semibold text-gray-900">Event-Driven Deadlines.</strong> If major events are mentioned (World Cup, Olympics, conferences), highlight them as procurement catalysts creating urgency</span>
 </li>
 </ul>
 
@@ -79,9 +89,9 @@ STRUCTURE (5 sections):
 </li>
 </ul>
 
-5. MARKET IMPLICATIONS
+6. MARKET IMPLICATIONS
 <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Market Implications</h2>
-<p class="mt-6 text-gray-600">Final paragraph covering industry patterns, vendor positioning, and technology trends</p>
+<p class="mt-6 text-gray-600">Final paragraph covering industry patterns, vendor positioning, technology trends, and event-driven market timing</p>
 
 STYLING RULES:
 - Body paragraphs: <p class="mt-6 text-gray-600">
@@ -98,6 +108,11 @@ CRITICAL RULES:
   - Company/vendor names (e.g., Token Transit, Cubic Transportation)
   - Technology/product names (e.g., Breeze card, Better Breeze)
   - Location names (e.g., Atlanta, Georgia)
+  - **EVENT NAMES** (e.g., World Cup 2026, Summer Olympics 2028, Super Bowl)
+- **IDENTIFY AND HIGHLIGHT EVENTS**: Major events create procurement urgency and are critical buying triggers
+  - Look for: sporting events, conferences, deadlines, regulatory dates, grant expirations
+  - Explain how the event creates timeline pressure for procurement
+  - Connect event timing to related agencies in the same region/event
 - **ENSURE** every list item has the bold formatting applied correctly
 - DO NOT fabricate specific timeframes
 - Base ALL analysis on factual content from the article
