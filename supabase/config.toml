@@ -1,4 +1,1 @@
 project_id = "nuaqnxskrudgwcnfmnnk"
-
-[functions.transform-article]
-verify_jwt = false
