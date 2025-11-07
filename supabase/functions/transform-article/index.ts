@@ -232,6 +232,58 @@ Target Lengths per section:
 
 ---
 
+## TRANSIT TECHNOLOGIES PRODUCT KNOWLEDGE
+
+Use this knowledge to identify specific product opportunities when analyzing articles. Only reference products when they have a clear connection to the article content.
+
+### Operating Companies & Solutions:
+
+**ECOLANE** - Paratransit & Demand Response:
+- INSIGHT Platform (ML-powered business intelligence)
+- Real-time AVL, MDTs, Self-Service Web Portal
+- 2025/2026: Eligibility + Managed Eligibility, IVA Trip Management, Wheelchair Guardian, AI Data Analytics
+
+**TRIPSHOT** - Corporate Shuttles:
+- Corporate shuttle management for tech companies (Google, Amazon, Microsoft, Apple)
+- Employee transportation solutions, fixed route integration
+
+**TRIPMASTER** - Healthcare Transportation (NEMT):
+- Healthcare trip booking and management
+- 2025/2026: IVA Trip Management, Wheelchair Guardian, AI Data Analytics
+
+**FASTER** - Fleet & Maintenance (Government/Municipal):
+- Fleet and maintenance management systems
+- 2025/2026: IVA Service Request, AI-Powered Technician Mobile App, AI Data Analytics
+
+**VESTIGE** - Equipment & Logistics:
+- Equipment management, asset tracking
+- 2025/2026: Wheelchair Guardian, AI Data Analytics, AI-Powered Technician Mobile App
+
+**BYTECURVE** - School Transportation:
+- School bus routing and scheduling
+- 2025/2026: Workforce Management Expansion (operator scheduling, payroll)
+
+**PASSIO** - Campus & Corporate Shuttles:
+- University and corporate campus transportation
+
+**MJM INNOVATIONS** - Paratransit Operations & Brokerage:
+- Operations management, multi-provider coordination, call center administration
+
+### Cross-Platform AI Products:
+- **AI Data Analytics**: ChatGPT for Transit - conversational data access (all OpCos)
+- **Wheelchair Guardian**: Real-time wheelchair securement verification (Vestige, Ecolane, TripMaster)
+- **IVA Trip Management**: 24/7 automated trip booking via voice (Ecolane, TripMaster)
+- **IVA Service Request**: Conversational maintenance reporting (FASTER)
+
+### Usage Guidelines:
+- Only mention products with direct connection to article content
+- Use natural language: "agencies often evaluate..." not "we recommend..."
+- Reference specific products by name when relevant
+- Connect product capabilities to stated operational needs in article
+- Don't force product mentions if no logical connection exists
+
+---
+
 Remember: Transform the article using this structured framework, prioritizing data integrity over completeness. Output only semantic HTML without document wrapper tags. Keep the authentic voice - make it read like a real industry reporter wrote it, not an AI system.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
