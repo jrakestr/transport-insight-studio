@@ -3,13 +3,27 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, ArrowLeft, ExternalLink } from "lucide-react";
-import { articles } from "@/data/articles";
+import { Calendar, ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
+import { useArticles } from "@/hooks/useArticles";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { format } from "date-fns";
 
 const Article = () => {
   const { slug } = useParams();
-  const article = articles.find(a => a.slug === slug);
+  const { data: articles, isLoading } = useArticles();
+  const article = articles?.find(a => a.slug === slug);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!article) {
     return (
@@ -48,10 +62,10 @@ const Article = () => {
         {/* Article Header */}
         <section className="border-b bg-muted/30">
           {/* Article Image */}
-          {article.imageUrl && (
+          {article.image_url && (
             <div className="w-full h-96 overflow-hidden">
               <img
-                src={article.imageUrl}
+                src={article.image_url}
                 alt={article.title}
                 className="w-full h-full object-cover"
               />
@@ -60,9 +74,11 @@ const Article = () => {
           
           <div className="section-container py-12 lg:py-16">
             <div className="max-w-4xl">
-              <Badge variant="secondary" className="mb-4">
-                {article.category.title}
-              </Badge>
+              {article.category && (
+                <Badge variant="secondary" className="mb-4">
+                  {article.category}
+                </Badge>
+              )}
               
               <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
                 {article.title}
@@ -71,29 +87,33 @@ const Article = () => {
               <div className="flex items-center gap-4 mb-6">
                 <Avatar className="size-12">
                   <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-lg">
-                    JR
+                    {article.author_name ? article.author_name.split(' ').map(n => n[0]).join('').toUpperCase() : 'TT'}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <div className="font-semibold">{article.author.name}</div>
-                  <div className="text-sm text-muted-foreground">{article.author.role}</div>
+                  <div className="font-semibold">{article.author_name || 'Transit Technologies'}</div>
+                  {article.author_role && (
+                    <div className="text-sm text-muted-foreground">{article.author_role}</div>
+                  )}
                 </div>
               </div>
 
               <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4" />
-                  <time dateTime={article.datetime}>{article.date}</time>
+                  <time dateTime={article.published_at}>
+                    {format(new Date(article.published_at), 'MMMM d, yyyy')}
+                  </time>
                 </div>
-                {article.sourceUrl && (
+                {article.source_url && (
                   <a 
-                    href={article.sourceUrl} 
+                    href={article.source_url} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 hover:text-primary transition-colors"
                   >
                     <ExternalLink className="h-4 w-4" />
-                    <span>View Original Source ({article.sourceName})</span>
+                    <span>View Original Source{article.source_name && ` (${article.source_name})`}</span>
                   </a>
                 )}
               </div>
@@ -110,32 +130,34 @@ const Article = () => {
                   {article.description}
                 </p>
                 
-                <div 
-                  className="article-content"
-                  dangerouslySetInnerHTML={{ 
-                    __html: article.content.split('\n').map(line => {
-                      // Handle H2 headings
-                      if (line.startsWith('## ')) {
-                        return `<h2 class="text-2xl font-bold mt-8 mb-4">${line.substring(3)}</h2>`;
-                      } 
-                      // Handle list items
-                      else if (line.startsWith('- ')) {
-                        const listContent = line.substring(2);
-                        const formatted = listContent.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-                        return `<li class="ml-6 mb-2">${formatted}</li>`;
-                      } 
-                      // Handle empty lines
-                      else if (line.trim() === '') {
-                        return '';
-                      } 
-                      // Handle paragraphs with bold text
-                      else {
-                        const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold">$1</strong>');
-                        return `<p class="mb-4 leading-relaxed">${formatted}</p>`;
-                      }
-                    }).join('')
-                  }}
-                />
+                {article.content && (
+                  <div 
+                    className="article-content"
+                    dangerouslySetInnerHTML={{ 
+                      __html: article.content.split('\n').map(line => {
+                        // Handle H2 headings
+                        if (line.startsWith('## ')) {
+                          return `<h2 class="text-2xl font-bold mt-8 mb-4">${line.substring(3)}</h2>`;
+                        } 
+                        // Handle list items
+                        else if (line.startsWith('- ')) {
+                          const listContent = line.substring(2);
+                          const formatted = listContent.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                          return `<li class="ml-6 mb-2">${formatted}</li>`;
+                        } 
+                        // Handle empty lines
+                        else if (line.trim() === '') {
+                          return '';
+                        } 
+                        // Handle paragraphs with bold text
+                        else {
+                          const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold">$1</strong>');
+                          return `<p class="mb-4 leading-relaxed">${formatted}</p>`;
+                        }
+                      }).join('')
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -146,8 +168,8 @@ const Article = () => {
           <div className="section-container">
             <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {articles
-                .filter(a => a.id !== article.id && a.category.title === article.category.title)
+              {articles && articles
+                .filter(a => a.id !== article.id && article.category && a.category === article.category)
                 .slice(0, 3)
                 .map(relatedArticle => (
                   <Link 
@@ -155,15 +177,17 @@ const Article = () => {
                     to={`/article/${relatedArticle.slug}`}
                     className="block border rounded-lg hover:border-primary transition-colors bg-card overflow-hidden"
                   >
-                    {relatedArticle.imageUrl && (
+                    {relatedArticle.image_url && (
                       <img
-                        src={relatedArticle.imageUrl}
+                        src={relatedArticle.image_url}
                         alt={relatedArticle.title}
                         className="w-full h-40 object-cover"
                       />
                     )}
                     <div className="p-4">
-                      <Badge variant="outline" className="mb-2">{relatedArticle.category.title}</Badge>
+                      {relatedArticle.category && (
+                        <Badge variant="outline" className="mb-2">{relatedArticle.category}</Badge>
+                      )}
                       <h3 className="font-semibold mb-2 hover:text-primary transition-colors">
                         {relatedArticle.title}
                       </h3>
