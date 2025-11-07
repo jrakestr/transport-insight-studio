@@ -78,6 +78,14 @@ export default function ArticleForm() {
       return;
     }
 
+    // Check if content is already transformed HTML
+    if (formData.content.includes('<div class="bg-white') || 
+        formData.content.includes('text-indigo-600') ||
+        formData.content.includes('max-w-3xl')) {
+      toast.error("This content is already transformed HTML. Transform only works on raw article text.");
+      return;
+    }
+
     setIsTransforming(true);
     try {
       const { data, error } = await supabase.functions.invoke('transform-article', {
