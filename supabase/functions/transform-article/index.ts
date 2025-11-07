@@ -103,37 +103,42 @@ STYLING RULES:
 
 CRITICAL RULES - ABSOLUTE REQUIREMENTS:
 
-**FORBIDDEN LANGUAGE - NEVER USE:**
-- "within 6-12 months"
-- "within 12-18 months"  
-- "within X-Y months"
-- "Expect RFPs within..."
-- Any phrase suggesting procurement timing or timeline predictions
-- Any phrase like "likely", "expected", "anticipated" followed by timeframes
+**FORBIDDEN LANGUAGE - NEVER INCLUDE IN OUTPUT:**
+❌ "within 6-12 months" / "within 12-18 months" / "within X-Y months"
+❌ "Expect RFPs within..."
+❌ "will likely lead to RFPs within..."
+❌ "could create urgency for procurement within..."
+❌ "Procurement timelines...are likely to follow a X-Y year cycle"
+❌ Any phrase suggesting specific procurement timing or timeline predictions
+❌ "anticipated within", "expected in", "projected for" + timeframes
+
+**CORRECT ALTERNATIVES - USE THESE INSTEAD:**
+✅ "The expansion creates demand for advanced microtransit software platforms"
+✅ "Federal grant cycles may drive procurement decisions"
+✅ "The agency has demonstrated readiness to invest in technology"
+✅ "This signals ongoing technology procurement needs"
+✅ State WHAT technology is needed, NOT WHEN it will be procured
 
 **REQUIRED FORMATTING:**
-- **ALWAYS** use <strong class="font-semibold text-gray-900"> for bolding category names in lists
-- **BOLD ALL ENTITIES** using <strong class="font-semibold text-gray-900">:
-  - Agency names (e.g., MARTA, Metropolitan Atlanta Rapid Transit Authority)
-  - Company/vendor names (e.g., Token Transit, Cubic Transportation)
-  - Technology/product names (e.g., Breeze card, Better Breeze)
-  - Location names (e.g., Atlanta, Georgia)
-  - **EVENT NAMES** (e.g., World Cup 2026, Summer Olympics 2028, Super Bowl)
+- **ALWAYS** use <strong class="font-semibold text-gray-900"> for bolding in lists
+- **BOLD ALL ENTITIES**:
+  - Agency names (Sugar Land, MARTA)
+  - Company/vendor names (Token Transit, Cubic)
+  - Technology/product names (Better Breeze, Sugar Land On-Demand)
+  - Location names (Texas, Atlanta)
+  - Event names (World Cup 2026, Olympics 2028)
 
 **EVENT IDENTIFICATION:**
-- Major events create procurement urgency and are critical buying triggers
-- Look for: sporting events, conferences, deadlines, regulatory dates, grant expirations
-- Explain how the event creates timeline pressure WITHOUT fabricating procurement dates
-- Connect event timing to related agencies in the same region/event
+- Major events create procurement urgency - highlight them
+- State the event and deadline WITHOUT fabricating procurement dates
+- Example: "World Cup 2026 creates urgency" NOT "procurement within 12 months"
 
 **CONTENT RULES:**
-- Base 100% of analysis on factual content from the article
-- If vendor/provider company names are mentioned, include them prominently
-- DO NOT include article title, date, author, source links
-- DO NOT use ### markdown
-- State what technology is NEEDED, not when procurement will happen
-- Keep it professional and grounded in facts
-- Output ONLY valid HTML with proper Tailwind classes
+- Base 100% on article facts
+- Include vendor names if mentioned
+- NO article metadata (title, date, author, URLs)
+- NO markdown (###)
+- Output valid HTML with Tailwind classes only
 
 Transform this article:`;
 
@@ -168,7 +173,32 @@ Transform this article:`;
     const data = await response.json();
     let transformedContent = data.choices[0].message.content;
 
-    // Post-processing: Strip out any metadata tags the AI might have added
+    // CRITICAL: Post-processing to remove any timeframe fabrications that slip through
+    const timeframePatterns = [
+      /within\s+\d+-?\d*\s+months?/gi,
+      /in\s+\d+-?\d*\s+months?/gi,
+      /over\s+the\s+next\s+\d+-?\d*\s+months?/gi,
+      /expect\s+rfps?\s+within[^.]*\./gi,
+      /will\s+likely\s+lead\s+to\s+rfps?\s+within[^.]*\./gi,
+      /could\s+create\s+urgency\s+for\s+procurement\s+within[^.]*\./gi,
+      /procurement\s+timelines?[^.]*are\s+likely\s+to\s+follow\s+a\s+\d+-?\d*\s+year\s+cycle/gi,
+      /anticipated\s+within\s+\d+-?\d*/gi,
+      /expected\s+in\s+\d+-?\d*/gi,
+      /projected\s+for\s+\d+-?\d*/gi
+    ];
+    
+    // Remove sentences containing forbidden timeframe language
+    timeframePatterns.forEach(pattern => {
+      transformedContent = transformedContent.replace(pattern, '[timeframe removed]');
+    });
+    
+    // Clean up artifacts from removal
+    transformedContent = transformedContent
+      .replace(/\[timeframe removed\]\s*/gi, '')
+      .replace(/\s+\./g, '.')
+      .replace(/\.\s+\./g, '.');
+
+    // Additional cleanup: Strip out metadata tags
     transformedContent = transformedContent
       .replace(/<p[^>]*class="[^"]*text-indigo-600[^"]*"[^>]*>.*?<\/p>/gi, '') // Remove category labels
       .replace(/<h1[^>]*>.*?<\/h1>/gi, '') // Remove any h1 titles
