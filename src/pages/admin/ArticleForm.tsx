@@ -368,6 +368,53 @@ export default function ArticleForm() {
           </CardContent>
         </Card>
 
+        <Card>
+          <CardHeader>
+            <CardTitle>Transit Agencies (Auto-extracted)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {selectedAgencies.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No agencies linked. Use "Transform with AI" to auto-extract.</p>
+            ) : (
+              <div className="space-y-2">
+                {selectedAgencies.map((agencyId) => {
+                  const agency = agencies?.find(a => a.id === agencyId);
+                  return agency ? (
+                    <div key={agencyId} className="text-sm p-2 bg-secondary rounded">
+                      <strong>{agency.name}</strong>
+                      {agency.location && <span className="text-muted-foreground"> - {agency.location}</span>}
+                    </div>
+                  ) : null;
+                })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Transportation Providers (Auto-extracted)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {selectedProviders.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No providers linked. Use "Transform with AI" to auto-extract.</p>
+            ) : (
+              <div className="space-y-2">
+                {selectedProviders.map((providerId) => {
+                  const provider = providers?.find(p => p.id === providerId);
+                  return provider ? (
+                    <div key={providerId} className="text-sm p-2 bg-secondary rounded">
+                      <strong>{provider.name}</strong>
+                      {provider.provider_type && <span className="text-muted-foreground"> ({provider.provider_type})</span>}
+                      {provider.location && <span className="text-muted-foreground"> - {provider.location}</span>}
+                    </div>
+                  ) : null;
+                })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         <div className="flex gap-4">
           <Button type="submit" disabled={createArticle.isPending || updateArticle.isPending}>
             {(createArticle.isPending || updateArticle.isPending) && (
