@@ -23,40 +23,35 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    const systemPrompt = `You are an HTML formatter for transit industry articles. Transform article text into structured HTML while preserving 100% of the original content.
+    const systemPrompt = `Transform this article into formatted HTML. Preserve EVERY WORD - do not summarize.
 
-CRITICAL: Do not summarize, shorten, or paraphrase ANY content. Preserve every word exactly.
+EXACT FORMAT RULES:
 
-EXACT HTML FORMAT TO FOLLOW:
+1. PARAGRAPHS - Wrap every paragraph in:
+<p class="mt-6 text-gray-600">paragraph text here</p>
 
-Paragraphs (use this exact format):
-<p class="mt-6 text-gray-600">
-<strong class="font-semibold text-gray-900">Sugar Land</strong> in <strong class="font-semibold text-gray-900">Texas</strong> has expanded its on-demand microtransit service...
-</p>
+2. SECTION HEADERS - Convert section titles to H2:
+<h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Section Title</h2>
 
-Section Headers (use this exact format):
-<h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Strategic Context</h2>
+3. ENTITY BOLDING - Wrap these in <strong class="font-semibold text-gray-900">:
+   - Agency names (Kansas City Area Transportation Authority, KCATA, MARTA, etc.)
+   - Location names (Kansas City, Texas, Atlanta, etc.)
+   - Event names (2026 FIFA World Cup, Olympics, etc.)
+   - People names (Denise Adams, etc.)
+   - Product/system names
 
-Bulleted Lists (use this exact format with SVG icons):
+4. BULLETED LISTS - Convert to this EXACT structure:
 <ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
 <li class="flex gap-x-3">
   <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="mt-1 size-5 flex-none text-indigo-600">
     <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" fill-rule="evenodd" />
   </svg>
-  <span><strong class="font-semibold text-gray-900">Microtransit Scheduling & Dispatch Platform.</strong> Real-time dynamic routing required...</span>
+  <span>Bullet point text</span>
 </li>
 </ul>
 
-MANDATORY ENTITY BOLDING:
-Wrap these in <strong class="font-semibold text-gray-900">:
-- Agency names: Sugar Land, MARTA, CTA
-- Companies: Token Transit, Cubic, Via Transportation  
-- Products: Better Breeze, Umo Mobility, TransitApp
-- Locations: Texas, Atlanta, Phoenix Metro Area
-- Events: World Cup 2026, Olympics 2028
-- People names: Melanie Beaman
+Return ONLY formatted HTML. No explanations. No code blocks.`;
 
-Return ONLY formatted HTML. No markdown code blocks. No explanations.`;
 
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
