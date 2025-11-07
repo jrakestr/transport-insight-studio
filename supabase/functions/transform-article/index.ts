@@ -25,71 +25,60 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const systemPrompt = `Format this transit article as HTML. Follow these rules EXACTLY.
+    const systemPrompt = `You are formatting a transit article into HTML. The title, category, author, and date are stored separately and rendered by the application. DO NOT include them in your HTML output.
 
-# OUTPUT FORMAT
-
-Your output MUST start with these exact lines:
+YOUR FIRST 3 LINES OF OUTPUT MUST BE EXACTLY:
 
 Line 1: <div class="bg-white px-6 py-32 lg:px-8">
 Line 2:   <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
-Line 3:     <p class="mt-6 text-xl/8">[First paragraph of article]</p>
+Line 3:     <p class="mt-6 text-xl/8">[Copy the first paragraph of the article here]</p>
 
-DO NOT output anything before these lines.
-DO NOT include: title, h1, category label, author name, date, time tags.
+DO NOT OUTPUT:
+- Any text before "<div class="bg-white"
+- <p class="text-base/7 font-semibold text-indigo-600"> (category label)
+- <h1> tags
+- <time> tags
+- Author names in the HTML
+- <a> tags or any URLs
 
-# CONTENT SECTIONS
+# STRUCTURE AFTER OPENING PARAGRAPH
 
-After the opening paragraph, add these sections in order:
-
-## Section 1: TL;DR
+## TL;DR Section
 <h2 class="mt-16 text-2xl font-semibold tracking-tight text-gray-900">TL;DR</h2>
-<p class="mt-6">Write 2-3 sentences: what happened, why it matters for sales, the opportunity.</p>
+<p class="mt-6">2-3 sentence summary: what happened, why it matters, the opportunity.</p>
 
-## Section 2-4: Main Body
-Copy ALL remaining paragraphs from the original article EXACTLY.
-Split into 2-3 sections with descriptive h2 headers.
-h2 class: "mt-16 text-3xl font-semibold tracking-tight text-gray-900"
+## Main Body (2-3 sections)
+Copy all remaining paragraphs from original article.
+Use descriptive h2 headers with class="mt-16 text-3xl font-semibold tracking-tight text-gray-900"
 
-## Section 5: Insights
+## Insights Section  
 <h2 class="mt-16 text-3xl font-semibold tracking-tight text-gray-900">Insights</h2>
 
-Add these h3 subsections (class="mt-8 text-xl font-semibold text-gray-900"):
+### Buying Triggers (h3 with class="mt-8 text-xl font-semibold text-gray-900")
+3-5 procurement signals with timeframes
 
-### Buying Triggers
-List 3-5 specific procurement signals with 6-18 month timeframes.
+### Lookalike Prospects (h3)
+4-6 agencies: **Name** (location, fleet) - challenges
 
-### Lookalike Prospects  
-List 4-6 agencies: **Agency Name** (Location, fleet size) - challenges
+### Cross-Sell Opportunities (h3)
+2-3 complementary tech categories
 
-### Cross-Sell Opportunities
-2-3 complementary technology categories.
+### Market Implications (h3)
+2-3 trend observations
 
-### Market Implications
-2-3 observations about trends and timelines.
+# EXAMPLE OF CORRECT START:
+<div class="bg-white px-6 py-32 lg:px-8">
+  <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
+    <p class="mt-6 text-xl/8">Illinois lawmakers passed a compromise bill delivering $1.5 billion...</p>
+    <h2 class="mt-16 text-2xl font-semibold tracking-tight text-gray-900">TL;DR</h2>
 
-# FORBIDDEN OUTPUT
+# EXAMPLE OF WRONG START (FORBIDDEN):
+<div class="bg-white px-6 py-32 lg:px-8">
+  <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
+    <p class="text-base/7 font-semibold text-indigo-600">Transit Funding</p>
+    <h1 class="mt-2 text-4xl">Title Here</h1>
 
-NEVER include:
-- <h1> tags
-- <time> tags  
-- Category labels
-- Author names
-- Publication dates
-- <a> tags or href attributes
-- Any URLs (http, https, www)
-- "Source:" or "Link to" phrases
-
-If you output any of the above, you FAIL.
-
-# STYLING
-
-- h2: class="mt-16 text-3xl font-semibold tracking-tight text-gray-900"
-- h3: class="mt-8 text-xl font-semibold text-gray-900"  
-- p: class="mt-6"
-- strong: class="font-semibold text-gray-900"
-
-Output only HTML starting with the opening <div> tag.`;
+Output only HTML. Start with <div class="bg-white px-6 py-32 lg:px-8">`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
