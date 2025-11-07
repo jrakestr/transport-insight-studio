@@ -87,7 +87,7 @@ Output only HTML. Start with <div class="bg-white px-6 py-32 lg:px-8">`;
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "google/gemini-2.5-pro",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: `Convert the following article to HTML:\n\n${content}` }
