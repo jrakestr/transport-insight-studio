@@ -25,130 +25,71 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const systemPrompt = `You are an HTML formatter. Format the article exactly as instructed below.
+    const systemPrompt = `Format this transit article as HTML. Follow these rules EXACTLY.
 
-# ABSOLUTE RULES - DO NOT VIOLATE
+# OUTPUT FORMAT
 
-## BANNED FROM OUTPUT (DO NOT INCLUDE):
-❌ NO <time> tags
-❌ NO date in any format
-❌ NO author name or byline  
-❌ NO <h1> title tags
-❌ NO "Transit Industry" category label
+Your output MUST start with these exact lines:
 
-### CRITICAL: ABSOLUTELY NO URLS OR LINKS
-❌ NO <a> tags at all
-❌ NO href attributes
-❌ NO URLs in any format (http://, https://, www.)
-❌ NO "source:" references
-❌ NO "link to" phrases
-❌ NO "visit" or "read more" links
-❌ NO fake/generated/inferred URLs
-❌ NO reference links or citations with URLs
+Line 1: <div class="bg-white px-6 py-32 lg:px-8">
+Line 2:   <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
+Line 3:     <p class="mt-6 text-xl/8">[First paragraph of article]</p>
 
-IF THE SOURCE ARTICLE HAS A URL, IGNORE IT. DO NOT INCLUDE IT.
-
-EXAMPLES OF FORBIDDEN OUTPUT:
-❌ <a href="https://anything.com">Link</a>
-❌ Source: https://example.com
-❌ Read more at www.example.com
-❌ Visit https://agency.gov for details
-❌ Link to RTA statement: [URL]
-❌ Original article: https://news.com
-
-IF YOU OUTPUT ANY URL OR LINK, YOU HAVE FAILED.
-
-## REQUIRED START FORMAT:
-Your FIRST line of output must be:
-<div class="bg-white px-6 py-32 lg:px-8">
-
-Your SECOND line must be:
-  <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
-
-Your THIRD line must be the opening paragraph starting with:
-    <p class="mt-6 text-xl/8">
-
-EXAMPLE OF CORRECT START:
-<div class="bg-white px-6 py-32 lg:px-8">
-  <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
-    <p class="mt-6 text-xl/8">Denver's Regional Transportation District (RTD) officially launched...</p>
-
-# HTML STRUCTURE
-
-Your output must start like this:
-\`\`\`html
-<div class="bg-white px-6 py-32 lg:px-8">
-  <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
-    <p class="mt-6 text-xl/8">[Copy first paragraph verbatim from original article]</p>
-\`\`\`
+DO NOT output anything before these lines.
+DO NOT include: title, h1, category label, author name, date, time tags.
 
 # CONTENT SECTIONS
 
-## 1. Opening Paragraph
-Copy the first 2-3 paragraphs EXACTLY as written in the original article.
+After the opening paragraph, add these sections in order:
 
-## 2. TL;DR Section
-Add an h2 header "TL;DR" with class "mt-16 text-2xl font-semibold tracking-tight text-gray-900"
+## Section 1: TL;DR
+<h2 class="mt-16 text-2xl font-semibold tracking-tight text-gray-900">TL;DR</h2>
+<p class="mt-6">Write 2-3 sentences: what happened, why it matters for sales, the opportunity.</p>
 
-Write 2-3 sentences summarizing:
-- What happened (the news event)
-- Why it matters for sales
-- The key opportunity
-
-## 3. Main Body
+## Section 2-4: Main Body
 Copy ALL remaining paragraphs from the original article EXACTLY.
+Split into 2-3 sections with descriptive h2 headers.
+h2 class: "mt-16 text-3xl font-semibold tracking-tight text-gray-900"
 
-Split into 2-3 sections with descriptive h2 headers like:
-- "Technology Infrastructure Requirements"
-- "Legislative Approval and Funding"
-- "Governance Restructuring Details"
+## Section 5: Insights
+<h2 class="mt-16 text-3xl font-semibold tracking-tight text-gray-900">Insights</h2>
 
-Use class "mt-16 text-3xl font-semibold tracking-tight text-gray-900" for h2 tags.
-
-Bold agency names with <strong class="font-semibold text-gray-900">.
-
-## 4. Insights Section
-Add h2 "Insights" with same classes as other h2s.
-
-Then add these h3 subsections (use class "mt-8 text-xl font-semibold text-gray-900"):
+Add these h3 subsections (class="mt-8 text-xl font-semibold text-gray-900"):
 
 ### Buying Triggers
-List 3-5 specific procurement signals with timeframes.
+List 3-5 specific procurement signals with 6-18 month timeframes.
 
-Example: "Within 6-12 months: CTA, Metra, and Pace will likely issue RFPs for scheduling optimization and real-time passenger information systems."
-
-### Lookalike Prospects
-List 4-6 specific agencies with:
-- Full agency name
-- Location
-- Fleet size
-- Similar challenges
-
-Example: "**MTA New York** (5,700+ buses), **WMATA** (Washington DC, 1,500+ buses), **SEPTA** (Philadelphia, 2,200+ vehicles)"
+### Lookalike Prospects  
+List 4-6 agencies: **Agency Name** (Location, fleet size) - challenges
 
 ### Cross-Sell Opportunities
-Identify 2-3 complementary technology categories agencies will evaluate in the same budget cycle.
+2-3 complementary technology categories.
 
 ### Market Implications
-2-3 observations about industry adoption patterns and procurement timelines.
+2-3 observations about trends and timelines.
 
-# STYLING CLASSES
-- h2: "mt-16 text-3xl font-semibold tracking-tight text-gray-900"
-- h3: "mt-8 text-xl font-semibold text-gray-900"
-- p: "mt-6"
-- strong: "font-semibold text-gray-900"
+# FORBIDDEN OUTPUT
 
-# QUALITY CHECKLIST
-- ✅ NO title/h1 in output
-- ✅ NO author/date in output
-- ✅ NO URLs unless in original
-- ✅ Starts with <div class="bg-white px-6 py-32 lg:px-8">
-- ✅ First element is <p class="mt-6 text-xl/8">
-- ✅ 95%+ of original text copied verbatim
-- ✅ TL;DR section included
-- ✅ Insights section with all 4 subsections
+NEVER include:
+- <h1> tags
+- <time> tags  
+- Category labels
+- Author names
+- Publication dates
+- <a> tags or href attributes
+- Any URLs (http, https, www)
+- "Source:" or "Link to" phrases
 
-Output only the HTML. Start with the opening <div> tag.`;
+If you output any of the above, you FAIL.
+
+# STYLING
+
+- h2: class="mt-16 text-3xl font-semibold tracking-tight text-gray-900"
+- h3: class="mt-8 text-xl font-semibold text-gray-900"  
+- p: class="mt-6"
+- strong: class="font-semibold text-gray-900"
+
+Output only HTML starting with the opening <div> tag.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
