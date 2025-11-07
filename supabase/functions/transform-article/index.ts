@@ -37,39 +37,51 @@ STRUCTURE (4 sections):
 - Integration requirements
 
 3. SALES INTELLIGENCE (use these exact subheaders with Tailwind styling)
-<h3 class="text-lg font-semibold mt-6 mb-3">Buying Triggers</h3>
-<ul class="list-disc pl-6 space-y-2">
-<li>Technology categories likely needed for procurement (no fabricated timeframes)</li>
-<li>Budget cycle implications based on article details</li>
-<li>Organizational readiness signals from the article</li>
+<h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Buying Triggers</h2>
+<ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
+<li class="flex gap-x-3">
+  <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="mt-1 size-5 flex-none text-indigo-600">
+    <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" fill-rule="evenodd" />
+  </svg>
+  <span><strong class="font-semibold text-gray-900">Technology categories.</strong> List categories without fabricated timeframes</span>
+</li>
 </ul>
 
-<h3 class="text-lg font-semibold mt-6 mb-3">Lookalike Prospects</h3>
-<ul class="list-disc pl-6 space-y-2">
-<li>Comparable agencies with actual location, fleet size, parallel challenges</li>
-<li>Procurement signals based on similar real deployments</li>
+<h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Lookalike Prospects</h2>
+<ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
+<li class="flex gap-x-3">
+  <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="mt-1 size-5 flex-none text-indigo-600">
+    <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" fill-rule="evenodd" />
+  </svg>
+  <span><strong class="font-semibold text-gray-900">Agency name.</strong> Details about comparable agency</span>
+</li>
 </ul>
 
-<h3 class="text-lg font-semibold mt-6 mb-3">Cross-Sell Opportunities</h3>
-<ul class="list-disc pl-6 space-y-2">
-<li>Complementary systems that integrate with primary procurement</li>
-<li>Related operational solutions</li>
+<h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Cross-Sell Opportunities</h2>
+<ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
+<li class="flex gap-x-3">
+  <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="mt-1 size-5 flex-none text-indigo-600">
+    <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" fill-rule="evenodd" />
+  </svg>
+  <span><strong class="font-semibold text-gray-900">System type.</strong> Description of complementary system</span>
+</li>
 </ul>
 
-4. MARKET IMPLICATIONS (final paragraph)
-- Industry adoption patterns
-- Vendor competitive positioning
-- General procurement observations (no specific month ranges)
-- Technology architecture trends
+4. MARKET IMPLICATIONS
+<h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Market Implications</h2>
+<p class="mt-6 text-gray-600">Final paragraph covering industry patterns, vendor positioning, and technology trends</p>
+
+STYLING RULES:
+- Body paragraphs: <p class="mt-6 text-gray-600">
+- Section headers: <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">
+- Lists: <ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
+- List items: <li class="flex gap-x-3"> with SVG icon
+- Strong text: <strong class="font-semibold text-gray-900">
+- Include the checkmark SVG for each list item
 
 CRITICAL RULES:
-- DO NOT fabricate specific timeframes like "within 6-12 months" or "12-18 months"
+- DO NOT fabricate specific timeframes
 - Base ALL analysis on factual content from the article
-- Provide general insights without inventing timing windows
-- Use <p class="mb-4"> for paragraphs
-- Use <ul class="list-disc pl-6 space-y-2"><li> for lists
-- Use <strong> for emphasis within text
-- Use <h3 class="text-lg font-semibold mt-6 mb-3"> for section headers
 - DO NOT include article title, date, author, source links
 - DO NOT use ### markdown
 - Keep it professional and grounded in facts
@@ -111,8 +123,6 @@ Transform this article:`;
     transformedContent = transformedContent
       .replace(/<p[^>]*class="[^"]*text-indigo-600[^"]*"[^>]*>.*?<\/p>/gi, '') // Remove category labels
       .replace(/<h1[^>]*>.*?<\/h1>/gi, '') // Remove any h1 titles
-      .replace(/<h2[^>]*>.*?<\/h2>/gi, '') // Remove h2 titles
-      .replace(/<h3[^>]*>.*?<\/h3>/gi, '') // Remove h3 titles
       .replace(/<time[^>]*>.*?<\/time>/gi, '') // Remove time tags
       .replace(/<a[^>]*href[^>]*>.*?<\/a>/gi, '') // Remove all links
       .replace(/###\s*Sources to Reference:?[\s\S]*?(?=<p>|$)/gi, '') // Remove Sources to Reference sections
