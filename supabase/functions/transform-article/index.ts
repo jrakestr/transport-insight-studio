@@ -22,35 +22,53 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY not configured");
     }
 
-    const systemPrompt = `You format raw article text into clean HTML paragraphs.
+    const systemPrompt = `You are transforming raw transit industry news into structured HTML following a specific B2B sales intelligence format.
 
-CRITICAL RULES:
-1. Use semantic HTML: <p> for paragraphs, <ul><li> for lists, <strong> for emphasis, <em> for italics
-2. When you see a list of items, use <ul> and <li> tags, NOT individual <p> tags
-3. DO NOT output category labels, titles, dates, authors, or source links - these are already displayed separately
-4. DO NOT output "Sources to Reference" sections or methodology references
-5. DO NOT output any headings with ### or ** markers
-6. Start immediately with the first body paragraph
-7. No wrapper divs, no header elements, no metadata
+ARTICLE STRUCTURE (4 sections):
 
-CORRECT OUTPUT EXAMPLE:
-<p>The transit agency announced a new service expansion covering 15 square miles...</p>
-<p>The new expansion features several additional destinations, including:</p>
-<ul>
-<li>Downtown Transit Center</li>
-<li>Regional Medical Center</li>
-<li>University Campus</li>
-</ul>
-<p>This initiative represents a significant investment in <strong>microtransit technology</strong>.</p>
+1. OPENING PARAGRAPH (News Hook)
+- 2-3 sentences presenting factual developments
+- Include: Agency name and geographic area, specific action (launched/awarded/approved), scale metrics (dollars/vehicles/area), technology/operational change
 
-WRONG OUTPUT (DO NOT DO THIS):
-<p>Destinations include:</p>
-<p>Downtown Transit Center</p>
-<p>Regional Medical Center</p>
-<h1>Article Title Here</h1>
-### Sources to Reference:
+2. STRATEGIC CONTEXT AND TECHNOLOGY REQUIREMENTS
+- Operational systems required to support the initiative
+- Data infrastructure challenges created by the change
+- Scale of technology deployment (vehicle count, user count, data volume)
+- Integration requirements with existing systems
 
-Transform the following raw article text:`;
+3. SALES INTELLIGENCE ANALYSIS (CRITICAL - use these exact subheaders)
+
+**Buying Triggers**
+- Specific technology categories likely in RFPs within 6-18 months
+- Budget cycle implications (federal funding deadlines, fiscal year constraints)
+- Organizational readiness signals
+- Regulatory/compliance drivers creating procurement urgency
+
+**Lookalike Prospects**
+- Comparable agencies facing identical challenges (include agency name, location, fleet size)
+- Specific parallel challenges for relevance validation
+- Procurement timing signals
+
+**Cross-Sell Opportunities**
+- Complementary systems integrating with primary procurement
+- Technology categories solving related operational challenges
+- Implementation timing synergies
+
+4. MARKET IMPLICATIONS
+- Industry-wide adoption patterns emerging from the news
+- Competitive positioning implications for vendors
+- Procurement timeline predictions based on historical patterns
+- Technology architecture trends
+
+OUTPUT FORMAT:
+- Use <p> tags for paragraphs
+- Use <ul><li> for lists
+- Use <strong> for bold subheaders (Buying Triggers, Lookalike Prospects, Cross-Sell Opportunities)
+- Use <em> for emphasis
+- DO NOT include metadata (titles, dates, authors, source links, "Sources to Reference" sections)
+- DO NOT include ### markdown headings
+
+Transform the following article:`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
