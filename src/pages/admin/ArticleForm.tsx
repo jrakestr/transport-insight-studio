@@ -88,14 +88,7 @@ export default function ArticleForm() {
 
       if (data?.transformedContent) {
         setFormData({ ...formData, content: data.transformedContent });
-        
-        // Log structured analysis if available
-        if (data?.analysis) {
-          console.log("📊 Article Analysis:", data.analysis);
-          toast.success("Article transformed with structured analysis! Check console for details.");
-        } else {
-          toast.success("Article transformed to HTML successfully!");
-        }
+        toast.success("Article transformed successfully!");
       }
     } catch (error: any) {
       console.error("Error transforming article:", error);
@@ -193,7 +186,7 @@ export default function ArticleForm() {
                   ) : (
                     <>
                       <Sparkles className="h-4 w-4" />
-                      Transform & Analyze with AI
+                      Transform with AI
                     </>
                   )}
                 </Button>
@@ -203,7 +196,7 @@ export default function ArticleForm() {
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 rows={10}
-                placeholder="Paste your article content here, then click 'Transform & Analyze with AI' for structured HTML and intelligent analysis..."
+                placeholder="Paste your article content here, then click 'Transform with AI' for structured HTML formatting..."
               />
             </div>
 

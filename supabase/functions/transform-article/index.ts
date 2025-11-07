@@ -28,80 +28,58 @@ serve(async (req) => {
     const systemPrompt = `# Transit Article Intelligence Transformation
 
 ## Core Philosophy
-Prioritize transparent data extraction over subjective advice generation. Build trustworthiness through systematic analytical processes. Show users the thought process behind analysis rather than synthesizing recommendations.
+Prioritize transparent data extraction over subjective advice generation. Build trustworthiness through systematic analytical processes. Demonstrate your thought process before generating content.
 
 ## Mission
-Transform transit news articles into structured intelligence by:
-1. Extracting entities, sentiment, topics, and relationships systematically
+Transform transit news articles into structured, formatted HTML by:
+1. Internally analyzing entities, sentiment, topics, and relationships systematically
 2. Preserving 70%+ of original content verbatim in formatted HTML
-3. Generating transparent Q&A pairs with confidence scores
-4. Adding strategic analysis sections
+3. Using structured thinking to inform article presentation
+4. Adding strategic analysis sections based on your systematic review
 
-## OUTPUT STRUCTURE
-You must return a JSON object with two properties:
-{
-  "html": "formatted HTML content",
-  "analysis": { structured analysis object }
-}
+## CRITICAL: OUTPUT FORMAT
+**You must return ONLY formatted HTML content. No JSON wrapper.**
+The structured analysis below is your INTERNAL THOUGHT PROCESS - use it to guide your work, but output only the HTML article.
 
 ---
 
-## PART 1: STRUCTURED ANALYSIS
+## INTERNAL ANALYSIS PROCESS (Think Through This Systematically)
 
-### Metadata Extraction
-Extract and structure as follows:
+Before writing the HTML, mentally work through this structured analysis:
 
-**metadata.input_validation:**
-- is_valid: boolean (true if processable)
-- language: string (e.g., "English")
-- character_count: integer
-- content_structure: array of strings describing article sections
-- technical_complexity: string describing complexity level
+### Step 1: Input Validation
+- Verify content is valid and processable
+- Identify language (e.g., "English")
+- Count characters
+- Map content_structure (sections present in article)
+- Assess technical_complexity
 
-**metadata.analysis_metadata:**
-- detected_entities: array of all organizations, agencies, people, systems mentioned
-- sentiment_analysis: object with "overall" sentiment and sentiment by stakeholder groups
-- topics: array of core themes
-- segment_importance_scoring: object mapping section names to importance scores (1-10)
-- inter_segment_relationships: array describing how sections connect
-- domain_specific_flags: object with technical_term_accuracy, preserved_semantics, needs_expert_validation
+### Step 2: Entity & Metadata Extraction
+- detected_entities: List all organizations, agencies, people, systems
+- sentiment_analysis: Determine overall sentiment + sentiment by stakeholder groups
+- topics: Identify core themes
+- segment_importance_scoring: Rate each section 1-10 for importance
+- inter_segment_relationships: Note how sections connect
+- domain_specific_flags: Assess technical_term_accuracy, preserved_semantics, needs_expert_validation
 
-### Q&A Pair Generation
-Generate 10-16 question-answer pairs covering factual and conceptual questions.
+### Step 3: Q&A Pair Generation (Internal Check)
+Mentally generate 10-16 question-answer pairs to ensure you understand:
+- Factual questions (What, Who, When, Where, How much)
+- Conceptual questions (Why, What does this mean, What are implications)
+- For each: question, answer, type (factual/conceptual), confidence (0-1), quality_score (1-10)
 
-**Each qa_pair object must include:**
-- question: string (clear, specific question)
-- answer: string (concise, accurate answer from article)
-- type: "factual" or "conceptual"
-- confidence: number 0.0-1.0 (based on source clarity)
-- quality_score: integer 1-10
-- improvement_suggestions: null or string with specific suggestions
+This ensures you've comprehensively analyzed the source material before writing.
 
-### Integration Guidelines Structure
-- import_instructions: string explaining how to import/use this data
-- conversation_flow: array of strings describing chatbot conversation patterns
-- fallback_handling: string describing fallback behavior
-- version_control: string with version tag and metadata
+### Step 4: Integration & Performance Assessment
+- Note how this content integrates with broader transit intelligence
+- Assess your processing completeness
+- Identify any optimization needs
 
-### Performance Metrics Structure
-- processing_status: string (e.g., "complete")
-- progress: string (e.g., "100%")
-- timeout_occurred: boolean
-- optimization_notes: string with processing notes
-
-### Complete Analysis Schema
-The analysis object MUST be a valid JSON object with this exact structure:
-- Root level: "metadata", "qa_pairs", "integration_guidelines", "performance_metrics"
-- metadata contains: "input_validation" and "analysis_metadata"
-- input_validation has: is_valid, language, character_count, content_structure array, technical_complexity
-- analysis_metadata has: detected_entities, sentiment_analysis (with overall + stakeholder keys), topics, segment_importance_scoring, inter_segment_relationships, domain_specific_flags
-- qa_pairs is an array of objects each with: question, answer, type, confidence, quality_score, improvement_suggestions
-- integration_guidelines has: import_instructions, conversation_flow, fallback_handling, version_control
-- performance_metrics has: processing_status, progress, timeout_occurred, optimization_notes
+**NOW, use all this systematic analysis to inform your HTML output.**
 
 ---
 
-## PART 2: HTML ARTICLE CONTENT
+## HTML ARTICLE CONTENT GENERATION
 
 ## CORE RULE: PRESERVE, DON'T REWRITE
 
@@ -336,28 +314,10 @@ Output only semantic HTML. Write like a real industry reporter, not an AI.`;
     }
 
     const data = await response.json();
-    const aiResponse = data.choices?.[0]?.message?.content || "";
-    
-    // Try to parse as JSON with html and analysis properties
-    let result;
-    try {
-      const parsed = JSON.parse(aiResponse);
-      if (parsed.html && parsed.analysis) {
-        result = {
-          transformedContent: parsed.html,
-          analysis: parsed.analysis
-        };
-      } else {
-        // Fallback: treat entire response as HTML
-        result = { transformedContent: aiResponse };
-      }
-    } catch {
-      // If not JSON, treat as plain HTML
-      result = { transformedContent: aiResponse };
-    }
+    const transformedContent = data.choices?.[0]?.message?.content || "";
 
     return new Response(
-      JSON.stringify(result),
+      JSON.stringify({ transformedContent }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
