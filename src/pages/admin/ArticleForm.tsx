@@ -80,52 +80,25 @@ export default function ArticleForm() {
 
     setIsTransforming(true);
     try {
-      // Simple client-side formatting - no AI needed
-      const paragraphs = formData.content
-        .split('\n\n')
-        .filter(p => p.trim())
-        .map(p => {
-          // Handle headers
-          if (p.startsWith('# ')) {
-            return `<h1 class="text-4xl font-bold text-gray-900 mb-6">${p.substring(2)}</h1>`;
-          }
-          if (p.startsWith('## ')) {
-            return `<h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">${p.substring(3)}</h2>`;
-          }
-          if (p.startsWith('### ')) {
-            return `<h3 class="text-xl font-semibold text-gray-800 mb-3 mt-6">${p.substring(4)}</h3>`;
-          }
-          
-          // Handle lists
-          if (p.includes('\n- ') || p.startsWith('- ')) {
-            const items = p.split('\n').filter(line => line.trim().startsWith('- '));
-            const listItems = items.map(item => {
-              const content = item.substring(2).trim();
-              return `<li class="flex gap-x-3">
-  <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="mt-1 size-5 flex-none text-indigo-600">
-    <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" fill-rule="evenodd" />
-  </svg>
-  <span>${content}</span>
-</li>`;
-            }).join('\n');
-            return `<ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">\n${listItems}\n</ul>`;
-          }
-          
-          // Regular paragraphs
-          return `<p class="mt-6 text-gray-600">${p}</p>`;
-        });
+      const { data, error } = await supabase.functions.invoke('transform-article', {
+        body: { content: formData.content }
+      });
 
-      const transformedContent = paragraphs.join('\n\n');
-      
+      if (error) throw error;
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
       setFormData(prev => ({
         ...prev,
-        content: transformedContent
+        content: data.transformedContent
       }));
       
-      toast.success("Content formatted successfully");
+      toast.success("Content transformed successfully");
     } catch (error: any) {
       console.error('Transform error:', error);
-      toast.error(error.message || "Failed to format content");
+      toast.error(error.message || "Failed to transform content");
     } finally {
       setIsTransforming(false);
     }
