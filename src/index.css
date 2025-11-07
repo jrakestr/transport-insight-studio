@@ -108,4 +108,13 @@ All colors MUST be HSL.
            prose-ul:my-6 prose-li:my-2
            prose-strong:text-primary prose-strong:font-semibold;
   }
+  
+  .article-content svg {
+    @apply inline-block w-5 h-5 align-text-bottom;
+  }
+  
+  .article-content .flex svg,
+  .article-content .inline-flex svg {
+    @apply w-5 h-5 flex-shrink-0;
+  }
 }
