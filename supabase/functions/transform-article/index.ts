@@ -129,6 +129,32 @@ Format: Agency Name (Location) - Fleet size, one specific parallel
 * Avoid speculation about distant future events
 * Keep paragraphs short and direct
 
+#### Related Coverage & Sources
+* **Always look for complementary articles** that provide additional context
+* Search for related coverage about the same agency, technology, or trend
+* Include source citations with full URLs for any referenced data
+* Link to industry reports, vendor announcements, or government documents when relevant
+
+**What to Include:**
+* Articles about the agency's previous initiatives or history
+* Similar implementations at other transit agencies
+* Industry trend pieces that provide broader context
+* Technical documentation or standards referenced in the article
+* Vendor announcements or product information mentioned
+
+**Link Format Requirements:**
+* Use descriptive link text (not "click here" or bare URLs)
+* Always add target="_blank" rel="noopener noreferrer" attributes
+* Include publication name and date when available
+* Format as: <a href="URL" target="_blank" rel="noopener noreferrer">Descriptive Title</a> - Source, Date
+
+**Quality Standards:**
+* ✅ Prefer authoritative sources: transit agencies, APTA, FTA, industry publications
+* ✅ Only include links that add genuine contextual value
+* ✅ Verify links are accessible (not broken or heavily paywalled)
+* ❌ Don't fabricate links or sources
+* ❌ Skip this section if no relevant complementary content exists
+
 ---
 
 ## Data Integrity Rules
@@ -190,6 +216,7 @@ Tier 2: Conditional (omit if insufficient data)
 * Lookalike Prospects - Skip if article lacks comparable agency context
 * Cross-Sell Opportunities - Skip if no adjacent technology mentioned
 * Market Implications - Skip if article is too narrow/specific
+* Related Coverage & Sources - Skip if no complementary articles or sources can be identified
 
 ### Decision Tree
 
@@ -228,7 +255,8 @@ Target Lengths per section:
 * Lookalike Prospects: 3-5 agencies (or pattern description)
 * Cross-Sell Opportunities: 3-5 items
 * Market Implications: 2-3 trend observations
-* Total Output: 400-600 words typical
+* Related Coverage & Sources: 2-5 relevant links with citations (optional)
+* Total Output: 400-700 words typical
 
 ---
 
