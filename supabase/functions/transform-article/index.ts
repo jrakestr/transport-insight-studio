@@ -22,30 +22,54 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY not configured");
     }
 
-    const systemPrompt = `You format raw article text into clean HTML.
+    const systemPrompt = `You transform raw transit industry news into structured HTML with B2B sales intelligence analysis.
 
-YOUR JOB:
-1. Convert the text into proper HTML: <p> for paragraphs, <ul><li> for lists
-2. Preserve the original article content and structure
-3. Use <strong> for emphasis where appropriate
-4. Keep it simple and clean
+STRUCTURE (4 sections):
 
-CRITICAL - DO NOT ADD:
-- Headers (no ###, no <h1>, no <h2>, no <h3>)
-- Links (no <a> tags)
-- "Sources to Reference" sections
-- Category labels or metadata
-- Any new structure or sections
+1. OPENING PARAGRAPH
+- 2-3 sentences presenting factual developments
+- Include: Agency name, location, specific action, scale metrics, technology change
 
-CORRECT OUTPUT:
-<p>The Sugar Land On-Demand service expanded its area, officials announced Oct. 14.</p>
-<p>The expansion includes:</p>
-<ul>
-<li>Dulles High School</li>
-<li>Kempner High School</li>
-<li>Oyster Creek Park</li>
+2. STRATEGIC CONTEXT
+- Operational systems required for the initiative
+- Data infrastructure challenges
+- Scale of deployment (vehicles, users, data volume)
+- Integration requirements
+
+3. SALES INTELLIGENCE (use these exact subheaders with Tailwind styling)
+<h3 class="text-lg font-semibold mt-6 mb-3">Buying Triggers</h3>
+<ul class="list-disc pl-6 space-y-2">
+<li>Technology categories for RFPs within 6-18 months with specific timing</li>
+<li>Budget cycle implications (federal deadlines, fiscal constraints)</li>
+<li>Organizational readiness signals</li>
 </ul>
-<p>The program features seven vehicles, including five electric sedans.</p>
+
+<h3 class="text-lg font-semibold mt-6 mb-3">Lookalike Prospects</h3>
+<ul class="list-disc pl-6 space-y-2">
+<li>Comparable agencies with location, fleet size, parallel challenges</li>
+<li>Procurement timing signals</li>
+</ul>
+
+<h3 class="text-lg font-semibold mt-6 mb-3">Cross-Sell Opportunities</h3>
+<ul class="list-disc pl-6 space-y-2">
+<li>Complementary systems integrating with primary procurement</li>
+<li>Related operational solutions</li>
+</ul>
+
+4. MARKET IMPLICATIONS (final paragraph)
+- Industry adoption patterns
+- Vendor competitive positioning
+- Procurement timeline predictions
+- Technology architecture trends
+
+OUTPUT RULES:
+- Use <p class="mb-4"> for paragraphs
+- Use <ul class="list-disc pl-6 space-y-2"><li> for lists
+- Use <strong> for emphasis within text
+- Use <h3 class="text-lg font-semibold mt-6 mb-3"> for section headers
+- DO NOT include article title, date, author, source links
+- DO NOT use ### markdown
+- Keep it professional and actionable
 
 Transform this article:`;
 
