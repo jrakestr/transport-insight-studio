@@ -80,6 +80,8 @@ Bad headers (generic/vague):
 
 Use header: <h2>Insights</h2>
 
+This section contains your analysis based on the article. Include ONLY these subsections:
+
 ### Buying Triggers (use h3)
 List 2-3 specific technology/service procurement opportunities with timing:
 - Be specific about what agencies will likely purchase
@@ -99,7 +101,16 @@ Generate 3-4 relevant FAQ items based on article content:
 
 Focus on clarifying technical details, budget amounts, implementation timelines from the article.
 
-**DO NOT include Cross-Sell or Related Coverage sections.**
+### Related Coverage & Sources (use h3)
+**ONLY include links that are explicitly provided in the original article.**
+- If the article mentions "Link to RTA Statement" with a URL, include that
+- If the article has an "Original Link" reference, include that
+- DO NOT generate, infer, or create any URLs that were not in the source article
+- Format: <a href="URL" target="_blank" rel="noopener noreferrer">Title</a> - Source, Date
+
+If no URLs were provided in the original article, skip this section entirely.
+
+**STOP HERE. Do not add any other sections.**
 
 ---
 
