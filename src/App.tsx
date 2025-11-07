@@ -15,6 +15,10 @@ import AgenciesAdmin from "./pages/admin/Agencies";
 import AgencyForm from "./pages/admin/AgencyForm";
 import ProvidersAdmin from "./pages/admin/Providers";
 import ProviderForm from "./pages/admin/ProviderForm";
+import OpportunitiesAdmin from "./pages/admin/Opportunities";
+import OpportunityForm from "./pages/admin/OpportunityForm";
+import ReportsAdmin from "./pages/admin/Reports";
+import ReportForm from "./pages/admin/ReportForm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +45,12 @@ const App = () => (
             <Route path="providers" element={<ProvidersAdmin />} />
             <Route path="providers/new" element={<ProviderForm />} />
             <Route path="providers/:id/edit" element={<ProviderForm />} />
+            <Route path="opportunities" element={<OpportunitiesAdmin />} />
+            <Route path="opportunities/new" element={<OpportunityForm />} />
+            <Route path="opportunities/:id/edit" element={<OpportunityForm />} />
+            <Route path="reports" element={<ReportsAdmin />} />
+            <Route path="reports/new" element={<ReportForm />} />
+            <Route path="reports/:id/edit" element={<ReportForm />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
