@@ -104,29 +104,6 @@ List 2-4 specific technology categories with timing:
 - "Q1 2026 likely window..."
 - Connect to facts stated in article
 
-### Lookalike Prospects
-**Must include 5-8 prospects mixing public agencies AND private operators.**
-
-For public agencies:
-- Format: Agency Name (Location) - Fleet size, service area, parallel challenge
-
-For private operators (contractors, service providers):
-- Format: Company Name (Service Type) - Agencies they serve, contract scope
-
-Examples:
-- "ABC Transit Services (Paratransit Contractor) - Operates 150+ vehicles for three Illinois agencies"
-- "Metro Transit (Chicago) - 500-vehicle fleet, facing workforce management challenges"
-- "XYZ Mobility (Microtransit Provider) - Contracts with Pace and two regional agencies"
-
-Categories to include:
-- Microtransit providers
-- Paratransit contractors
-- Vanpool/shuttle companies
-- Transit management firms
-- Fleet maintenance contractors
-
-**If you can't identify 5+ specific prospects, state: "Further research needed to identify comparable operators in this market"**
-
 ### Cross-Sell Opportunities
 **MANDATORY: Every opportunity needs a real clickable source link, or skip this entire section.**
 
@@ -180,7 +157,6 @@ Before outputting:
 - ✅ All facts from original article only
 - ✅ Sales intelligence clearly separated at end
 - ✅ Cross-Sell has real source URLs or is skipped
-- ✅ Lookalike includes both public agencies and private operators
 
 ---
 
@@ -188,7 +164,6 @@ Before outputting:
 
 If source material is thin:
 - Skip Buying Triggers if no procurement signals
-- Skip Lookalike if no comparable context
 - Skip Cross-Sell if no sources available
 - Skip Market Implications if too narrow
 - Skip Related Coverage if no relevant links
