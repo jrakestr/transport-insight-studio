@@ -85,17 +85,83 @@ export default function ArticleForm() {
       });
 
       if (error) throw error;
+      if (data.error) throw new Error(data.error);
 
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
+      // Update content
       setFormData(prev => ({
         ...prev,
         content: data.transformedContent
       }));
-      
-      toast.success("Content transformed successfully");
+
+      // Auto-create agencies and providers
+      const createdAgencyIds: string[] = [];
+      const createdProviderIds: string[] = [];
+
+      if (data.agencies?.length > 0) {
+        for (const agency of data.agencies) {
+          // Check if agency already exists by name
+          const { data: existing } = await supabase
+            .from('transit_agencies')
+            .select('id')
+            .ilike('name', agency.name)
+            .single();
+
+          if (existing) {
+            createdAgencyIds.push(existing.id);
+          } else {
+            const { data: newAgency, error: agencyError } = await supabase
+              .from('transit_agencies')
+              .insert({
+                name: agency.name,
+                location: agency.location || null,
+                notes: agency.notes || null
+              })
+              .select('id')
+              .single();
+
+            if (!agencyError && newAgency) {
+              createdAgencyIds.push(newAgency.id);
+            }
+          }
+        }
+      }
+
+      if (data.providers?.length > 0) {
+        for (const provider of data.providers) {
+          // Check if provider already exists by name
+          const { data: existing } = await supabase
+            .from('transportation_providers')
+            .select('id')
+            .ilike('name', provider.name)
+            .single();
+
+          if (existing) {
+            createdProviderIds.push(existing.id);
+          } else {
+            const { data: newProvider, error: providerError } = await supabase
+              .from('transportation_providers')
+              .insert({
+                name: provider.name,
+                location: provider.location || null,
+                provider_type: provider.provider_type || null,
+                notes: provider.notes || null
+              })
+              .select('id')
+              .single();
+
+            if (!providerError && newProvider) {
+              createdProviderIds.push(newProvider.id);
+            }
+          }
+        }
+      }
+
+      // Update selected agencies and providers
+      setSelectedAgencies(createdAgencyIds);
+      setSelectedProviders(createdProviderIds);
+
+      const entityCount = createdAgencyIds.length + createdProviderIds.length;
+      toast.success(`Content transformed! Auto-created ${entityCount} entities.`);
     } catch (error: any) {
       console.error('Transform error:', error);
       toast.error(error.message || "Failed to transform content");

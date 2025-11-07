@@ -223,7 +223,8 @@ Remember: Preserve 70%+ original content, use article-specific headers, include 
 
 
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    // First, transform the article
+    const transformResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
@@ -251,31 +252,98 @@ ${content}` }
       }),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('AI Gateway error:', response.status, errorText);
+    if (!transformResponse.ok) {
+      const errorText = await transformResponse.text();
+      console.error('AI Gateway error:', transformResponse.status, errorText);
       
-      if (response.status === 429) {
+      if (transformResponse.status === 429) {
         throw new Error('Rate limits exceeded');
       }
-      if (response.status === 402) {
+      if (transformResponse.status === 402) {
         throw new Error('Payment required');
       }
       throw new Error('AI gateway error');
     }
 
-    const data = await response.json();
-    let transformedContent = data.choices[0].message.content;
-
-    // Remove markdown code blocks if present
+    const transformData = await transformResponse.json();
+    let transformedContent = transformData.choices[0].message.content;
     transformedContent = transformedContent.replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
 
-    console.log('Transform successful, content length:', transformedContent.length);
+    // Now extract entities from the transformed content
+    const extractResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        messages: [
+          { 
+            role: 'system', 
+            content: `Extract transit agencies and transportation providers from the article. Return ONLY a JSON object with this structure:
+{
+  "agencies": [
+    {"name": "Agency Name", "location": "City, State", "notes": "Brief context from article"}
+  ],
+  "providers": [
+    {"name": "Provider Name", "location": "City, State", "provider_type": "contract-operator|paratransit|tnc|other", "notes": "Brief context"}
+  ]
+}
+
+Rules:
+- Extract ONLY entities explicitly mentioned in the article
+- Include public transit agencies (CTA, WMATA, etc.)
+- Include private operators (First Transit, Transdev, MV Transportation, etc.)
+- Extract location from context if available
+- Keep notes brief (1 sentence)
+- Return valid JSON only, no markdown formatting`
+          },
+          { role: 'user', content: transformedContent }
+        ],
+      }),
+    });
+
+    if (!extractResponse.ok) {
+      console.error('Entity extraction failed, continuing without entities');
+      return new Response(
+        JSON.stringify({ 
+          transformedContent,
+          agencies: [],
+          providers: []
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const extractData = await extractResponse.json();
+    let entitiesText = extractData.choices[0].message.content;
+    
+    // Clean up markdown code blocks if present
+    entitiesText = entitiesText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    
+    let entities;
+    try {
+      entities = JSON.parse(entitiesText);
+    } catch (e) {
+      console.error('Failed to parse entities JSON:', e);
+      entities = { agencies: [], providers: [] };
+    }
+
+    console.log('Transform successful, extracted entities:', {
+      agencies: entities.agencies?.length || 0,
+      providers: entities.providers?.length || 0
+    });
 
     return new Response(
-      JSON.stringify({ transformedContent }),
+      JSON.stringify({ 
+        transformedContent,
+        agencies: entities.agencies || [],
+        providers: entities.providers || []
+      }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
+
   } catch (error) {
     console.error('Error in transform-article:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
