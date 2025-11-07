@@ -22,53 +22,32 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY not configured");
     }
 
-    const systemPrompt = `You are transforming raw transit industry news into structured HTML following a specific B2B sales intelligence format.
+    const systemPrompt = `You format raw article text into clean HTML.
 
-ARTICLE STRUCTURE (4 sections):
+YOUR JOB:
+1. Convert the text into proper HTML: <p> for paragraphs, <ul><li> for lists
+2. Preserve the original article content and structure
+3. Use <strong> for emphasis where appropriate
+4. Keep it simple and clean
 
-1. OPENING PARAGRAPH (News Hook)
-- 2-3 sentences presenting factual developments
-- Include: Agency name and geographic area, specific action (launched/awarded/approved), scale metrics (dollars/vehicles/area), technology/operational change
+CRITICAL - DO NOT ADD:
+- Headers (no ###, no <h1>, no <h2>, no <h3>)
+- Links (no <a> tags)
+- "Sources to Reference" sections
+- Category labels or metadata
+- Any new structure or sections
 
-2. STRATEGIC CONTEXT AND TECHNOLOGY REQUIREMENTS
-- Operational systems required to support the initiative
-- Data infrastructure challenges created by the change
-- Scale of technology deployment (vehicle count, user count, data volume)
-- Integration requirements with existing systems
+CORRECT OUTPUT:
+<p>The Sugar Land On-Demand service expanded its area, officials announced Oct. 14.</p>
+<p>The expansion includes:</p>
+<ul>
+<li>Dulles High School</li>
+<li>Kempner High School</li>
+<li>Oyster Creek Park</li>
+</ul>
+<p>The program features seven vehicles, including five electric sedans.</p>
 
-3. SALES INTELLIGENCE ANALYSIS (CRITICAL - use these exact subheaders)
-
-**Buying Triggers**
-- Specific technology categories likely in RFPs within 6-18 months
-- Budget cycle implications (federal funding deadlines, fiscal year constraints)
-- Organizational readiness signals
-- Regulatory/compliance drivers creating procurement urgency
-
-**Lookalike Prospects**
-- Comparable agencies facing identical challenges (include agency name, location, fleet size)
-- Specific parallel challenges for relevance validation
-- Procurement timing signals
-
-**Cross-Sell Opportunities**
-- Complementary systems integrating with primary procurement
-- Technology categories solving related operational challenges
-- Implementation timing synergies
-
-4. MARKET IMPLICATIONS
-- Industry-wide adoption patterns emerging from the news
-- Competitive positioning implications for vendors
-- Procurement timeline predictions based on historical patterns
-- Technology architecture trends
-
-OUTPUT FORMAT:
-- Use <p> tags for paragraphs
-- Use <ul><li> for lists
-- Use <strong> for bold subheaders (Buying Triggers, Lookalike Prospects, Cross-Sell Opportunities)
-- Use <em> for emphasis
-- DO NOT include metadata (titles, dates, authors, source links, "Sources to Reference" sections)
-- DO NOT include ### markdown headings
-
-Transform the following article:`;
+Transform this article:`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
