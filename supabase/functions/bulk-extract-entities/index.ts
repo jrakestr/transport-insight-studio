@@ -45,9 +45,10 @@ serve(async (req) => {
         console.log(`Processing article: ${article.title}`);
 
         // Extract entities using AI
-        const extractionPrompt = `Extract transit agencies, transportation providers, and industry verticals from this article content. Return ONLY valid JSON.
+        const extractionPrompt = `Extract transit agencies, transportation providers, industry verticals, and article category from this content. Return ONLY valid JSON.
 
-Industry verticals to choose from: paratransit, corporate-shuttles, school, healthcare, government, fixed-route
+Industry verticals (transit sectors): paratransit, corporate-shuttles, school, healthcare, government, fixed-route
+Article categories (topics): Funding, RFPs & Procurement, Technology Partnerships, Safety & Security, Technology, Market Trends, Microtransit, Government
 
 Article content:
 ${article.content}
@@ -56,7 +57,8 @@ Return format:
 {
   "agencies": [{"name": "Agency Name", "location": "City, State", "notes": "relevant details"}],
   "providers": [{"name": "Provider Name", "location": "City, State", "provider_type": "technology/service", "notes": "relevant details"}],
-  "verticals": ["paratransit", "fixed-route"]
+  "verticals": ["paratransit", "fixed-route"],
+  "category": "Technology"
 }`;
 
         const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -91,6 +93,15 @@ Return format:
         const agencyIds: string[] = [];
         const providerIds: string[] = [];
         const verticals: string[] = extracted.verticals || [];
+        const category: string | null = extracted.category || null;
+
+        // Update article category if extracted
+        if (category) {
+          await supabaseClient
+            .from('articles')
+            .update({ category })
+            .eq('id', article.id);
+        }
 
         // Process agencies
         if (extracted.agencies?.length > 0) {
