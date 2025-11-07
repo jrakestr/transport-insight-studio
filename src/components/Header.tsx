@@ -34,22 +34,47 @@ export const Header = () => {
             <DropdownMenuContent className="bg-background border shadow-lg z-50">
               <DropdownMenuItem asChild>
                 <Link to="/news" className="cursor-pointer">
-                  Latest News
+                  Latest
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/news?filter=trending" className="cursor-pointer">
-                  Trending
+                <Link to="/news?filter=paratransit" className="cursor-pointer">
+                  Paratransit/ADA
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/news?filter=archived" className="cursor-pointer">
-                  Archived
+                <Link to="/news?filter=corporate-shuttles" className="cursor-pointer">
+                  Corporate Shuttles
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/news?filter=school" className="cursor-pointer">
+                  School Transportation
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/news?filter=healthcare" className="cursor-pointer">
+                  Healthcare/NEMT
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/news?filter=government" className="cursor-pointer">
+                  Government Transit
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/news?filter=fixed-route" className="cursor-pointer">
+                  Fixed-Route/Major Agencies
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/reports" className="cursor-pointer">
                   Market Reports
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/news?filter=archived" className="cursor-pointer">
+                  Archived
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -135,21 +160,49 @@ export const Header = () => {
                 className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Latest News
+                Latest
               </Link>
               <Link
-                to="/news?filter=trending"
+                to="/news?filter=paratransit"
                 className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Trending
+                Paratransit/ADA
               </Link>
               <Link
-                to="/news?filter=archived"
+                to="/news?filter=corporate-shuttles"
                 className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Archived
+                Corporate Shuttles
+              </Link>
+              <Link
+                to="/news?filter=school"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                School Transportation
+              </Link>
+              <Link
+                to="/news?filter=healthcare"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Healthcare/NEMT
+              </Link>
+              <Link
+                to="/news?filter=government"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Government Transit
+              </Link>
+              <Link
+                to="/news?filter=fixed-route"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Fixed-Route/Major Agencies
               </Link>
               <Link
                 to="/reports"
@@ -157,6 +210,13 @@ export const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Market Reports
+              </Link>
+              <Link
+                to="/news?filter=archived"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Archived
               </Link>
             </div>
             
