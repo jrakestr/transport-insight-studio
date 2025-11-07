@@ -65,7 +65,19 @@ export function useArticleMutation() {
   });
 
   const updateArticle = useMutation({
-    mutationFn: async ({ id, updates }: { id: string; updates: any }) => {
+    mutationFn: async ({ 
+      id, 
+      updates, 
+      verticals, 
+      agencies, 
+      providers 
+    }: { 
+      id: string; 
+      updates: any;
+      verticals?: string[];
+      agencies?: string[];
+      providers?: string[];
+    }) => {
       const { data, error } = await supabase
         .from("articles")
         .update(updates)
@@ -74,6 +86,37 @@ export function useArticleMutation() {
         .single();
 
       if (error) throw error;
+
+      // Update verticals if provided
+      if (verticals !== undefined) {
+        await supabase.from("article_verticals").delete().eq("article_id", id);
+        if (verticals.length > 0) {
+          await supabase.from("article_verticals").insert(
+            verticals.map(vertical => ({ article_id: id, vertical }))
+          );
+        }
+      }
+
+      // Update agencies if provided
+      if (agencies !== undefined) {
+        await supabase.from("article_agencies").delete().eq("article_id", id);
+        if (agencies.length > 0) {
+          await supabase.from("article_agencies").insert(
+            agencies.map(agency_id => ({ article_id: id, agency_id }))
+          );
+        }
+      }
+
+      // Update providers if provided
+      if (providers !== undefined) {
+        await supabase.from("article_providers").delete().eq("article_id", id);
+        if (providers.length > 0) {
+          await supabase.from("article_providers").insert(
+            providers.map(provider_id => ({ article_id: id, provider_id }))
+          );
+        }
+      }
+
       return data;
     },
     onSuccess: () => {

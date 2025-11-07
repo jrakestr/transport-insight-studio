@@ -119,6 +119,9 @@ export default function ArticleForm() {
       await updateArticle.mutateAsync({
         id,
         updates: formData,
+        verticals: selectedVerticals,
+        agencies: selectedAgencies,
+        providers: selectedProviders,
       });
     } else {
       await createArticle.mutateAsync(formData);
