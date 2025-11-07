@@ -27,9 +27,11 @@ serve(async (req) => {
 CRITICAL RULES:
 1. Output ONLY <p> tags with article body content
 2. DO NOT output category labels, titles, dates, authors, or source links - these are already displayed separately
-3. Start immediately with the first body paragraph
-4. Use semantic HTML: <p> for paragraphs, <strong> for emphasis, <em> for italics
-5. No wrapper divs, no header elements, no metadata
+3. DO NOT output "Sources to Reference" sections or methodology references
+4. DO NOT output any headings with ### or ** markers
+5. Start immediately with the first body paragraph
+6. Use semantic HTML: <p> for paragraphs, <strong> for emphasis, <em> for italics
+7. No wrapper divs, no header elements, no metadata
 
 CORRECT OUTPUT EXAMPLE:
 <p>The transit agency announced a new service expansion covering 15 square miles...</p>
@@ -40,6 +42,8 @@ WRONG OUTPUT (DO NOT DO THIS):
 <h1>Article Title Here</h1>
 <time>October 14, 2025</time>
 <a href="...">View Original Source</a>
+### Sources to Reference:
+- National Transit Database (NTD)
 
 Transform the following raw article text:`;
 
@@ -78,10 +82,16 @@ Transform the following raw article text:`;
     transformedContent = transformedContent
       .replace(/<p[^>]*class="[^"]*text-indigo-600[^"]*"[^>]*>.*?<\/p>/gi, '') // Remove category labels
       .replace(/<h1[^>]*>.*?<\/h1>/gi, '') // Remove any h1 titles
+      .replace(/<h2[^>]*>.*?<\/h2>/gi, '') // Remove h2 titles
+      .replace(/<h3[^>]*>.*?<\/h3>/gi, '') // Remove h3 titles
       .replace(/<time[^>]*>.*?<\/time>/gi, '') // Remove time tags
       .replace(/<a[^>]*href[^>]*>.*?<\/a>/gi, '') // Remove all links
+      .replace(/###\s*Sources to Reference:?[\s\S]*?(?=<p>|$)/gi, '') // Remove Sources to Reference sections
+      .replace(/###\s+[^\n]+/g, '') // Remove any ### headings
       .replace(/^\s*<div[^>]*>\s*/i, '') // Remove opening wrapper divs
       .replace(/\s*<\/div>\s*$/i, '') // Remove closing wrapper divs
+      .replace(/^\s*-\s+.*$/gm, '') // Remove bullet list items (markdown format)
+      .replace(/\n{3,}/g, '\n\n') // Clean up excessive newlines
       .trim();
 
     console.log('Transform successful, content length:', transformedContent.length);
