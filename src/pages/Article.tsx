@@ -130,15 +130,7 @@ const Article = () => {
             <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {articles && articles
-                .filter(a => {
-                  if (a.id === article.id) return false;
-                  
-                  const currentVerticals = article.article_verticals?.map((v: any) => v.vertical) || [];
-                  const otherVerticals = a.article_verticals?.map((v: any) => v.vertical) || [];
-                  
-                  // Match if they share at least one vertical
-                  return currentVerticals.some((v: string) => otherVerticals.includes(v));
-                })
+                .filter(a => a.id !== article.id && article.category && a.category === article.category)
                 .slice(0, 3)
                 .map(relatedArticle => (
                   <Link 
