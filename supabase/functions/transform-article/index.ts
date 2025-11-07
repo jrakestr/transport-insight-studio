@@ -96,7 +96,21 @@ Example: "Denver's Regional Transportation District established an in-house dete
 ---
 
 ### Section 2: Background & Context
-**COPY EXTENSIVELY from the original article** - This section should be 70%+ verbatim from source material.
+**CRITICAL: Generate a contextual header** - Create an h2 header that reflects the ACTUAL CONTENT of this section, not a generic label.
+
+Examples of good contextual headers:
+* <h2>Transit Infrastructure Modernization Coupled with Governance Reform</h2>
+* <h2>Decades of Funding Constraints Drive Service Innovation</h2>
+* <h2>Regional Coordination Replaces Fragmented Law Enforcement</h2>
+* <h2>Federal Mandate Accelerates Fleet Electrification Timeline</h2>
+
+**DO NOT use generic headers like:**
+* "Background & Context"
+* "Strategic Context & Technology Requirements"  
+* "Overview"
+* "Introduction"
+
+**Content: COPY EXTENSIVELY from the original article** - This section should be 70%+ verbatim from source material.
 
 Include whatever background the article provides:
 * Historical context about the agency
@@ -114,7 +128,20 @@ Include whatever background the article provides:
 ---
 
 ### Section 3: Operational Details & Technology Implications
-**Start with article's own description** - Copy the article's explanation of what's happening operationally.
+**CRITICAL: Generate a contextual header** - Create an h2 header specific to what's actually being implemented.
+
+Examples of good contextual headers:
+* <h2>In-House Detective Bureau Requires Integrated Video Analytics</h2>
+* <h2>Zero-Emission Fleet Transition Demands Charging Infrastructure</h2>
+* <h2>Microtransit Expansion Needs Real-Time Dispatch Platform</h2>
+* <h2>Fare System Overhaul Enables Contactless Payment</h2>
+
+**DO NOT use generic headers like:**
+* "Operational Details & Technology Implications"
+* "Technology Requirements"
+* "Implementation Details"
+
+**Start with article own description** - Copy the article explanation of what is happening operationally.
 
 Then add technology implications naturally:
 * What systems/platforms are mentioned or clearly implied
