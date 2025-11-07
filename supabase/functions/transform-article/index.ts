@@ -59,7 +59,17 @@ Copy the first 2-3 paragraphs of the article EXACTLY. Format as the lead.
 - Scale/scope metrics (dollar amount, vehicle count, service area)
 - Technology/operational change description
 
-### 2. Strategic Context / Technology Requirements Section
+### 2. TLDR Section
+Create a brief "TL;DR" section with an h2 header using class "mt-8 text-2xl font-semibold tracking-tight text-gray-900"
+
+This should be a 2-3 sentence summary that captures:
+- The core news event (what happened)
+- The immediate business impact (why it matters for sales)
+- The key opportunity (what to do about it)
+
+Keep it concise and focused on actionable intelligence for sales teams.
+
+### 3. Strategic Context / Technology Requirements Section
 If the article discusses technology, systems, or operational changes, create a section analyzing:
 - What operational systems are required to support this initiative?
 - What scale of technology deployment is implied?
@@ -70,7 +80,7 @@ Use descriptive h2 headers like:
 - "Operational Systems Needed to Support Expansion"
 - "Integration Challenges and System Dependencies"
 
-### 3. Main Body Content
+### 4. Main Body Content
 **Split remaining content into 2-3 sections with descriptive headers based on natural breaks.**
 
 For each section:
@@ -203,6 +213,7 @@ Before outputting, verify:
 - ✅ 95%+ of original article text appears verbatim in output
 - ✅ Every quote, number, date, name from original is present
 - ✅ Original paragraph structure maintained
+- ✅ TLDR section is present and concise (2-3 sentences)
 - ✅ "Insights" section includes Buying Triggers, Lookalike Prospects, Cross-Sell Opportunities, and Market Implications
 - ✅ Lookalike Prospects includes 4-6 named agencies with fleet sizes or scale indicators
 - ✅ Buying Triggers are specific with timeframes
