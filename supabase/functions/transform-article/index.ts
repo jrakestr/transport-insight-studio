@@ -2,12 +2,12 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
@@ -15,12 +15,12 @@ serve(async (req) => {
     const { content } = await req.json();
 
     if (!content) {
-      throw new Error('No content provided');
+      throw new Error("No content provided");
     }
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
+      throw new Error("LOVABLE_API_KEY not configured");
     }
 
     const systemPrompt = `You are a Sales Intelligence Article Transformer for the transit technology industry. You are advising a specialized sales consultant with expertise in government and public transportation procurement processes.
@@ -32,7 +32,7 @@ serve(async (req) => {
 - Technical expertise in transit technology solutions (in-vehicle cameras, safety systems, scheduling platforms, maintenance management)
 - Consultative selling methodologies for extended sales cycles
 - Cross-functional collaboration for integrated solution positioning
-
+Ω
 **Sales Methodology Alignment:**
 Transform articles to support a discovery-driven approach. Provide insights that can serve as conversation starters, enabling the consultant to ask open-ended questions. Focus on insights that demonstrate technical understanding and facilitate active listening.
 
@@ -221,20 +221,20 @@ After restructuring content, convert to semantic HTML:
 
 Remember: Preserve 70%+ original content, use article-specific headers, include both public agencies and private operators in Lookalike Prospects (First Transit, Transdev, MV Transportation, etc.), and provide real source URLs for Cross-Sell Opportunities or skip that section entirely.`;
 
-
-
     // First, transform the article
-    const transformResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
+    const transformResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
+        model: "google/gemini-2.5-pro",
         messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: `Transform this article following ALL instructions. You MUST include these sections with article-specific headers:
+          { role: "system", content: systemPrompt },
+          {
+            role: "user",
+            content: `Transform this article following ALL instructions. You MUST include these sections with article-specific headers:
 
 1. Opening paragraph (news hook)
 2. Strategic Context/Technology Requirements section (contextual header, NOT generic)
@@ -247,40 +247,44 @@ Preserve 70%+ of original content. Bold all agency names, company names, locatio
 
 Article to transform:
 
-${content}` }
+${content}`,
+          },
         ],
       }),
     });
 
     if (!transformResponse.ok) {
       const errorText = await transformResponse.text();
-      console.error('AI Gateway error:', transformResponse.status, errorText);
-      
+      console.error("AI Gateway error:", transformResponse.status, errorText);
+
       if (transformResponse.status === 429) {
-        throw new Error('Rate limits exceeded');
+        throw new Error("Rate limits exceeded");
       }
       if (transformResponse.status === 402) {
-        throw new Error('Payment required');
+        throw new Error("Payment required");
       }
-      throw new Error('AI gateway error');
+      throw new Error("AI gateway error");
     }
 
     const transformData = await transformResponse.json();
     let transformedContent = transformData.choices[0].message.content;
-    transformedContent = transformedContent.replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
+    transformedContent = transformedContent
+      .replace(/```html\n?/g, "")
+      .replace(/```\n?/g, "")
+      .trim();
 
     // Now extract entities from the transformed content
-    const extractResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
+    const extractResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: "google/gemini-2.5-flash",
         messages: [
-          { 
-            role: 'system', 
+          {
+            role: "system",
             content: `Extract transit agencies and transportation providers from the article. Return ONLY a JSON object with this structure:
 {
   "agencies": [
@@ -297,59 +301,61 @@ Rules:
 - Include private operators (First Transit, Transdev, MV Transportation, etc.)
 - Extract location from context if available
 - Keep notes brief (1 sentence)
-- Return valid JSON only, no markdown formatting`
+- Return valid JSON only, no markdown formatting`,
           },
-          { role: 'user', content: transformedContent }
+          { role: "user", content: transformedContent },
         ],
       }),
     });
 
     if (!extractResponse.ok) {
-      console.error('Entity extraction failed, continuing without entities');
+      console.error("Entity extraction failed, continuing without entities");
       return new Response(
-        JSON.stringify({ 
+        JSON.stringify({
           transformedContent,
           agencies: [],
-          providers: []
+          providers: [],
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
     const extractData = await extractResponse.json();
     let entitiesText = extractData.choices[0].message.content;
-    
+
     // Clean up markdown code blocks if present
-    entitiesText = entitiesText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    
+    entitiesText = entitiesText
+      .replace(/```json\n?/g, "")
+      .replace(/```\n?/g, "")
+      .trim();
+
     let entities;
     try {
       entities = JSON.parse(entitiesText);
     } catch (e) {
-      console.error('Failed to parse entities JSON:', e);
+      console.error("Failed to parse entities JSON:", e);
       entities = { agencies: [], providers: [] };
     }
 
-    console.log('Transform successful, extracted entities:', {
+    console.log("Transform successful, extracted entities:", {
       agencies: entities.agencies?.length || 0,
-      providers: entities.providers?.length || 0
+      providers: entities.providers?.length || 0,
     });
 
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         transformedContent,
         agencies: entities.agencies || [],
-        providers: entities.providers || []
+        providers: entities.providers || [],
       }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
-
   } catch (error) {
-    console.error('Error in transform-article:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(
-      JSON.stringify({ error: errorMessage }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    console.error("Error in transform-article:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    return new Response(JSON.stringify({ error: errorMessage }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });
