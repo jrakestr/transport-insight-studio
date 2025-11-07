@@ -82,6 +82,44 @@ export type Database = {
           },
         ]
       }
+      article_processing_status: {
+        Row: {
+          article_id: string
+          created_at: string | null
+          error_message: string | null
+          id: string
+          last_processed_at: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          article_id: string
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          last_processed_at?: string | null
+          status: string
+          updated_at?: string | null
+        }
+        Update: {
+          article_id?: string
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          last_processed_at?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_processing_status_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: true
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       article_providers: {
         Row: {
           article_id: string
