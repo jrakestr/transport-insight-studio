@@ -230,10 +230,23 @@ Remember: Preserve 70%+ original content, use article-specific headers, include 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'openai/gpt-5',
+        model: 'google/gemini-2.5-pro',
         messages: [
           { role: 'system', content: systemPrompt },
-          { role: 'user', content: `Format this article with structured HTML. Preserve ALL content exactly - no summarizing.\n\n${content}` }
+          { role: 'user', content: `Transform this article following ALL instructions. You MUST include these sections with article-specific headers:
+
+1. Opening paragraph (news hook)
+2. Strategic Context/Technology Requirements section (contextual header, NOT generic)
+3. Buying Triggers section (required)
+4. Lookalike Prospects section (5-8 specific agencies AND private operators - required)
+5. Cross-Sell Opportunities section (with real source URLs, or skip if none available)
+6. Market Implications section (required)
+
+Preserve 70%+ of original content. Bold all agency names, company names, locations with <strong class="font-semibold text-gray-900">.
+
+Article to transform:
+
+${content}` }
         ],
       }),
     });
