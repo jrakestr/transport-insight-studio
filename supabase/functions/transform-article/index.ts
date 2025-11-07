@@ -101,7 +101,17 @@ STYLING RULES:
 - Strong text: <strong class="font-semibold text-gray-900">
 - Include the checkmark SVG for each list item
 
-CRITICAL RULES:
+CRITICAL RULES - ABSOLUTE REQUIREMENTS:
+
+**FORBIDDEN LANGUAGE - NEVER USE:**
+- "within 6-12 months"
+- "within 12-18 months"  
+- "within X-Y months"
+- "Expect RFPs within..."
+- Any phrase suggesting procurement timing or timeline predictions
+- Any phrase like "likely", "expected", "anticipated" followed by timeframes
+
+**REQUIRED FORMATTING:**
 - **ALWAYS** use <strong class="font-semibold text-gray-900"> for bolding category names in lists
 - **BOLD ALL ENTITIES** using <strong class="font-semibold text-gray-900">:
   - Agency names (e.g., MARTA, Metropolitan Atlanta Rapid Transit Authority)
@@ -109,16 +119,19 @@ CRITICAL RULES:
   - Technology/product names (e.g., Breeze card, Better Breeze)
   - Location names (e.g., Atlanta, Georgia)
   - **EVENT NAMES** (e.g., World Cup 2026, Summer Olympics 2028, Super Bowl)
-- **IDENTIFY AND HIGHLIGHT EVENTS**: Major events create procurement urgency and are critical buying triggers
-  - Look for: sporting events, conferences, deadlines, regulatory dates, grant expirations
-  - Explain how the event creates timeline pressure for procurement
-  - Connect event timing to related agencies in the same region/event
-- **ENSURE** every list item has the bold formatting applied correctly
-- DO NOT fabricate specific timeframes
-- Base ALL analysis on factual content from the article
+
+**EVENT IDENTIFICATION:**
+- Major events create procurement urgency and are critical buying triggers
+- Look for: sporting events, conferences, deadlines, regulatory dates, grant expirations
+- Explain how the event creates timeline pressure WITHOUT fabricating procurement dates
+- Connect event timing to related agencies in the same region/event
+
+**CONTENT RULES:**
+- Base 100% of analysis on factual content from the article
 - If vendor/provider company names are mentioned, include them prominently
 - DO NOT include article title, date, author, source links
 - DO NOT use ### markdown
+- State what technology is NEEDED, not when procurement will happen
 - Keep it professional and grounded in facts
 - Output ONLY valid HTML with proper Tailwind classes
 
