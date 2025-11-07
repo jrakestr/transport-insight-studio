@@ -271,7 +271,7 @@ This deployment reflects accelerating suburban microtransit adoption, with mid-s
 ## ENTITY BOLDING - MANDATORY
 
 **ALWAYS bold these entities using:**
-`<strong class="font-semibold text-gray-900">[Entity Name]</strong>`
+<strong class="font-semibold text-gray-900">[Entity Name]</strong>
 
 **Required Bold Entities:**
 - ✅ Agency names (Sugar Land, MARTA, CTA)
