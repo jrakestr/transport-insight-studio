@@ -176,11 +176,11 @@ Example:
 Format: Agency Name (Location) - Fleet size, one specific parallel
 
 #### Cross-Sell Opportunities
-**MANDATORY: Each opportunity MUST include cited sources with URLs**
-* Every cross-sell opportunity mentioned must be accompanied by a source link
-* Use proper link format: <a href="URL" target="_blank" rel="noopener noreferrer">Descriptive Title</a>
-* Sources can include: industry reports, vendor documentation, case studies, transit agency announcements, or market research
-* If you cannot provide credible sources for cross-sell opportunities, **SKIP THIS ENTIRE SECTION**
+**MANDATORY: Each opportunity MUST include clickable source links with real URLs**
+* Every cross-sell opportunity mentioned must be accompanied by a working clickable link to a real source
+* Use proper HTML link format: <a href="https://actual-url.com" target="_blank" rel="noopener noreferrer">Descriptive Link Text</a>
+* Sources must be real, accessible URLs to: industry reports, vendor documentation, case studies, transit agency announcements, or market research
+* **If you cannot find and provide real, working URL sources for cross-sell opportunities, SKIP THIS ENTIRE SECTION**
 
 **Content Requirements:**
 * Use capability-based language, NOT specific product names
@@ -188,16 +188,15 @@ Format: Agency Name (Location) - Fleet size, one specific parallel
 * Use conditional language: "agencies typically evaluate...", "systems often include...", "emerging capabilities in..."
 * Connect capabilities to operational needs stated in the article with supporting source evidence
 * Frame as industry direction rather than specific product offerings
-* Keep it to 3-5 realistic capability areas (only those you can cite sources for)
+* Keep it to 3-5 realistic capability areas (only those you can cite with real URLs)
 
-**Examples of capability-based language with sources:**
-✅ "Advanced business intelligence platforms for performance analysis, ridership trends, and operational efficiency <a href="..." target="_blank" rel="noopener noreferrer">Industry Report on Transit Analytics</a>"
-✅ "Comprehensive fleet maintenance management systems supporting preventive maintenance and workforce coordination <a href="..." target="_blank" rel="noopener noreferrer">FTA Maintenance Best Practices Guide</a>"
+**Example format with real clickable links:**
+"Advanced business intelligence platforms for performance analysis and ridership trends are increasingly adopted by transit agencies (<a href="https://www.apta.com/research-technical-resources/" target="_blank" rel="noopener noreferrer">APTA Transit Analytics Research</a>)."
 
-**AVOID:**
-❌ Specific product names without sources
-❌ Cross-sell claims without supporting documentation
-❌ Including this section if sources cannot be provided
+**CRITICAL:**
+❌ Do NOT include this section without real, clickable source URLs
+❌ Do NOT use placeholder URLs like "..." or "example.com"
+❌ Do NOT make claims without verifiable sources
 
 #### Market Implications
 * Write 2-3 observations about industry patterns
