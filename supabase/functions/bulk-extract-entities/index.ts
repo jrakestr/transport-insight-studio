@@ -45,7 +45,9 @@ serve(async (req) => {
         console.log(`Processing article: ${article.title}`);
 
         // Extract entities using AI
-        const extractionPrompt = `Extract transit agencies and transportation providers from this article content. Return ONLY valid JSON.
+        const extractionPrompt = `Extract transit agencies, transportation providers, and industry verticals from this article content. Return ONLY valid JSON.
+
+Industry verticals to choose from: paratransit, corporate-shuttles, school, healthcare, government, fixed-route
 
 Article content:
 ${article.content}
@@ -53,7 +55,8 @@ ${article.content}
 Return format:
 {
   "agencies": [{"name": "Agency Name", "location": "City, State", "notes": "relevant details"}],
-  "providers": [{"name": "Provider Name", "location": "City, State", "provider_type": "technology/service", "notes": "relevant details"}]
+  "providers": [{"name": "Provider Name", "location": "City, State", "provider_type": "technology/service", "notes": "relevant details"}],
+  "verticals": ["paratransit", "fixed-route"]
 }`;
 
         const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -87,6 +90,7 @@ Return format:
         const extracted = JSON.parse(jsonMatch[0]);
         const agencyIds: string[] = [];
         const providerIds: string[] = [];
+        const verticals: string[] = extracted.verticals || [];
 
         // Process agencies
         if (extracted.agencies?.length > 0) {
@@ -177,8 +181,22 @@ Return format:
             .insert(providerIds.map(id => ({ article_id: article.id, provider_id: id })));
         }
 
+        // Link verticals to article
+        if (verticals.length > 0) {
+          // Delete existing links
+          await supabaseClient
+            .from('article_verticals')
+            .delete()
+            .eq('article_id', article.id);
+
+          // Create new links
+          await supabaseClient
+            .from('article_verticals')
+            .insert(verticals.map(v => ({ article_id: article.id, vertical: v })));
+        }
+
         results.processed++;
-        console.log(`✓ Processed ${article.title}: ${agencyIds.length} agencies, ${providerIds.length} providers`);
+        console.log(`✓ Processed ${article.title}: ${agencyIds.length} agencies, ${providerIds.length} providers, ${verticals.length} verticals`);
 
       } catch (error: any) {
         console.error(`Error processing article ${article.id}:`, error.message);
