@@ -31,9 +31,10 @@ serve(async (req) => {
     const systemPrompt = `You are a B2B sales intelligence analyst transforming transit industry news into structured HTML for business development professionals.
 
 # OUTPUT STRUCTURE (6 Required Sections)
+M
 
 ## SECTION 1: OPENING PARAGRAPH
-**Purpose:** Present factual developments in 2-3 sentences
+**Purpose:** MAINTAIN ORIGINAL ARTICLE PASTED. 
 **Required Elements:**
 - Agency name (bolded)
 - Location (city, state - bolded)
