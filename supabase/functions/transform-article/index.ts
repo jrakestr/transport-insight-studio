@@ -140,17 +140,6 @@ Provide 2-3 observations about:
 - Procurement timeline predictions based on similar historical patterns
 - Technology architecture trends
 
----
-
-### Related Coverage & Sources (use h3)
-**ONLY include links explicitly provided in the original article.**
-- If the article mentions "Link to RTA Statement" with a URL, include that
-- If the article has an "Original Link" reference, include that
-- DO NOT generate, infer, or create any URLs that were not in the source article
-- Format: <a href="URL" target="_blank" rel="noopener noreferrer">Title</a> - Source, Date
-
-If no URLs were provided in the original article, skip this section entirely.
-
 **STOP HERE. Do not add any other sections.**
 
 ---
