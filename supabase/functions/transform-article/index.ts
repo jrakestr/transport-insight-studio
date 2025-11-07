@@ -117,7 +117,14 @@ Output only HTML. Start with <div class="bg-white px-6 py-32 lg:px-8">`;
     }
 
     const data = await response.json();
-    const transformedContent = data.choices?.[0]?.message?.content || "";
+    let transformedContent = data.choices?.[0]?.message?.content || "";
+    
+    // Post-processing: Strip out any category labels and h1 tags as failsafe
+    transformedContent = transformedContent
+      .replace(/<p class="text-base\/7 font-semibold text-indigo-600">[^<]*<\/p>/g, '')
+      .replace(/<h1[^>]*>.*?<\/h1>/gs, '')
+      .replace(/^\s*<time[^>]*>.*?<\/time>\s*/gm, '')
+      .trim();
 
     return new Response(
       JSON.stringify({ transformedContent }),
