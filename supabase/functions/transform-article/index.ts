@@ -232,55 +232,65 @@ Target Lengths per section:
 
 ---
 
-## TRANSIT TECHNOLOGIES PRODUCT KNOWLEDGE
+## TRANSIT TECHNOLOGIES CAPABILITY FRAMEWORK
 
-Use this knowledge to identify specific product opportunities when analyzing articles. Only reference products when they have a clear connection to the article content.
+Use this knowledge to identify relevant technology categories when analyzing articles. Focus on capability areas rather than specific products, maintaining flexibility for evolving solutions.
 
-### Operating Companies & Solutions:
+### Core Capability Areas by Market Vertical:
 
-**ECOLANE** - Paratransit & Demand Response:
-- INSIGHT Platform (ML-powered business intelligence)
-- Real-time AVL, MDTs, Self-Service Web Portal
-- 2025/2026: Eligibility + Managed Eligibility, IVA Trip Management, Wheelchair Guardian, AI Data Analytics
+**Paratransit & Demand Response Transit**:
+- Business intelligence and predictive analytics platforms
+- Real-time vehicle tracking and dispatch optimization
+- Rider self-service booking and communication systems
+- Mobile operator tools and in-vehicle technology
+- Emerging: Automated eligibility processing, conversational AI for trip management, AI-powered safety compliance monitoring
 
-**TRIPSHOT** - Corporate Shuttles:
-- Corporate shuttle management for tech companies (Google, Amazon, Microsoft, Apple)
-- Employee transportation solutions, fixed route integration
+**Corporate & Campus Transportation**:
+- Employee shuttle management and optimization
+- Campus transportation coordination
+- Fixed-route integration capabilities
+- Real-time rider tracking and communication
 
-**TRIPMASTER** - Healthcare Transportation (NEMT):
-- Healthcare trip booking and management
-- 2025/2026: IVA Trip Management, Wheelchair Guardian, AI Data Analytics
+**Healthcare Transportation (NEMT)**:
+- Medical appointment transportation coordination
+- Multi-provider network management
+- Trip booking and scheduling systems
+- Emerging: Voice-based trip management automation, AI safety verification
 
-**FASTER** - Fleet & Maintenance (Government/Municipal):
-- Fleet and maintenance management systems
-- 2025/2026: IVA Service Request, AI-Powered Technician Mobile App, AI Data Analytics
+**Fleet & Maintenance Management**:
+- Government and municipal fleet tracking
+- Maintenance workflow and asset lifecycle management
+- Work order systems and technician tools
+- Emerging: Conversational AI for service requests, predictive maintenance capabilities, mobile technician productivity tools
 
-**VESTIGE** - Equipment & Logistics:
-- Equipment management, asset tracking
-- 2025/2026: Wheelchair Guardian, AI Data Analytics, AI-Powered Technician Mobile App
+**Equipment & Logistics**:
+- Asset tracking and equipment management
+- Logistics coordination systems
+- Emerging: AI-powered safety compliance, automated technician workflows
 
-**BYTECURVE** - School Transportation:
-- School bus routing and scheduling
-- 2025/2026: Workforce Management Expansion (operator scheduling, payroll)
+**School Transportation**:
+- Student routing and scheduling optimization
+- Parent communication platforms
+- Emerging: Integrated workforce management and operator scheduling systems
 
-**PASSIO** - Campus & Corporate Shuttles:
-- University and corporate campus transportation
+**Paratransit Operations & Brokerage**:
+- Multi-provider coordination and oversight
+- Call center and reservation management
+- Real-time service monitoring and optimization
 
-**MJM INNOVATIONS** - Paratransit Operations & Brokerage:
-- Operations management, multi-provider coordination, call center administration
-
-### Cross-Platform AI Products:
-- **AI Data Analytics**: ChatGPT for Transit - conversational data access (all OpCos)
-- **Wheelchair Guardian**: Real-time wheelchair securement verification (Vestige, Ecolane, TripMaster)
-- **IVA Trip Management**: 24/7 automated trip booking via voice (Ecolane, TripMaster)
-- **IVA Service Request**: Conversational maintenance reporting (FASTER)
+### Emerging Technology Categories (In Development):
+- **Conversational AI Systems**: Voice-based automation for trip booking, service requests, and rider communication
+- **AI-Powered Safety Compliance**: Computer vision for automated verification of safety protocols
+- **Intelligent Data Analytics**: Conversational access to operational data without manual reporting
+- **Unified Workforce Management**: Integrated scheduling, payroll, and operator communication platforms
 
 ### Usage Guidelines:
-- Only mention products with direct connection to article content
-- Use natural language: "agencies often evaluate..." not "we recommend..."
-- Reference specific products by name when relevant
-- Connect product capabilities to stated operational needs in article
-- Don't force product mentions if no logical connection exists
+- Reference capability categories, not specific product names
+- Use conditional language: "agencies often evaluate...", "systems typically include...", "emerging capabilities in..."
+- Connect technology categories to operational needs stated in articles
+- Avoid promises about specific features or timelines
+- Only mention capabilities with direct relevance to article content
+- Frame as industry direction rather than guaranteed offerings
 
 ---
 
