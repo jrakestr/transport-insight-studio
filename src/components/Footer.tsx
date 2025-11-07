@@ -9,6 +9,7 @@ export const Footer = () => {
       { name: "Sales Opportunities", href: "/opportunities" },
     ],
     resources: [
+      { name: "Product Portfolio", href: "/product-portfolio" },
       { name: "NTD Database", href: "/ntd-database" },
       { name: "Industry Links", href: "/industry-links" },
       { name: "Newsletter", href: "/newsletter" },

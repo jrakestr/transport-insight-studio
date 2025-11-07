@@ -81,6 +81,11 @@ export const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-background border shadow-lg z-50">
               <DropdownMenuItem asChild>
+                <Link to="/product-portfolio" className="cursor-pointer">
+                  Product Portfolio
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link to="/ntd-database" className="cursor-pointer">
                   NTD Database
                 </Link>
@@ -179,6 +184,13 @@ export const Header = () => {
               <div className="px-3 py-2 text-xs font-semibold text-muted-foreground">
                 Resources/Tools
               </div>
+              <Link
+                to="/product-portfolio"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Product Portfolio
+              </Link>
               <Link
                 to="/ntd-database"
                 className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
