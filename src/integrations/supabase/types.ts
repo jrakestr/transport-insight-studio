@@ -14,7 +14,330 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      article_agencies: {
+        Row: {
+          agency_id: string
+          article_id: string
+          created_at: string
+          id: string
+          mention_type: string | null
+        }
+        Insert: {
+          agency_id: string
+          article_id: string
+          created_at?: string
+          id?: string
+          mention_type?: string | null
+        }
+        Update: {
+          agency_id?: string
+          article_id?: string
+          created_at?: string
+          id?: string
+          mention_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_agencies_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "article_agencies_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      article_providers: {
+        Row: {
+          article_id: string
+          created_at: string
+          id: string
+          mention_type: string | null
+          provider_id: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          id?: string
+          mention_type?: string | null
+          provider_id: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          id?: string
+          mention_type?: string | null
+          provider_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_providers_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "article_providers_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "transportation_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      article_verticals: {
+        Row: {
+          article_id: string
+          created_at: string
+          id: string
+          vertical: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          id?: string
+          vertical: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          id?: string
+          vertical?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_verticals_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      articles: {
+        Row: {
+          author_name: string | null
+          author_role: string | null
+          category: string | null
+          content: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          published_at: string
+          slug: string
+          source_name: string | null
+          source_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_name?: string | null
+          author_role?: string | null
+          category?: string | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          published_at?: string
+          slug: string
+          source_name?: string | null
+          source_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_name?: string | null
+          author_role?: string | null
+          category?: string | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          published_at?: string
+          slug?: string
+          source_name?: string | null
+          source_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      opportunities: {
+        Row: {
+          agency_id: string | null
+          article_id: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          provider_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          agency_id?: string | null
+          article_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          provider_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string | null
+          article_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          provider_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunities_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "transportation_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reports: {
+        Row: {
+          content: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          published_at: string
+          read_time: string | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          published_at?: string
+          read_time?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          published_at?: string
+          read_time?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transit_agencies: {
+        Row: {
+          created_at: string
+          fleet_size: number | null
+          formal_name: string | null
+          id: string
+          location: string | null
+          name: string
+          notes: string | null
+          ntd_id: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          fleet_size?: number | null
+          formal_name?: string | null
+          id?: string
+          location?: string | null
+          name: string
+          notes?: string | null
+          ntd_id?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          fleet_size?: number | null
+          formal_name?: string | null
+          id?: string
+          location?: string | null
+          name?: string
+          notes?: string | null
+          ntd_id?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      transportation_providers: {
+        Row: {
+          created_at: string
+          id: string
+          location: string | null
+          name: string
+          notes: string | null
+          provider_type: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          name: string
+          notes?: string | null
+          provider_type?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          name?: string
+          notes?: string | null
+          provider_type?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
