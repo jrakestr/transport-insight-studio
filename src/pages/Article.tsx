@@ -130,7 +130,12 @@ const Article = () => {
             <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {articles && articles
-                .filter(a => a.id !== article.id && article.category && a.category === article.category)
+                .filter(a => {
+                  if (a.id === article.id) return false;
+                  const currentCategories = article.article_categories?.map((c: any) => c.category) || [];
+                  const relatedCategories = a.article_categories?.map((c: any) => c.category) || [];
+                  return currentCategories.some((cat: string) => relatedCategories.includes(cat));
+                })
                 .slice(0, 3)
                 .map(relatedArticle => (
                   <Link 
@@ -146,8 +151,10 @@ const Article = () => {
                       />
                     )}
                     <div className="p-4">
-                      {relatedArticle.category && (
-                        <span className="text-sm font-semibold text-primary">{relatedArticle.category}</span>
+                      {relatedArticle.article_categories?.[0] && (
+                        <span className="text-sm font-semibold text-primary">
+                          {relatedArticle.article_categories[0].category}
+                        </span>
                       )}
                       <h3 className="font-semibold mt-2 mb-2 group-hover:text-primary transition-colors">
                         {relatedArticle.title}

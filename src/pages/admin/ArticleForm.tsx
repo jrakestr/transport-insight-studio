@@ -21,6 +21,17 @@ const VERTICALS = [
   "fixed-route",
 ];
 
+const CATEGORIES = [
+  "Funding",
+  "RFPs & Procurement",
+  "Technology Partnerships",
+  "Safety & Security",
+  "Technology",
+  "Market Trends",
+  "Microtransit",
+  "Government",
+];
+
 export default function ArticleForm() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -41,11 +52,11 @@ export default function ArticleForm() {
     image_url: "",
     source_name: "",
     source_url: "",
-    category: "",
     published_at: new Date().toISOString().split("T")[0],
   });
 
   const [selectedVerticals, setSelectedVerticals] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedAgencies, setSelectedAgencies] = useState<string[]>([]);
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [isTransforming, setIsTransforming] = useState(false);
@@ -62,11 +73,11 @@ export default function ArticleForm() {
         image_url: article.image_url || "",
         source_name: article.source_name || "",
         source_url: article.source_url || "",
-        category: article.category || "",
         published_at: article.published_at?.split("T")[0] || "",
       });
 
       setSelectedVerticals(article.article_verticals?.map((v: any) => v.vertical) || []);
+      setSelectedCategories(article.article_categories?.map((c: any) => c.category) || []);
       setSelectedAgencies(article.article_agencies?.map((a: any) => a.agency_id) || []);
       setSelectedProviders(article.article_providers?.map((p: any) => p.provider_id) || []);
     }
@@ -178,6 +189,7 @@ export default function ArticleForm() {
         id,
         updates: formData,
         verticals: selectedVerticals,
+        categories: selectedCategories,
         agencies: selectedAgencies,
         providers: selectedProviders,
       });
@@ -298,26 +310,15 @@ export default function ArticleForm() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="category">Category</Label>
-                <Input
-                  id="category"
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="published_at">Published Date *</Label>
-                <Input
-                  id="published_at"
-                  type="date"
-                  value={formData.published_at}
-                  onChange={(e) => setFormData({ ...formData, published_at: e.target.value })}
-                  required
-                />
-              </div>
+            <div>
+              <Label htmlFor="published_at">Published Date *</Label>
+              <Input
+                id="published_at"
+                type="date"
+                value={formData.published_at}
+                onChange={(e) => setFormData({ ...formData, published_at: e.target.value })}
+                required
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -362,6 +363,32 @@ export default function ArticleForm() {
                     }}
                   />
                   <span className="text-sm capitalize">{vertical.replace("-", " ")}</span>
+                </label>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Categories</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORIES.map((category) => (
+                <label key={category} className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(category)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedCategories([...selectedCategories, category]);
+                      } else {
+                        setSelectedCategories(selectedCategories.filter((c) => c !== category));
+                      }
+                    }}
+                  />
+                  <span className="text-sm">{category}</span>
                 </label>
               ))}
             </div>

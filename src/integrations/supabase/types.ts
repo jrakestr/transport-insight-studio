@@ -53,6 +53,35 @@ export type Database = {
           },
         ]
       }
+      article_categories: {
+        Row: {
+          article_id: string
+          category: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          article_id: string
+          category: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          article_id?: string
+          category?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_categories_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       article_providers: {
         Row: {
           article_id: string

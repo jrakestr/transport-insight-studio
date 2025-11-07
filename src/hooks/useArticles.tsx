@@ -10,7 +10,8 @@ export function useArticles() {
         .from("articles")
         .select(`
           *,
-          article_verticals(vertical)
+          article_verticals(vertical),
+          article_categories(category)
         `)
         .order("created_at", { ascending: false });
 
@@ -32,7 +33,8 @@ export function useArticle(id: string | undefined) {
           *,
           article_agencies(agency_id, mention_type),
           article_providers(provider_id, mention_type),
-          article_verticals(vertical)
+          article_verticals(vertical),
+          article_categories(category)
         `)
         .eq("id", id)
         .single();
@@ -72,12 +74,14 @@ export function useArticleMutation() {
       id, 
       updates, 
       verticals, 
+      categories,
       agencies, 
       providers 
     }: { 
       id: string; 
       updates: any;
       verticals?: string[];
+      categories?: string[];
       agencies?: string[];
       providers?: string[];
     }) => {
@@ -96,6 +100,16 @@ export function useArticleMutation() {
         if (verticals.length > 0) {
           await supabase.from("article_verticals").insert(
             verticals.map(vertical => ({ article_id: id, vertical }))
+          );
+        }
+      }
+
+      // Update categories if provided
+      if (categories !== undefined) {
+        await supabase.from("article_categories").delete().eq("article_id", id);
+        if (categories.length > 0) {
+          await supabase.from("article_categories").insert(
+            categories.map(category => ({ article_id: id, category }))
           );
         }
       }
