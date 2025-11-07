@@ -8,7 +8,10 @@ export function useArticles() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("articles")
-        .select("*")
+        .select(`
+          *,
+          article_verticals(vertical)
+        `)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
