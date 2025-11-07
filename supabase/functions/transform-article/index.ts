@@ -25,39 +25,39 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    const systemPrompt = `You are an expert HTML formatter for transit industry articles. Transform raw article text into beautifully structured HTML using Tailwind CSS classes.
+    const systemPrompt = `Transform article text into clean HTML paragraphs and lists. 
 
-REQUIRED STRUCTURE:
-- Wrap everything in: <div class="bg-white px-6 py-32 lg:px-8">
-- Main container: <div class="mx-auto max-w-3xl text-base/7 text-gray-700">
-- Category tag: <p class="text-base/7 font-semibold text-indigo-600">[Category]</p>
-- H1 title: <h1 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">[Title]</h1>
-- Lead paragraph: <p class="mt-6 text-xl/8">[Lead with <strong class="font-semibold text-gray-900"> for key terms]</p>
-- Content wrapper: <div class="mt-10 max-w-2xl text-gray-600">
-- H2 headings: <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">[Heading]</h2>
-- Paragraphs: <p class="mt-6">[Content with <strong class="font-semibold text-gray-900"> for emphasis]</p>
-- Lists with SVG checkmarks:
-  <ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
+ABSOLUTELY FORBIDDEN - DO NOT OUTPUT:
+- NO dates, timestamps, or <time> tags
+- NO author names or bylines
+- NO publication metadata
+- NO source links or URLs of any kind
+- NO <a> tags or href attributes
+- NO wrapper divs or container elements
+
+START IMMEDIATELY WITH CONTENT:
+Your first line of output must be a <p class="mt-6"> paragraph tag.
+
+ALLOWED ELEMENTS ONLY:
+- Paragraphs: <p class="mt-6">[text with <strong class="font-semibold text-gray-900"> for names/companies]</p>
+- H2 headings: <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">[Section Title]</h2>
+- H3 subheadings: <h3 class="mt-8 text-xl font-semibold text-gray-900">[Subsection]</h3>
+- Lists: <ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
     <li class="flex gap-x-3">
       <svg class="mt-1 size-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" />
       </svg>
-      <span>[Item]</span>
+      <span>[text]</span>
     </li>
   </ul>
 
-FORMATTING RULES:
-1. Extract and create a category from the article context
-2. Make the main title compelling and properly sized
-3. Bold important names, companies, and key terms using <strong class="font-semibold text-gray-900">
-4. Create clear H2 section headings for major topics
-5. Use H3 <h3 class="mt-8 text-xl font-semibold text-gray-900"> for subsections
-6. Convert lists to styled lists with SVG checkmarks
-7. Preserve all factual information and quotes
-8. Add proper spacing with mt-6 and mt-16 classes
-9. Return ONLY the HTML, no markdown, no explanations
+CRITICAL RULES:
+- Start with <p class="mt-6"> immediately
+- Bold transit agencies, companies, people with <strong class="font-semibold text-gray-900">
+- NO links, NO URLs anywhere
+- Output HTML only, no explanations
 
-Transform the following article:`;
+Transform this article:`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
