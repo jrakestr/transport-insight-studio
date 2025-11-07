@@ -183,6 +183,17 @@ Example:
 ### Market Implications (use h3)
 2-3 short observations about industry patterns based on this article. Keep paragraphs direct.
 
+### Frequently Asked Questions (use h3)
+Generate 3-5 relevant FAQ items based on the article content. Format each as:
+- Question in bold: **What is [question]?**
+- Answer as a paragraph directly below
+
+Focus on:
+- Clarifying technical terms or systems mentioned
+- Addressing implementation questions
+- Explaining budget/funding aspects
+- Timeline and rollout questions
+
 ### Related Coverage & Sources (use h3, optional)
 Include 2-5 relevant links to:
 - Agency's previous initiatives
