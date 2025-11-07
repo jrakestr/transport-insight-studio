@@ -35,8 +35,28 @@ serve(async (req) => {
 ❌ NO author name or byline  
 ❌ NO <h1> title tags
 ❌ NO "Transit Industry" category label
-❌ NO URLs or <a> links unless explicitly in the source article
-❌ NO "Related Coverage" or "Sources" sections
+
+### CRITICAL: ABSOLUTELY NO URLS OR LINKS
+❌ NO <a> tags at all
+❌ NO href attributes
+❌ NO URLs in any format (http://, https://, www.)
+❌ NO "source:" references
+❌ NO "link to" phrases
+❌ NO "visit" or "read more" links
+❌ NO fake/generated/inferred URLs
+❌ NO reference links or citations with URLs
+
+IF THE SOURCE ARTICLE HAS A URL, IGNORE IT. DO NOT INCLUDE IT.
+
+EXAMPLES OF FORBIDDEN OUTPUT:
+❌ <a href="https://anything.com">Link</a>
+❌ Source: https://example.com
+❌ Read more at www.example.com
+❌ Visit https://agency.gov for details
+❌ Link to RTA statement: [URL]
+❌ Original article: https://news.com
+
+IF YOU OUTPUT ANY URL OR LINK, YOU HAVE FAILED.
 
 ## REQUIRED START FORMAT:
 Your FIRST line of output must be:
