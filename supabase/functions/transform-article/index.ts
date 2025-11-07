@@ -93,6 +93,11 @@ STYLING RULES:
 
 CRITICAL RULES:
 - **ALWAYS** use <strong class="font-semibold text-gray-900"> for bolding category names in lists
+- **BOLD ALL ENTITIES** using <strong class="font-semibold text-gray-900">:
+  - Agency names (e.g., MARTA, Metropolitan Atlanta Rapid Transit Authority)
+  - Company/vendor names (e.g., Token Transit, Cubic Transportation)
+  - Technology/product names (e.g., Breeze card, Better Breeze)
+  - Location names (e.g., Atlanta, Georgia)
 - **ENSURE** every list item has the bold formatting applied correctly
 - DO NOT fabricate specific timeframes
 - Base ALL analysis on factual content from the article
