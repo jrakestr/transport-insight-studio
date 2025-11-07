@@ -164,21 +164,9 @@ List 2-4 specific technology categories with timing:
 - Connect to facts stated in article
 
 ### Cross-Sell Opportunities (use h3)
-**MANDATORY: Every opportunity needs a real clickable source link, or skip this entire section.**
+**CRITICAL: SKIP THIS ENTIRE SECTION. DO NOT INCLUDE IT IN THE OUTPUT.**
 
-Format each as:
-"[Capability description] (<a href="real-url" target="_blank" rel="noopener noreferrer">Source Name</a>)"
-
-Requirements:
-- Use capability language (not product names): "business intelligence platforms", "fleet maintenance systems", "demand response platforms"
-- Use conditional language: "agencies typically evaluate...", "systems often include..."
-- Real URLs only (APTA, FTA, industry reports, case studies)
-- 3-5 opportunities max
-
-Example:
-"Advanced business intelligence platforms for performance analysis are increasingly adopted by transit agencies (<a href="https://www.apta.com/research-technical-resources/" target="_blank" rel="noopener noreferrer">APTA Transit Analytics Research</a>)."
-
-**Skip this section if you cannot provide real source URLs.**
+This section has been removed because AI-generated URLs are unreliable and lead to incorrect sources. Only include this section if you have been explicitly provided with verified URLs in the source article.
 
 ### Market Implications (use h3)
 2-3 short observations about industry patterns based on this article. Keep paragraphs direct.
