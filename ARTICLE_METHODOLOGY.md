@@ -201,7 +201,6 @@ Before publishing, verify each article includes:
 - ✅ Market implications explaining broader trends
 - ✅ All numeric claims sourced/verified
 - ✅ Procurement timing estimates included
-- ✅ Source attribution (original news source linked)
 
 ---
 
