@@ -93,14 +93,14 @@ export default function OpportunityForm() {
             <div>
               <Label htmlFor="agency_id">Transit Agency</Label>
               <Select
-                value={formData.agency_id}
-                onValueChange={(value) => setFormData({ ...formData, agency_id: value })}
+                value={formData.agency_id || "none"}
+                onValueChange={(value) => setFormData({ ...formData, agency_id: value === "none" ? "" : value })}
               >
                 <SelectTrigger id="agency_id">
                   <SelectValue placeholder="Select agency (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   {agencies?.map((agency) => (
                     <SelectItem key={agency.id} value={agency.id}>
                       {agency.name}
@@ -113,14 +113,14 @@ export default function OpportunityForm() {
             <div>
               <Label htmlFor="provider_id">Transportation Provider</Label>
               <Select
-                value={formData.provider_id}
-                onValueChange={(value) => setFormData({ ...formData, provider_id: value })}
+                value={formData.provider_id || "none"}
+                onValueChange={(value) => setFormData({ ...formData, provider_id: value === "none" ? "" : value })}
               >
                 <SelectTrigger id="provider_id">
                   <SelectValue placeholder="Select provider (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   {providers?.map((provider) => (
                     <SelectItem key={provider.id} value={provider.id}>
                       {provider.name}
@@ -133,14 +133,14 @@ export default function OpportunityForm() {
             <div>
               <Label htmlFor="article_id">Related Article</Label>
               <Select
-                value={formData.article_id}
-                onValueChange={(value) => setFormData({ ...formData, article_id: value })}
+                value={formData.article_id || "none"}
+                onValueChange={(value) => setFormData({ ...formData, article_id: value === "none" ? "" : value })}
               >
                 <SelectTrigger id="article_id">
                   <SelectValue placeholder="Select article (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   {articles?.map((article) => (
                     <SelectItem key={article.id} value={article.id}>
                       {article.title}
