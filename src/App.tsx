@@ -5,9 +5,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Report from "./pages/Report";
+import Reports from "./pages/Reports";
+import ReportDetail from "./pages/ReportDetail";
 import Article from "./pages/Article";
 import Opportunities from "./pages/Opportunities";
 import Opportunity from "./pages/Opportunity";
+import Agencies from "./pages/Agencies";
+import Providers from "./pages/Providers";
 import Auth from "./pages/Auth";
 import AdminLayout from "./components/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -34,9 +38,13 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/reports/:slug" element={<ReportDetail />} />
           <Route path="/article/:slug" element={<Article />} />
           <Route path="/opportunities" element={<Opportunities />} />
           <Route path="/opportunities/:id" element={<Opportunity />} />
+          <Route path="/agencies" element={<Agencies />} />
+          <Route path="/providers" element={<Providers />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
