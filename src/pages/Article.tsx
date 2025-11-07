@@ -125,40 +125,17 @@ const Article = () => {
         <section className="py-12 lg:py-20">
           <div className="section-container">
             <div className="max-w-4xl mx-auto">
-              <div className="prose prose-lg max-w-none">
-                <p className="text-xl text-muted-foreground mb-8 lead">
+              <article className="article-content">
+                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                   {article.description}
                 </p>
                 
                 {article.content && (
                   <div 
-                    className="article-content"
-                    dangerouslySetInnerHTML={{ 
-                      __html: article.content.split('\n').map(line => {
-                        // Handle H2 headings
-                        if (line.startsWith('## ')) {
-                          return `<h2 class="text-2xl font-bold mt-8 mb-4">${line.substring(3)}</h2>`;
-                        } 
-                        // Handle list items
-                        else if (line.startsWith('- ')) {
-                          const listContent = line.substring(2);
-                          const formatted = listContent.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-                          return `<li class="ml-6 mb-2">${formatted}</li>`;
-                        } 
-                        // Handle empty lines
-                        else if (line.trim() === '') {
-                          return '';
-                        } 
-                        // Handle paragraphs with bold text
-                        else {
-                          const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold">$1</strong>');
-                          return `<p class="mb-4 leading-relaxed">${formatted}</p>`;
-                        }
-                      }).join('')
-                    }}
+                    dangerouslySetInnerHTML={{ __html: article.content }}
                   />
                 )}
-              </div>
+              </article>
             </div>
           </div>
         </section>
