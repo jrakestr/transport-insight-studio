@@ -2,12 +2,42 @@ import { Link } from "react-router-dom";
 import { useArticles, useArticleMutation } from "@/hooks/useArticles";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, Plus, Pencil, Trash2 } from "lucide-react";
+import { Loader2, Plus, Pencil, Trash2, Sparkles } from "lucide-react";
 import { format } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export default function ArticlesAdmin() {
   const { data: articles, isLoading } = useArticles();
   const { deleteArticle } = useArticleMutation();
+  const [isBulkProcessing, setIsBulkProcessing] = useState(false);
+
+  const handleBulkExtract = async () => {
+    setIsBulkProcessing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('bulk-extract-entities', {});
+      
+      if (error) throw error;
+      
+      toast.success(
+        `Processed ${data.processed} articles! Created ${data.agenciesCreated} agencies and ${data.providersCreated} providers.`
+      );
+      
+      if (data.errors?.length > 0) {
+        console.error('Extraction errors:', data.errors);
+        toast.warning(`${data.errors.length} articles had errors - check console`);
+      }
+      
+      // Refresh the page to show updated data
+      window.location.reload();
+    } catch (error: any) {
+      console.error('Bulk extraction error:', error);
+      toast.error(error.message || 'Failed to process articles');
+    } finally {
+      setIsBulkProcessing(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -21,12 +51,31 @@ export default function ArticlesAdmin() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Articles</h1>
-        <Button asChild>
-          <Link to="/admin/articles/new">
-            <Plus className="h-4 w-4 mr-2" />
-            New Article
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleBulkExtract}
+            disabled={isBulkProcessing}
+          >
+            {isBulkProcessing ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <Sparkles className="h-4 w-4 mr-2" />
+                Extract All Entities
+              </>
+            )}
+          </Button>
+          <Button asChild>
+            <Link to="/admin/articles/new">
+              <Plus className="h-4 w-4 mr-2" />
+              New Article
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="space-y-4">
