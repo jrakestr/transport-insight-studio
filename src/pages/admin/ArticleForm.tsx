@@ -8,7 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const VERTICALS = [
   "paratransit",
@@ -46,6 +48,7 @@ export default function ArticleForm() {
   const [selectedVerticals, setSelectedVerticals] = useState<string[]>([]);
   const [selectedAgencies, setSelectedAgencies] = useState<string[]>([]);
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [isTransforming, setIsTransforming] = useState(false);
 
   useEffect(() => {
     if (article) {
@@ -68,6 +71,38 @@ export default function ArticleForm() {
       setSelectedProviders(article.article_providers?.map((p: any) => p.provider_id) || []);
     }
   }, [article]);
+
+  const handleTransformWithAI = async () => {
+    if (!formData.content.trim()) {
+      toast.error("Please paste article content first");
+      return;
+    }
+
+    setIsTransforming(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('transform-article', {
+        body: { content: formData.content }
+      });
+
+      if (error) throw error;
+
+      if (data?.transformedContent) {
+        setFormData({ ...formData, content: data.transformedContent });
+        toast.success("Article transformed to HTML successfully!");
+      }
+    } catch (error: any) {
+      console.error("Error transforming article:", error);
+      if (error.message?.includes("429")) {
+        toast.error("Rate limit exceeded. Please try again later.");
+      } else if (error.message?.includes("402")) {
+        toast.error("AI credits exhausted. Please add funds to your workspace.");
+      } else {
+        toast.error("Failed to transform article. Please try again.");
+      }
+    } finally {
+      setIsTransforming(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,12 +168,35 @@ export default function ArticleForm() {
             </div>
 
             <div>
-              <Label htmlFor="content">Content (Markdown)</Label>
+              <div className="flex items-center justify-between mb-2">
+                <Label htmlFor="content">Content (HTML)</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleTransformWithAI}
+                  disabled={isTransforming}
+                  className="gap-2"
+                >
+                  {isTransforming ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Transforming...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-4 w-4" />
+                      Edit with AI
+                    </>
+                  )}
+                </Button>
+              </div>
               <Textarea
                 id="content"
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 rows={10}
+                placeholder="Paste your article content here, then click 'Edit with AI' to transform it to structured HTML..."
               />
             </div>
 
