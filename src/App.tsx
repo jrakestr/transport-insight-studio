@@ -19,6 +19,7 @@ import OpportunitiesAdmin from "./pages/admin/Opportunities";
 import OpportunityForm from "./pages/admin/OpportunityForm";
 import ReportsAdmin from "./pages/admin/Reports";
 import ReportForm from "./pages/admin/ReportForm";
+import MigrateArticles from "./pages/admin/MigrateArticles";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ const App = () => (
             <Route path="reports" element={<ReportsAdmin />} />
             <Route path="reports/new" element={<ReportForm />} />
             <Route path="reports/:id/edit" element={<ReportForm />} />
+            <Route path="migrate-articles" element={<MigrateArticles />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
