@@ -168,12 +168,37 @@ Example:
 "Agencies establishing in-house law enforcement operations need immediate technology procurement for video management systems with AI search, evidence management platforms, and mobile data terminals."
 
 #### Lookalike Prospects
-* Name actual agencies with comparable situations
-* Include one specific metric per agency (fleet size or service area)
-* Keep descriptions brief - one parallel challenge per agency
-* If you don't have confident knowledge of specific agencies, describe the agency profile instead
+**CRITICAL: This section requires thorough research and specific details**
 
-Format: Agency Name (Location) - Fleet size, one specific parallel
+**Mandatory Research Requirements:**
+* Include BOTH public transit agencies AND private transportation providers/contractors
+* For private operators: Name specific companies that contract with or provide services to similar agencies
+* For public agencies: Include fleet size, service area, and one specific parallel challenge
+* Every prospect mentioned must be real and verifiable
+* Minimum 5-8 prospects total (mix of public and private)
+
+**Private Operator Categories to Research:**
+* Microtransit providers and contractors
+* Paratransit service operators
+* Vanpool and shuttle service companies
+* Transit management companies
+* Fleet maintenance contractors
+* Technology service providers working with transit agencies
+
+**Format Requirements:**
+* **Public Agencies**: Agency Name (Location) - Fleet size, service area, specific parallel challenge
+* **Private Operators**: Company Name (Service Type) - What agencies they serve, relevant contract scope or service details
+
+**Examples of thorough output:**
+✅ "ABC Transit Services (Paratransit Contractor) - Operates 150+ vehicles for three Illinois transit agencies including similar demand-response services"
+✅ "Metro Transit District (Chicago Region) - 500-vehicle fleet, facing identical workforce management and scheduling challenges"
+✅ "XYZ Mobility Solutions (Microtransit Provider) - Contracts with Pace and two other regional agencies for on-demand service"
+
+**CRITICAL:**
+❌ Do NOT list only public transit agencies - include private operators
+❌ Do NOT use vague descriptions - be specific about contracts, services, fleet sizes
+❌ Do NOT skip this section - if you lack specific knowledge, state "Further research needed to identify comparable private operators in this market"
+* If listing fewer than 5 prospects, explain why specific matches are limited
 
 #### Cross-Sell Opportunities
 **MANDATORY: Each opportunity MUST include clickable source links with real URLs**
