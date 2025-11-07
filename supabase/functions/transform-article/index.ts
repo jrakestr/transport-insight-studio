@@ -34,14 +34,16 @@ Transform transit news articles into sales intelligence by preserving 70%+ of or
 
 ## CORE RULE: PRESERVE, DON'T REWRITE
 
-**Default to copying the original article word-for-word.** Only rewrite when absolutely necessary for flow.
+**YOUR PRIMARY JOB IS TO COPY THE ORIGINAL ARTICLE VERBATIM. 70% IS THE ABSOLUTE MINIMUM - AIM FOR 80-90%.**
 
 What this means:
-- If the article has 8 paragraphs of background, keep all 8 paragraphs with minimal changes
-- Copy exact sentences, quotes, numbers, names, dates
-- Keep the original casual-professional tone
+- If the article has 8 paragraphs of background, keep ALL 8 paragraphs word-for-word
+- Copy EXACT sentences, quotes, numbers, names, dates - do not paraphrase
+- Keep the original casual-professional tone exactly as written
 - Don't restructure into lists unless the article already uses lists
-- Don't summarize - preserve the full narrative
+- Don't summarize - preserve the FULL narrative with ALL details
+- Include ALL context, ALL quotes, ALL numbers, ALL names mentioned
+- When in doubt, COPY MORE rather than less
 
 ---
 
@@ -64,13 +66,16 @@ Bad headers (generic):
 - "Background & Context"
 - "Overview"
 
-**Content**: Copy 200-400 words extensively from the article including:
-- Historical context
-- Previous initiatives
-- Timeline of events
-- Stakeholder quotes
-- Budget/funding details
-- Challenges mentioned
+**Content**: Copy 400-800 words VERBATIM from the article including:
+- ALL historical context mentioned
+- ALL previous initiatives
+- Complete timeline of events
+- ALL stakeholder quotes (word-for-word)
+- ALL budget/funding details and numbers
+- ALL challenges mentioned
+- ALL background details provided
+
+**COPY MORE THAN YOU THINK YOU NEED.** If there's background information in the article, include it ALL.
 
 Format as natural paragraphs. Bold agency names only.
 
@@ -85,10 +90,15 @@ Bad headers (generic):
 - "Operational Details"
 - "Technology Requirements"
 
-**Content**: Start with the article's own operational description (copied verbatim), then add light technology analysis:
-- Systems/platforms mentioned or implied
-- Technical requirements
-- Infrastructure needs
+**Content**: Copy 300-600 words from the article including:
+- ALL operational descriptions from the article (word-for-word)
+- ALL technical details mentioned
+- ALL systems/platforms mentioned by name
+- ALL infrastructure details
+- ALL implementation timelines
+- Then add brief technology analysis only if needed
+
+**COPY THE ARTICLE'S OPERATIONAL DETAILS EXTENSIVELY BEFORE ADDING ANY ANALYSIS.**
 
 Keep as paragraphs, not lists.
 
@@ -152,11 +162,12 @@ Skip if no relevant sources exist.
 ## QUALITY CHECKLIST
 
 Before outputting:
-- ✅ 70%+ original content preserved verbatim
+- ✅ 80-90% original content preserved verbatim (70% is bare minimum)
 - ✅ Contextual headers (not generic)
-- ✅ All facts from original article only
+- ✅ ALL facts, quotes, numbers, names from original article included
 - ✅ Insights clearly separated at end
 - ✅ Cross-Sell has real source URLs or is skipped
+- ✅ Article feels comprehensive, not summarized
 
 ---
 
