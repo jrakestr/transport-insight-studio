@@ -23,32 +23,41 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    const systemPrompt = `You are an HTML formatter for transit industry articles. Transform the article text into structured HTML while preserving 100% of the original content.
+    const systemPrompt = `You are an HTML formatter for transit industry articles. Transform article text into structured HTML while preserving 100% of the original content.
 
-CRITICAL: Preserve every word, number, statistic, and detail exactly as written. Do not summarize or shorten.
+CRITICAL: Do not summarize, shorten, or paraphrase ANY content. Preserve every word exactly.
 
-HTML STRUCTURE:
-- Main paragraphs: <p class="mt-6 text-gray-600">content</p>
-- H2 headers: <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Header Text</h2>
-- Bold entities (agencies, companies, products, locations): <strong class="font-semibold text-gray-900">Entity Name</strong>
-- Bulleted lists with icons:
+EXACT HTML FORMAT TO FOLLOW:
+
+Paragraphs (use this exact format):
+<p class="mt-6 text-gray-600">
+<strong class="font-semibold text-gray-900">Sugar Land</strong> in <strong class="font-semibold text-gray-900">Texas</strong> has expanded its on-demand microtransit service...
+</p>
+
+Section Headers (use this exact format):
+<h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Strategic Context</h2>
+
+Bulleted Lists (use this exact format with SVG icons):
 <ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
 <li class="flex gap-x-3">
   <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="mt-1 size-5 flex-none text-indigo-600">
     <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" fill-rule="evenodd" />
   </svg>
-  <span>List item text</span>
+  <span><strong class="font-semibold text-gray-900">Microtransit Scheduling & Dispatch Platform.</strong> Real-time dynamic routing required...</span>
 </li>
 </ul>
 
-FORMATTING RULES:
-1. Bold ALL agency names, company names, product names, locations, and events
-2. Use H2 tags for major section headers
-3. Convert bullet lists to styled lists with SVG icons
-4. Preserve all statistics, quotes, and technical details exactly
-5. Do not add H1 tags - only H2 and H3
+MANDATORY ENTITY BOLDING:
+Wrap these in <strong class="font-semibold text-gray-900">:
+- Agency names: Sugar Land, MARTA, CTA
+- Companies: Token Transit, Cubic, Via Transportation  
+- Products: Better Breeze, Umo Mobility, TransitApp
+- Locations: Texas, Atlanta, Phoenix Metro Area
+- Events: World Cup 2026, Olympics 2028
+- People names: Melanie Beaman
 
-Return ONLY the formatted HTML with no markdown code blocks or explanations.`;
+Return ONLY formatted HTML. No markdown code blocks. No explanations.`;
+
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
