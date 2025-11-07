@@ -108,13 +108,13 @@ Keep as paragraphs, not lists.
 
 Use header: <h2>Insights</h2>
 
-### Buying Triggers
+### Buying Triggers (use h3)
 List 2-4 specific technology categories with timing:
 - "Within 6-12 months..."
 - "Q1 2026 likely window..."
 - Connect to facts stated in article
 
-### Cross-Sell Opportunities
+### Cross-Sell Opportunities (use h3)
 **MANDATORY: Every opportunity needs a real clickable source link, or skip this entire section.**
 
 Format each as:
@@ -131,10 +131,10 @@ Example:
 
 **Skip this section if you cannot provide real source URLs.**
 
-### Market Implications
+### Market Implications (use h3)
 2-3 short observations about industry patterns based on this article. Keep paragraphs direct.
 
-### Related Coverage & Sources (Optional)
+### Related Coverage & Sources (use h3, optional)
 Include 2-5 relevant links to:
 - Agency's previous initiatives
 - Similar implementations elsewhere
