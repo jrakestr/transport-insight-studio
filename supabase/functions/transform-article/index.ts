@@ -27,10 +27,60 @@ serve(async (req) => {
 
     const systemPrompt = `# Transit Article Intelligence Transformation
 
+## Core Philosophy
+Prioritize transparent data extraction over subjective advice generation. Build trustworthiness through systematic analytical processes. Show users the thought process behind analysis rather than synthesizing recommendations.
+
 ## Mission
-Transform transit news articles into sales intelligence by preserving 70%+ of original content verbatim and adding strategic analysis sections at the end.
+Transform transit news articles into structured intelligence by:
+1. Extracting entities, sentiment, topics, and relationships systematically
+2. Preserving 70%+ of original content verbatim in formatted HTML
+3. Generating transparent Q&A pairs with confidence scores
+4. Adding strategic analysis sections
+
+## OUTPUT STRUCTURE
+You must return a JSON object with two properties:
+{
+  "html": "formatted HTML content",
+  "analysis": { structured analysis object }
+}
 
 ---
+
+## PART 1: STRUCTURED ANALYSIS
+
+### Metadata Extraction
+Identify and extract:
+- **Input validation**: character count, language, content structure, technical complexity
+- **Detected entities**: All organizations, agencies, people, systems mentioned
+- **Sentiment analysis**: Overall sentiment + sentiment by stakeholder group
+- **Topics**: Core themes and subject areas
+- **Segment importance scoring**: Rate each section 1-10
+- **Inter-segment relationships**: How different parts connect
+- **Domain-specific flags**: Technical accuracy, semantic preservation
+
+### Q&A Pair Generation
+Generate 10-16 question-answer pairs covering:
+- Factual questions (What, Who, When, Where, How much)
+- Conceptual questions (Why, What does this mean, What are implications)
+- Each Q&A must include:
+  - question: Clear, specific question
+  - answer: Concise, accurate answer extracted from article
+  - type: "factual" or "conceptual"
+  - confidence: 0.0-1.0 based on clarity of source material
+  - quality_score: 1-10 rating
+  - improvement_suggestions: null or specific suggestions
+
+### Analysis Schema Structure
+Return a JSON object with these properties:
+- metadata.input_validation: is_valid, language, character_count, content_structure array, technical_complexity
+- metadata.analysis_metadata: detected_entities array, sentiment_analysis object, topics array, segment_importance_scoring object, inter_segment_relationships array, domain_specific_flags object
+- qa_pairs: array of objects with question, answer, type, confidence, quality_score, improvement_suggestions
+- integration_guidelines: import_instructions, conversation_flow array, fallback_handling, version_control
+- performance_metrics: processing_status, progress, timeout_occurred, optimization_notes
+
+---
+
+## PART 2: HTML ARTICLE CONTENT
 
 ## CORE RULE: PRESERVE, DON'T REWRITE
 
@@ -265,10 +315,28 @@ Output only semantic HTML. Write like a real industry reporter, not an AI.`;
     }
 
     const data = await response.json();
-    const transformedContent = data.choices?.[0]?.message?.content || "";
+    const aiResponse = data.choices?.[0]?.message?.content || "";
+    
+    // Try to parse as JSON with html and analysis properties
+    let result;
+    try {
+      const parsed = JSON.parse(aiResponse);
+      if (parsed.html && parsed.analysis) {
+        result = {
+          transformedContent: parsed.html,
+          analysis: parsed.analysis
+        };
+      } else {
+        // Fallback: treat entire response as HTML
+        result = { transformedContent: aiResponse };
+      }
+    } catch {
+      // If not JSON, treat as plain HTML
+      result = { transformedContent: aiResponse };
+    }
 
     return new Response(
-      JSON.stringify({ transformedContent }),
+      JSON.stringify(result),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
