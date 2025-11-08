@@ -117,4 +117,95 @@ All colors MUST be HSL.
   .article-content .inline-flex svg {
     @apply w-5 h-5 flex-shrink-0;
   }
+
+  /* Playbook Content Styles */
+  .playbook-content h1 {
+    @apply text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-6 mt-12 first:mt-0;
+  }
+
+  .playbook-content h2 {
+    @apply text-2xl md:text-3xl font-bold text-foreground mb-4 mt-10;
+  }
+
+  .playbook-content h3 {
+    @apply text-xl md:text-2xl font-semibold text-foreground mb-3 mt-8;
+  }
+
+  .playbook-content h4 {
+    @apply text-lg md:text-xl font-semibold text-foreground mb-3 mt-6;
+  }
+
+  .playbook-content p {
+    @apply text-base text-foreground/90 leading-relaxed mb-4;
+  }
+
+  .playbook-content strong,
+  .playbook-content b {
+    @apply font-semibold text-foreground;
+  }
+
+  .playbook-content ul {
+    @apply space-y-2 mb-6 ml-6;
+  }
+
+  .playbook-content ol {
+    @apply space-y-2 mb-6 ml-6 list-decimal;
+  }
+
+  .playbook-content li {
+    @apply text-base text-foreground/90 leading-relaxed;
+  }
+
+  .playbook-content ul li {
+    @apply relative pl-2;
+  }
+
+  .playbook-content ul li::before {
+    @apply absolute left-[-1.25rem] top-[0.6em] w-1.5 h-1.5 rounded-full bg-primary;
+    content: '';
+  }
+
+  .playbook-content ul ul {
+    @apply mt-2 ml-4;
+  }
+
+  .playbook-content ul ul li::before {
+    @apply bg-primary/60;
+  }
+
+  .playbook-content blockquote {
+    @apply border-l-4 border-primary/30 pl-4 py-2 my-6 italic text-muted-foreground;
+  }
+
+  .playbook-content code {
+    @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground;
+  }
+
+  .playbook-content pre {
+    @apply bg-muted p-4 rounded-lg overflow-x-auto mb-6;
+  }
+
+  .playbook-content pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .playbook-content hr {
+    @apply border-border my-8;
+  }
+
+  .playbook-content a {
+    @apply text-primary hover:underline;
+  }
+
+  .playbook-content table {
+    @apply w-full border-collapse mb-6;
+  }
+
+  .playbook-content th {
+    @apply bg-muted px-4 py-2 text-left font-semibold text-foreground border border-border;
+  }
+
+  .playbook-content td {
+    @apply px-4 py-2 border border-border text-foreground/90;
+  }
 }
