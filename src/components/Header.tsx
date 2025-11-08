@@ -85,6 +85,11 @@ export const Header = () => {
                   Service Providers
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/playbook" className="cursor-pointer">
+                  Sales Playbook
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -180,6 +185,13 @@ export const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Service Providers
+              </Link>
+              <Link
+                to="/playbook"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Sales Playbook
               </Link>
             </div>
             
