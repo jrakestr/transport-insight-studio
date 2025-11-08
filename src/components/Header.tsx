@@ -33,43 +33,23 @@ export const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-background border shadow-lg z-50">
               <DropdownMenuItem asChild>
-                <Link to="/news" className="cursor-pointer">
+                <Link to="/" className="cursor-pointer">
                   Latest
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/news?filter=paratransit" className="cursor-pointer">
-                  Paratransit/ADA
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/news?filter=corporate-shuttles" className="cursor-pointer">
-                  Corporate Shuttles
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/news?filter=school" className="cursor-pointer">
-                  School Transportation
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/news?filter=healthcare" className="cursor-pointer">
-                  Healthcare/NEMT
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/news?filter=government" className="cursor-pointer">
-                  Government Transit
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/news?filter=fixed-route" className="cursor-pointer">
-                  Fixed-Route/Major Agencies
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/reports" className="cursor-pointer">
                   Market Reports
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/agencies" className="cursor-pointer">
+                  Transit Agencies
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/providers" className="cursor-pointer">
+                  Service Providers
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -82,13 +62,8 @@ export const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-background border shadow-lg z-50">
               <DropdownMenuItem asChild>
-                <Link to="/opportunities/government" className="cursor-pointer">
-                  Government Procurement
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/opportunities/early-stage" className="cursor-pointer">
-                  Early-Stage Opportunities
+                <Link to="/opportunities" className="cursor-pointer">
+                  View All Opportunities
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -101,18 +76,13 @@ export const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-background border shadow-lg z-50">
               <DropdownMenuItem asChild>
-                <Link to="/product-portfolio" className="cursor-pointer">
-                  Product Portfolio
+                <Link to="/agencies" className="cursor-pointer">
+                  Transit Agencies
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/ntd-database" className="cursor-pointer">
-                  NTD Database
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/industry-links" className="cursor-pointer">
-                  Industry Links
+                <Link to="/providers" className="cursor-pointer">
+                  Service Providers
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -151,53 +121,11 @@ export const Header = () => {
                 Industry News
               </div>
               <Link
-                to="/news"
+                to="/"
                 className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Latest
-              </Link>
-              <Link
-                to="/news?filter=paratransit"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Paratransit/ADA
-              </Link>
-              <Link
-                to="/news?filter=corporate-shuttles"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Corporate Shuttles
-              </Link>
-              <Link
-                to="/news?filter=school"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                School Transportation
-              </Link>
-              <Link
-                to="/news?filter=healthcare"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Healthcare/NEMT
-              </Link>
-              <Link
-                to="/news?filter=government"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Government Transit
-              </Link>
-              <Link
-                to="/news?filter=fixed-route"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Fixed-Route/Major Agencies
               </Link>
               <Link
                 to="/reports"
@@ -206,6 +134,20 @@ export const Header = () => {
               >
                 Market Reports
               </Link>
+              <Link
+                to="/agencies"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Transit Agencies
+              </Link>
+              <Link
+                to="/providers"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Service Providers
+              </Link>
             </div>
             
             <div className="border-b pb-2 mb-2">
@@ -213,18 +155,11 @@ export const Header = () => {
                 Sales Opportunities
               </div>
               <Link
-                to="/opportunities/government"
+                to="/opportunities"
                 className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Government Procurement
-              </Link>
-              <Link
-                to="/opportunities/early-stage"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Early-Stage Opportunities
+                View All Opportunities
               </Link>
             </div>
             
@@ -233,25 +168,18 @@ export const Header = () => {
                 Resources/Tools
               </div>
               <Link
-                to="/product-portfolio"
+                to="/agencies"
                 className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Product Portfolio
+                Transit Agencies
               </Link>
               <Link
-                to="/ntd-database"
+                to="/providers"
                 className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                NTD Database
-              </Link>
-              <Link
-                to="/industry-links"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Industry Links
+                Service Providers
               </Link>
             </div>
             
