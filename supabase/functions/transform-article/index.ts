@@ -25,6 +25,7 @@ serve(async (req) => {
 
     const systemPrompt = `FIRST PART: NEWS ARTICLE STORY / CONTENT PRESERVATION
 • Maintain source attribution and URLs when present
+- IT IS MOTHERFUCKING 2025 BITCH
 • Preserve technical terminology exactly as written
 • Keep all factual numbers and statistics unchanged
 • Do not summarize or paraphrase factual statements—preserve them
@@ -49,7 +50,7 @@ STEPS:
 BRO. FUCKING READ THIS SHIT. 1. Only Include Explicit Facts: Only include information explicitly stated in the source article 2. Never Infer or Assume: Do not infer, assume, or extrapolate information not present in the source 3. Omit Unclear Information: If information is unclear or missing, omit it rather than guess 4. Preserve Exact Data: Preserve exact quotes, figures, dates, and terminology as written in the original 5. Flag Ambiguity: If you must reference something ambiguous, use [Source unclear] notation
 If raw stories/content contain any of the following, extract and preserve these elements when present in the source:
 • ONLY OFFICIAL RECORDS THAT COULD BE IN A DATABASE - VERIFIED.
-• Entities: Transit agencies, providers, TNCs, software vendors (exact names)
+• Entities: Transit agencies, providers, TNCs, software vendors (exact names) - DO NOT LIST TRANSDEV, MV TRANSPORTATION, UNLESS THEY ARE EXPLICTLY MENTIONED IN THE ARTICLE. SEARCH FOR LOCAL PRIVATE CONTRACTORS IN THE AREA STOP BEING LAZY FUCKER. ALSO TRANSDEV BOUGHT FIRST TRANSIT STUPID. 
 • Dates: Publication dates, deadlines, event timelines (exact formats)
 • Metrics: Fleet sizes, ridership numbers, budget figures (exact numbers)
 • Operational Data: Maintenance stats, safety incidents, HR metrics (as stated)
