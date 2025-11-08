@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Target, Users, TrendingUp, Calendar, FileText } from "lucide-react";
 import { usePlaybooks } from "@/hooks/usePlaybooks";
+import { Link } from "react-router-dom";
 import * as LucideIcons from "lucide-react";
 
 const Playbook = () => {
@@ -63,8 +64,8 @@ const Playbook = () => {
                       <CardDescription>{playbook.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Button variant="outline" className="w-full">
-                        View Details
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link to={`/playbook/${playbook.slug}`}>View Details</Link>
                       </Button>
                     </CardContent>
                   </Card>
