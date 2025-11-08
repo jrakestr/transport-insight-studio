@@ -10,7 +10,9 @@ import { format } from "date-fns";
 
 const Index = () => {
   const { data: articles, isLoading } = useArticles();
-  const currentMonthYear = format(new Date(), 'MMMM yyyy');
+  const previousMonth = new Date();
+  previousMonth.setMonth(previousMonth.getMonth() - 1);
+  const reportMonthYear = format(previousMonth, 'MMMM yyyy');
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -33,7 +35,7 @@ const Index = () => {
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" asChild>
                   <Link to="/report">
-                    View {currentMonthYear} Report
+                    View {reportMonthYear} Report
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
@@ -141,7 +143,7 @@ const Index = () => {
               {/* View Full Report CTA */}
               <div className="mt-16 p-8 border-2 border-primary/20 rounded-lg bg-primary/5">
                 <h3 className="text-2xl font-bold mb-4">
-                  Want the Complete {currentMonthYear} Market Intelligence Report?
+                  Want the Complete {reportMonthYear} Market Intelligence Report?
                 </h3>
                 <p className="text-muted-foreground mb-6">
                   Access our comprehensive 42-minute analysis covering microtransit expansion, electric vehicle adoption, RFP opportunities, and competitive intelligence across the transit sector.
