@@ -194,7 +194,13 @@ export default function ArticleForm() {
         providers: selectedProviders,
       });
     } else {
-      await createArticle.mutateAsync(formData);
+      await createArticle.mutateAsync({
+        article: formData,
+        verticals: selectedVerticals,
+        categories: selectedCategories,
+        agencies: selectedAgencies,
+        providers: selectedProviders,
+      });
     }
 
     navigate("/admin/articles");

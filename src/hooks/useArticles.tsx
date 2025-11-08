@@ -50,7 +50,19 @@ export function useArticleMutation() {
   const queryClient = useQueryClient();
 
   const createArticle = useMutation({
-    mutationFn: async (article: any) => {
+    mutationFn: async ({ 
+      article, 
+      verticals, 
+      categories,
+      agencies, 
+      providers 
+    }: { 
+      article: any;
+      verticals?: string[];
+      categories?: string[];
+      agencies?: string[];
+      providers?: string[];
+    }) => {
       const { data, error } = await supabase
         .from("articles")
         .insert(article)
@@ -58,6 +70,37 @@ export function useArticleMutation() {
         .single();
 
       if (error) throw error;
+
+      const articleId = data.id;
+
+      // Insert verticals if provided
+      if (verticals && verticals.length > 0) {
+        await supabase.from("article_verticals").insert(
+          verticals.map(vertical => ({ article_id: articleId, vertical }))
+        );
+      }
+
+      // Insert categories if provided
+      if (categories && categories.length > 0) {
+        await supabase.from("article_categories").insert(
+          categories.map(category => ({ article_id: articleId, category }))
+        );
+      }
+
+      // Insert agencies if provided
+      if (agencies && agencies.length > 0) {
+        await supabase.from("article_agencies").insert(
+          agencies.map(agency_id => ({ article_id: articleId, agency_id }))
+        );
+      }
+
+      // Insert providers if provided
+      if (providers && providers.length > 0) {
+        await supabase.from("article_providers").insert(
+          providers.map(provider_id => ({ article_id: articleId, provider_id }))
+        );
+      }
+
       return data;
     },
     onSuccess: () => {
