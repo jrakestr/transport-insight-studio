@@ -244,6 +244,8 @@ export type Database = {
           agency_id: string | null
           article_id: string | null
           created_at: string
+          document_file_path: string | null
+          document_url: string | null
           id: string
           notes: string | null
           provider_id: string | null
@@ -254,6 +256,8 @@ export type Database = {
           agency_id?: string | null
           article_id?: string | null
           created_at?: string
+          document_file_path?: string | null
+          document_url?: string | null
           id?: string
           notes?: string | null
           provider_id?: string | null
@@ -264,6 +268,8 @@ export type Database = {
           agency_id?: string | null
           article_id?: string | null
           created_at?: string
+          document_file_path?: string | null
+          document_url?: string | null
           id?: string
           notes?: string | null
           provider_id?: string | null

@@ -10,7 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Upload, ExternalLink, FileText, X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export default function OpportunityForm() {
   const { id } = useParams();
@@ -29,7 +31,12 @@ export default function OpportunityForm() {
     provider_id: "",
     article_id: "",
     notes: "",
+    document_url: "",
+    document_file_path: "",
   });
+  
+  const [uploadingFile, setUploadingFile] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (opportunity) {
@@ -39,9 +46,60 @@ export default function OpportunityForm() {
         provider_id: opportunity.provider_id || "",
         article_id: opportunity.article_id || "",
         notes: opportunity.notes || "",
+        document_url: opportunity.document_url || "",
+        document_file_path: opportunity.document_file_path || "",
       });
     }
   }, [opportunity]);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setSelectedFile(file);
+    setUploadingFile(true);
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('opportunity-documents')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      setFormData({ ...formData, document_file_path: filePath });
+      toast.success("File uploaded successfully");
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      toast.error(error.message || "Failed to upload file");
+    } finally {
+      setUploadingFile(false);
+    }
+  };
+
+  const handleRemoveFile = async () => {
+    if (formData.document_file_path) {
+      try {
+        await supabase.storage
+          .from('opportunity-documents')
+          .remove([formData.document_file_path]);
+      } catch (error) {
+        console.error('Error removing file:', error);
+      }
+    }
+    setFormData({ ...formData, document_file_path: "" });
+    setSelectedFile(null);
+  };
+
+  const getFileUrl = (filePath: string) => {
+    const { data } = supabase.storage
+      .from('opportunity-documents')
+      .getPublicUrl(filePath);
+    return data.publicUrl;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,6 +216,80 @@ export default function OpportunityForm() {
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 rows={4}
               />
+            </div>
+
+            <div className="space-y-4 pt-4 border-t">
+              <h3 className="text-lg font-semibold">Documents</h3>
+              
+              <div>
+                <Label htmlFor="document_url">Document URL</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="document_url"
+                    type="url"
+                    placeholder="https://example.com/document.pdf"
+                    value={formData.document_url}
+                    onChange={(e) => setFormData({ ...formData, document_url: e.target.value })}
+                  />
+                  {formData.document_url && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      asChild
+                    >
+                      <a href={formData.document_url} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="document_file">Upload Document</Label>
+                <div className="space-y-2">
+                  {formData.document_file_path ? (
+                    <div className="flex items-center gap-2 p-3 bg-secondary rounded-lg">
+                      <FileText className="h-5 w-5 text-muted-foreground" />
+                      <span className="text-sm flex-1 truncate">
+                        {formData.document_file_path.split('/').pop()}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={handleRemoveFile}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        asChild
+                      >
+                        <a href={getFileUrl(formData.document_file_path)} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="document_file"
+                        type="file"
+                        onChange={handleFileUpload}
+                        disabled={uploadingFile}
+                        accept=".pdf,.doc,.docx,.txt,.xlsx,.xls,.csv"
+                      />
+                      {uploadingFile && (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
 
             <div className="flex gap-4">
