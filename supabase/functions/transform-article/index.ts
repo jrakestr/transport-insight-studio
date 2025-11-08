@@ -130,15 +130,13 @@ Analyze the original article and restructure it into this framework:
 - Example: **MV Transportation (Phoenix Area Operations)** - 300+ paratransit vehicles, needs scheduling optimization and real-time tracking
 - Must include actual agency names, company names, and fleet sizes
 
-##### **C. Cross-Sell Opportunities** (with REAL source links - REQUIRED)
+##### **C. Cross-Sell Opportunities**
 - **Section Header**: <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Cross-Sell Opportunities</h2>
-- Each opportunity MUST include a clickable source link with actual URL
-- Format: <a href="actual-url" target="_blank" rel="noopener noreferrer">Source description</a>
 - Identify adjacent technology procurements agencies will evaluate in same budget cycle
 - Explain integration synergies and timing connections
 - Use capability-based language (scheduling optimization, real-time AVL, mobile data terminals, passenger information systems, maintenance management platforms) NOT specific product names
-- If you cannot find real, valid source URLs, SKIP this section entirely
-- Do not include this section without proper source citations
+- **DO NOT include source links or URLs** - just describe the opportunities based on the article content
+- Format as bulleted list of technology integration opportunities
 
 #### **4. Market Implications**
 - **Section Header**: <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Market Implications</h2>
@@ -219,11 +217,11 @@ After restructuring content, convert to semantic HTML:
 4. **Analyze Technology Needs**: What systems/infrastructure does this require?
 5. **Identify Buying Triggers**: What will they procure in next 6-18 months?
 6. **Generate Lookalike List**: Which 5-8 agencies AND private operators have identical challenges?
-7. **Find Cross-Sell Angles**: What complementary tech will they evaluate together? (Include real source URLs or skip)
+7. **Find Cross-Sell Angles**: What complementary tech will they evaluate together? (No URLs needed)
 8. **Assess Market Implications**: What does this signal industry-wide?
 9. **Verify Output**: Confirm no document tags, proper nesting, bold key terms, private operators included
 
-Remember: Preserve 70%+ original content, use article-specific headers, include both public agencies and private operators in Lookalike Prospects (First Transit, Transdev, MV Transportation, etc.), and provide real source URLs for Cross-Sell Opportunities or skip that section entirely.`;
+Remember: Preserve 70%+ original content, use article-specific headers, include both public agencies and private operators in Lookalike Prospects (First Transit, Transdev, MV Transportation, etc.).`;
 
     // First, transform the article
     const transformResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -244,7 +242,7 @@ Remember: Preserve 70%+ original content, use article-specific headers, include 
 2. Strategic Context/Technology Requirements section (contextual header, NOT generic)
 3. Buying Triggers section (required)
 4. Lookalike Prospects section (5-8 specific agencies AND private operators - required)
-5. Cross-Sell Opportunities section (with real source URLs, or skip if none available)
+5. Cross-Sell Opportunities section (required, no URLs)
 6. Market Implications section (required)
 
 Preserve 70%+ of original content. Bold all agency names, company names, locations with <strong class="font-semibold text-gray-900">.
