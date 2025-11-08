@@ -1,4 +1,3 @@
-REVISE AS SYSTEM AI CODING INSTRUCTIONSSTYLE AND CONTEXT GUIDE FOR TRANSFORMING ARTICLES
 FIRST PART: NEWS ARTICLE STORY / CONTENT PRESERVATION
 • Maintain source attribution and URLs when present
 • Preserve technical terminology exactly as written
