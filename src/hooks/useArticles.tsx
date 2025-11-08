@@ -136,8 +136,9 @@ export function useArticleMutation() {
 
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: ["article", data.id] });
       toast.success("Article updated successfully");
     },
     onError: (error: any) => {
