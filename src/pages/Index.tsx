@@ -34,7 +34,7 @@ const Index = () => {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" asChild>
-                  <Link to="/report">
+                  <Link to="/reports">
                     View {reportMonthYear} Report
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
@@ -148,7 +148,7 @@ const Index = () => {
                 <p className="text-muted-foreground mb-6">
                   Access our comprehensive 42-minute analysis covering microtransit expansion, electric vehicle adoption, RFP opportunities, and competitive intelligence across the transit sector.
                 </p>
-                <Link to="/report">
+                <Link to="/reports">
                   <Button size="lg">
                     View Full Report
                     <ArrowRight className="ml-2 h-4 w-4" />
