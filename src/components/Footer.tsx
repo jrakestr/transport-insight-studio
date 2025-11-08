@@ -5,7 +5,7 @@ export const Footer = () => {
   const footerNavigation = {
     content: [
       { name: "Industry News", href: "/news" },
-      { name: "Market Reports", href: "/reports" },
+      { name: "Data Dispatch", href: "/reports" },
       { name: "Sales Opportunities", href: "/opportunities" },
     ],
     resources: [

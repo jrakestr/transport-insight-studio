@@ -25,7 +25,7 @@ const Reports = () => {
                 Market Intelligence Reports
               </Badge>
               <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Transit Industry <span className="text-primary">Market Reports</span>
+                Transit Industry <span className="text-primary">Data Dispatch</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
                 Comprehensive monthly analysis covering RFP opportunities, industry trends, and competitive intelligence for transit technology companies.
