@@ -43,11 +43,6 @@ export const Header = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/agencies" className="cursor-pointer">
-                  Transit Agencies
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
                 <Link to="/providers" className="cursor-pointer">
                   Service Providers
                 </Link>
@@ -138,13 +133,6 @@ export const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Data Dispatch
-              </Link>
-              <Link
-                to="/agencies"
-                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Transit Agencies
               </Link>
               <Link
                 to="/providers"
