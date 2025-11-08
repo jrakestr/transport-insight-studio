@@ -1,326 +1,319 @@
-<h2>Executive Summary</h2>
+<h1>Paratransit Software Sales Playbook — Strategic Interview & Intel-Gathering Plan</h1>
 
-<p>This comprehensive playbook transforms the traditional paratransit software sales process into a strategic intelligence-gathering operation. By leveraging the Sales Enablement Platform's real-time market data, news insights, and opportunity tracking, sales teams can arrive at every meeting with deep contextual knowledge and tailored positioning.</p>
+<p>Use this playbook to guide sales meetings with agency representatives. Objective: quickly establish credibility, gather decision-driving intel, and position your solution to match operational priorities. Each activity includes who leads it, the goal, sample questions, artifacts to collect, and an estimated time window.</p>
 
-<p>The playbook integrates directly with platform capabilities:</p>
+<h2>Phase 0 — Preparation (Before first meeting)</h2>
+
 <ul>
-  <li><strong>Industry News</strong> (<code>/news?filter=paratransit</code>) for pre-meeting research</li>
-  <li><strong>Sales Intelligence</strong> (<code>/intelligence</code>) for competitive positioning</li>
-  <li><strong>RFP Database</strong> (<code>/rfp-database</code>) for procurement insights</li>
-  <li><strong>Opportunities Hub</strong> (<code>/opportunities</code>) for pipeline tracking</li>
+  <li><strong>Lead:</strong> Account Executive (AE) + SAE</li>
+  <li><strong>Goal:</strong> Arrive informed and with tailored materials</li>
+  <li><strong>Actions:</strong>
+    <ul>
+      <li>Review public info: fleet size, service area, any recent news.</li>
+      <li>Build a one-page capability map linking your product features to paratransit needs (geocoding, reporting, real-time).</li>
+      <li>Prepare a 2-page agency questionnaire and a demo dataset template.</li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> capability map, questionnaire, demo data template</li>
+  <li><strong>Time:</strong> 1–2 days</li>
 </ul>
 
-<hr />
+<h2>Phase 1 — Discovery Kickoff (Week 1)</h2>
 
-<h2>Platform Integration Points</h2>
-
-<h3>Pre-Meeting Intelligence Gathering</h3>
-
-<p>Before any customer engagement, leverage the platform's integrated intelligence:</p>
-
-<p><strong>News Analysis</strong> (<code>/news</code>)</p>
 <ul>
-  <li>Search for recent articles about the target agency</li>
-  <li>Filter by paratransit vertical for industry trends</li>
-  <li>Identify pain points mentioned in public statements</li>
+  <li><strong>Lead:</strong> AE + Operations SME</li>
+  <li><strong>Goal:</strong> Establish relationship, confirm system size and immediate pain points</li>
+  <li><strong>Meeting agenda & sample questions:</strong>
+    <ul>
+      <li>Quick intro and credibility statement (5–10 min).</li>
+      <li>Confirm system classification:
+        <ul>
+          <li>"How many vehicles do you operate daily? Would you classify as small, medium, or large?"</li>
+        </ul>
+      </li>
+      <li>High-level KPIs:
+        <ul>
+          <li>"What are your typical vehicle miles/day, average rider trip time, and pick-up time variability?"</li>
+        </ul>
+      </li>
+      <li>Immediate pain:
+        <ul>
+          <li>"What single issue would you fix today if you could?"</li>
+        </ul>
+      </li>
+      <li>Decision process:
+        <ul>
+          <li>"Who's involved in vendor selection and what's your timeline?"</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Artifacts to capture:</strong> fleet size, KPIs, stakeholders list, immediate hot buttons</li>
+  <li><strong>Time:</strong> 60 minutes</li>
 </ul>
 
-<p><strong>Agency Profile</strong> (<code>/admin/agencies/:id</code>)</p>
+<h2>Phase 2 — Operational Deep Dive (Week 1–2)</h2>
+
 <ul>
-  <li>Review fleet size, NTD data, and operational metrics</li>
-  <li>Track historical procurement patterns</li>
-  <li>Map relationships with providers and vendors</li>
+  <li><strong>Lead:</strong> SE + Dispatch/Operations SME (optional follow-up with AE)</li>
+  <li><strong>Goal:</strong> Map daily workflows, reservation types, and trip patterns</li>
+  <li><strong>Topics & sample questions:</strong>
+    <ul>
+      <li>Demand profile:
+        <ul>
+          <li>"How many customers/trips per day? How does demand vary by time of day or zone?"</li>
+          <li>"What percent are immediate, advanced, or subscription reservations?"</li>
+        </ul>
+      </li>
+      <li>Trip patterns & transfers:
+        <ul>
+          <li>"Do you have frequent group trips or many transfers to fixed-route services?"</li>
+        </ul>
+      </li>
+      <li>Scheduling effort:
+        <ul>
+          <li>"How much manual rework is needed daily for schedules?"</li>
+          <li>"What are your biggest sources of schedule disruption?"</li>
+        </ul>
+      </li>
+      <li>Tools & integrations:
+        <ul>
+          <li>"What mapping/GIS, accounting, or CAD systems do you use?"</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> trip volume timelines, reservation mix %, list of integrations, sample trip patterns</li>
+  <li><strong>Time:</strong> 45–90 minutes</li>
 </ul>
 
-<p><strong>Opportunity Tracking</strong> (<code>/opportunities</code>)</p>
+<h2>Phase 3 — Technology & Feature Validation (Week 2–3)</h2>
+
 <ul>
-  <li>Check for existing opportunities linked to the agency</li>
-  <li>Review related articles and intelligence reports</li>
-  <li>Assess competitive landscape from similar opportunities</li>
+  <li><strong>Lead:</strong> SE + Product Manager (if available)</li>
+  <li><strong>Goal:</strong> Validate technology requirements, SLAs, and data needs for demos/proof</li>
+  <li><strong>Questions & checks:</strong>
+    <ul>
+      <li>Real-time needs:
+        <ul>
+          <li>"Do you require online pickup estimates and live vehicle tracking? What update frequency?"</li>
+        </ul>
+      </li>
+      <li>Database and eligibility:
+        <ul>
+          <li>"Do you need automatic population of reservation forms and ADA eligibility checks?"</li>
+        </ul>
+      </li>
+      <li>Mapping & geocoding:
+        <ul>
+          <li>"How accurate are your current addresses? Do you require geocoded-address verification?"</li>
+        </ul>
+      </li>
+      <li>Manual control:
+        <ul>
+          <li>"How often do dispatchers override schedules? What must a manual-override UI include?"</li>
+        </ul>
+      </li>
+      <li>Reporting & billing:
+        <ul>
+          <li>"Which reports are mandatory (e.g., Section 15)? What billing rules must be automated?"</li>
+        </ul>
+      </li>
+      <li>User profiles & security:
+        <ul>
+          <li>"How many concurrent users? What role-based access is required?"</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> prioritized feature list, SLA targets (e.g., lookup &lt;2s), sample data extract for demo</li>
+  <li><strong>Time:</strong> 60–90 minutes</li>
 </ul>
 
-<hr />
+<h2>Phase 4 — Stakeholder & Procurement Intelligence (Week 2–4)</h2>
 
-<h2>Phase 0 — Data-Driven Preparation</h2>
-
-<p><strong>Duration:</strong> 1-2 days<br />
-<strong>Platform Tools:</strong> News Database, Agency Profiles, RFP Archive</p>
-
-<h3>Enhanced Actions</h3>
 <ul>
-  <li>Query <code>/news?filter=paratransit</code> for agency-specific articles from the past 90 days</li>
-  <li>Build capability map using insights from <code>/product-portfolio/operations</code></li>
-  <li>Review similar-sized agency implementations in <code>/reports</code></li>
-  <li>Extract competitive intelligence from recent RFPs in <code>/rfp-database</code></li>
+  <li><strong>Lead:</strong> AE + Procurement Liaison</li>
+  <li><strong>Goal:</strong> Map decision criteria, procurement process, budget cadence, and references</li>
+  <li><strong>Questions & actions:</strong>
+    <ul>
+      <li>Decision authority:
+        <ul>
+          <li>"Who signs off on purchases and who influences the decision?"</li>
+        </ul>
+      </li>
+      <li>Procurement timeline:
+        <ul>
+          <li>"Is there a formal RFP? When will budget be allocated?"</li>
+        </ul>
+      </li>
+      <li>Budget signals:
+        <ul>
+          <li>"Is funding available now or is this next fiscal cycle?"</li>
+        </ul>
+      </li>
+      <li>Reference expectations:
+        <ul>
+          <li>"Would you like references from similar-sized agencies or peer deployments?"</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> decision-maker map, procurement timeline, budget window, evaluation criteria</li>
+  <li><strong>Time:</strong> 30–60 minutes</li>
 </ul>
 
-<h3>Platform-Generated Artifacts</h3>
+<h2>Phase 5 — Field & User Interviews (Week 3–6)</h2>
+
 <ul>
-  <li>Auto-generated agency briefing from news aggregation</li>
-  <li>Competitive positioning matrix from market reports</li>
-  <li>Historical procurement timeline from RFP database</li>
-  <li>Peer agency comparison from NTD integration</li>
+  <li><strong>Lead:</strong> AE + Customer Success Manager (CSM) / Trainer</li>
+  <li><strong>Goal:</strong> Gather tactical user needs, resistance points, and training requirements</li>
+  <li><strong>Interview targets & sample questions:</strong>
+    <ul>
+      <li>Dispatchers/reservationists:
+        <ul>
+          <li>"Walk me through a typical reservation from call to confirmation."</li>
+          <li>"Where do you waste the most time? What would reduce it?"</li>
+        </ul>
+      </li>
+      <li>Drivers:
+        <ul>
+          <li>"How do routing changes reach you? What vehicle info is critical?"</li>
+        </ul>
+      </li>
+      <li>Eligibility/compliance staff:
+        <ul>
+          <li>"How do you currently validate ADA eligibility and store documentation?"</li>
+        </ul>
+      </li>
+      <li>Riders or advocacy groups (optional):
+        <ul>
+          <li>"What friction points do riders cite for booking or transfers?"</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> SOP pain points, training needs list, no-show drivers, confirmation needs</li>
+  <li><strong>Time:</strong> 30–60 minutes per interview</li>
 </ul>
 
-<hr />
+<h2>Phase 6 — Validation Demo & Data Trial Offer (Week 4–8)</h2>
 
-<h2>Phase 1 — Intelligence-Informed Discovery</h2>
-
-<p><strong>Duration:</strong> 60 minutes<br />
-<strong>Platform Support:</strong> Real-time intelligence feeds, agency dashboards</p>
-
-<h3>Platform-Enhanced Questions</h3>
-
-<p>Reference recent news when asking:</p>
 <ul>
-  <li>"We noticed your recent [article from <code>/news</code>] mentioned challenges with [specific issue]. How has that evolved?"</li>
-  <li>"Based on NTD data, your fleet utilization appears to be [metric]. Is that accurate?"</li>
+  <li><strong>Lead:</strong> SE + AE</li>
+  <li><strong>Goal:</strong> Demonstrate fit using their data and collect acceptance criteria</li>
+  <li><strong>Actions:</strong>
+    <ul>
+      <li>Propose a short trial or sandbox using anonymized sample data.</li>
+      <li>Run scenario-based demos that mirror their top use cases:
+        <ul>
+          <li>Immediate reservations, subscription loads, group trip pooling, transfers, Section 15 report generation.</li>
+        </ul>
+      </li>
+      <li>Capture performance metrics during demo (response time, accuracy).</li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> demo recordings, acceptance checklist, trial data footprint</li>
+  <li><strong>Time:</strong> Schedule 1–3 sessions (60–90 min each) over 1–2 weeks</li>
 </ul>
 
-<h3>Real-Time Documentation</h3>
+<h2>Phase 7 — Competitive & Risk Intelligence (Throughout Weeks 1–8)</h2>
+
 <ul>
-  <li>Log responses directly into <code>/admin/opportunities/new</code></li>
-  <li>Tag relevant agencies and providers for relationship mapping</li>
-  <li>Create follow-up tasks linked to specific pain points</li>
+  <li><strong>Lead:</strong> AE + Market Intelligence</li>
+  <li><strong>Goal:</strong> Identify competing vendors, potential blockers, and compliance gaps</li>
+  <li><strong>Activities & prompts:</strong>
+    <ul>
+      <li>Ask: "Have you evaluated other vendors? What did you like/dislike?"</li>
+      <li>Probe for internal blockers (IT security, change resistance, data quality).</li>
+      <li>Collect any regulatory constraints (Section 15 specifics, local procurement rules).</li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> competitor spreadsheet, blocker mitigation plan, regulatory checklist</li>
+  <li><strong>Time:</strong> Ongoing</li>
 </ul>
 
-<hr />
+<h2>Phase 8 — Commercial & Implementation Positioning (Week 6–10)</h2>
 
-<h2>Phase 2 — Operational Intelligence Deep Dive</h2>
-
-<p><strong>Duration:</strong> 45-90 minutes<br />
-<strong>Platform Tools:</strong> Operations Software Portfolio, Integration Guides</p>
-
-<h3>Data-Driven Discovery</h3>
-
-<p>Leverage platform insights:</p>
 <ul>
-  <li>"Other agencies your size typically process [X trips/day]. How does that compare?"</li>
-  <li>"We've seen success with [specific feature] at [reference from case studies]. Would that address your challenge?"</li>
+  <li><strong>Lead:</strong> AE + Solutions Architect + CSM</li>
+  <li><strong>Goal:</strong> Turn gathered intel into a tailored commercial and implementation proposal</li>
+  <li><strong>Deliverables:</strong>
+    <ul>
+      <li>Proposal that maps must-have features to your solution and includes pricing tiers tied to fleet size and concurrency.</li>
+      <li>Phased implementation plan: pilot (2–4 weeks), data migration, staff training, cutover checklist.</li>
+      <li>KPI success criteria for 30/60/90-day reviews (vehicle miles/day, pick-up variability, no-shows).</li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> tailored proposal, pilot plan, SLA & success KPIs</li>
+  <li><strong>Time:</strong> 1–2 weeks to assemble</li>
 </ul>
 
-<h3>Workflow Mapping</h3>
+<h2>Phase 9 — Closing Preparation & Reference Reinforcement (Week 8–12)</h2>
+
 <ul>
-  <li>Document current state in opportunity notes</li>
-  <li>Link to relevant product capabilities from <code>/product-portfolio</code></li>
-  <li>Identify integration points with existing systems</li>
+  <li><strong>Lead:</strong> AE + Customer References + Legal (as needed)</li>
+  <li><strong>Goal:</strong> Remove final objections and prepare for procurement</li>
+  <li><strong>Actions:</strong>
+    <ul>
+      <li>Provide references from agencies of similar size and use cases (Section 15, ADA compliance).</li>
+      <li>Share case studies and pilot outcomes (if trial run).</li>
+      <li>Pre-fill answers for RFP requirements and provide a sample contract with standard SLAs.</li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> reference list, RFP response package, draft contract</li>
+  <li><strong>Time:</strong> 1–3 weeks depending on procurement cycle</li>
 </ul>
 
-<hr />
+<h2>Phase 10 — Win Handoff & Implementation Kickoff (Post-sign)</h2>
 
-<h2>Phase 3 — Technical Requirements Validation</h2>
-
-<p><strong>Duration:</strong> 60-90 minutes<br />
-<strong>Platform Resources:</strong> Product documentation, compliance checklists</p>
-
-<h3>Feature Mapping Exercise</h3>
 <ul>
-  <li>Use <code>/product-portfolio/operations</code> to demonstrate specific capabilities</li>
-  <li>Reference implementation success stories from <code>/reports</code></li>
-  <li>Show real-world ROI data from similar deployments</li>
+  <li><strong>Lead:</strong> CSM + Project Manager</li>
+  <li><strong>Goal:</strong> Ensure smooth transition and early success</li>
+  <li><strong>Actions:</strong>
+    <ul>
+      <li>Deliver implementation timeline, training schedule, data migration checklist, and go-live contingency plan.</li>
+      <li>Schedule 30/60/90-day performance reviews and assign a single point of contact for escalations.</li>
+    </ul>
+  </li>
+  <li><strong>Artifacts:</strong> kickoff pack, success dashboard, support SLAs</li>
+  <li><strong>Time:</strong> Immediate post-sign; kickoff within 1–2 weeks</li>
 </ul>
 
-<h3>Compliance Intelligence</h3>
+<h2>Quick Interview Cheat Sheet (one-page prompts)</h2>
+
 <ul>
-  <li>Pull latest regulatory updates from <code>/news?filter=government</code></li>
-  <li>Reference ADA compliance features from product portfolio</li>
-  <li>Link to relevant whitepapers in <code>/whitepapers</code></li>
+  <li><strong>System size & KPIs:</strong> vehicles, vehicle miles/day, avg rider time, pickup variability.</li>
+  <li><strong>Demand mix:</strong> trips/day, peak windows, immediate vs advanced vs subscriptions.</li>
+  <li><strong>Pain points:</strong> top 3 operational issues; cost/efficiency targets.</li>
+  <li><strong>Must-have tech:</strong> geocoding, real-time tracking, manual override, Section 15 reporting, billing automation.</li>
+  <li><strong>Integrations:</strong> GIS, accounting, CAD, HR systems; preferred file formats (CSV/XLSX/JSON).</li>
+  <li><strong>Users & security:</strong> concurrent users, roles, access restrictions.</li>
+  <li><strong>Procurement:</strong> timeline, budget window, decision makers, RFP status.</li>
+  <li><strong>Trial acceptance:</strong> success metrics, representative datasets, demo scenario list.</li>
 </ul>
 
-<hr />
+<h2>Tactics & Best Practices</h2>
 
-<h2>Phase 4 — Procurement Intelligence Strategy</h2>
-
-<p><strong>Duration:</strong> 30-60 minutes<br />
-<strong>Platform Tools:</strong> RFP Database, Government Procurement Guide</p>
-
-<h3>Strategic Questions Enhanced by Data</h3>
-
-<p>Based on <code>/rfp-database</code> patterns:</p>
 <ul>
-  <li>"We've noticed agencies in [state] typically use [procurement vehicle]. Does that apply here?"</li>
-  <li>"The average procurement cycle for similar systems is [X months]. What's your target?"</li>
+  <li><strong>Lead with empathy & domain credibility:</strong> cite quick wins relevant to their system size (e.g., "For 20–40 vehicle agencies we cut no-shows X% with confirmation callbacks").</li>
+  <li><strong>Use their data early:</strong> anonymized sample imports speed trust and reveal gaps.</li>
+  <li><strong>Convert pain into measurable success criteria:</strong> tie each feature to a KPI you'll track in 30/60/90 days.</li>
+  <li><strong>Address blockers proactively:</strong> security questionnaires, Section 15 compliance proof, and reference calls.</li>
+  <li><strong>Timebox conversations:</strong> stakeholders are busy — present concise agendas and next steps after each meeting.</li>
 </ul>
 
-<h3>Procurement Mapping</h3>
+<h2>Deliverables to Leave After Each Meeting</h2>
+
 <ul>
-  <li>Document in opportunity record with procurement type tag</li>
-  <li>Link to relevant procurement guides from <code>/opportunities/government</code></li>
-  <li>Set automated alerts for RFP release</li>
+  <li>One-page summary of what you learned, key decisions, and next steps (send within 24 hours).</li>
+  <li>Demo/trial request or data template (if agreed).</li>
+  <li>Stakeholder contact map and procurement timeline.</li>
 </ul>
 
-<hr />
+<p>If you'd like, I can:</p>
 
-<h2>Phase 5 — Stakeholder Intelligence Mapping</h2>
-
-<p><strong>Duration:</strong> 30-60 minutes per stakeholder<br />
-<strong>Platform Support:</strong> Stakeholder tracking, influence mapping</p>
-
-<h3>Multi-Level Engagement</h3>
-
-<p>Track in platform:</p>
 <ul>
-  <li>Create stakeholder profiles linked to agency</li>
-  <li>Document role-specific pain points</li>
-  <li>Map influence levels and decision authority</li>
-  <li>Set follow-up reminders by stakeholder</li>
-</ul>
-
-<hr />
-
-<h2>Phase 6 — Data-Driven Demo Development</h2>
-
-<p><strong>Duration:</strong> 1-3 sessions<br />
-<strong>Platform Assets:</strong> Demo templates, ROI calculators</p>
-
-<h3>Demonstration Strategy</h3>
-<ul>
-  <li>Pull agency-specific scenarios from news articles</li>
-  <li>Use performance benchmarks from market reports</li>
-  <li>Show relevant case studies from <code>/reports</code></li>
-  <li>Calculate ROI using platform calculators</li>
-</ul>
-
-<h3>Success Metrics</h3>
-<ul>
-  <li>Define KPIs based on industry benchmarks</li>
-  <li>Link to measurement framework in platform</li>
-  <li>Schedule follow-up performance reviews</li>
-</ul>
-
-<hr />
-
-<h2>Phase 7 — Competitive Intelligence Activation</h2>
-
-<p><strong>Duration:</strong> Ongoing<br />
-<strong>Platform Tools:</strong> Competitive analysis, win/loss database</p>
-
-<h3>Continuous Monitoring</h3>
-<ul>
-  <li>Set alerts for competitor mentions in <code>/news</code></li>
-  <li>Track competitive wins/losses by agency type</li>
-  <li>Update battle cards based on new intelligence</li>
-  <li>Share insights across sales team</li>
-</ul>
-
-<hr />
-
-<h2>Phase 8 — Intelligent Proposal Development</h2>
-
-<p><strong>Duration:</strong> 1-2 weeks<br />
-<strong>Platform Resources:</strong> Proposal templates, pricing tools</p>
-
-<h3>Dynamic Proposal Creation</h3>
-<ul>
-  <li>Auto-populate agency data from platform</li>
-  <li>Insert relevant case studies from <code>/reports</code></li>
-  <li>Include recent wins from news database</li>
-  <li>Link to implementation resources</li>
-</ul>
-
-<h3>Pricing Intelligence</h3>
-<ul>
-  <li>Use fleet-size based pricing matrices</li>
-  <li>Reference similar agency contracts</li>
-  <li>Include grant funding options from <code>/opportunities/government</code></li>
-</ul>
-
-<hr />
-
-<h2>Phase 9 — Reference Intelligence & Validation</h2>
-
-<p><strong>Duration:</strong> 1-3 weeks<br />
-<strong>Platform Support:</strong> Customer database, success stories</p>
-
-<h3>Strategic Reference Selection</h3>
-<ul>
-  <li>Match references by fleet size and geography</li>
-  <li>Provide recent implementation metrics</li>
-  <li>Share video testimonials from platform</li>
-  <li>Offer virtual site visit scheduling</li>
-</ul>
-
-<hr />
-
-<h2>Phase 10 — Implementation Intelligence Transfer</h2>
-
-<p><strong>Duration:</strong> Post-signature<br />
-<strong>Platform Integration:</strong> Project management, knowledge base</p>
-
-<h3>Seamless Handoff</h3>
-<ul>
-  <li>Transfer all intelligence to implementation team</li>
-  <li>Maintain opportunity history for future upsells</li>
-  <li>Schedule success milestone reviews</li>
-  <li>Continue monitoring agency news</li>
-</ul>
-
-<hr />
-
-<h2>Platform-Powered Best Practices</h2>
-
-<h3>Intelligence Advantage</h3>
-<ul>
-  <li>Start every day with <code>/news</code> filtered to your accounts</li>
-  <li>Set up automated alerts for target agencies</li>
-  <li>Review weekly market reports for trends</li>
-  <li>Share competitive intelligence in team meetings</li>
-</ul>
-
-<h3>Data-Driven Selling</h3>
-<ul>
-  <li>Always reference specific articles or reports</li>
-  <li>Use peer agency benchmarks in discussions</li>
-  <li>Show ROI data from similar implementations</li>
-  <li>Track all interactions in opportunity records</li>
-</ul>
-
-<h3>Continuous Learning</h3>
-<ul>
-  <li>Contribute win/loss insights to platform</li>
-  <li>Update agency profiles with new intelligence</li>
-  <li>Share successful tactics in team knowledge base</li>
-  <li>Review monthly performance dashboards</li>
-</ul>
-
-<hr />
-
-<h2>Success Metrics Dashboard</h2>
-
-<p>Track these KPIs in platform analytics:</p>
-<ul>
-  <li>News articles reviewed per opportunity</li>
-  <li>Intelligence reports generated per account</li>
-  <li>Competitive win rate by agency segment</li>
-  <li>Time from first contact to close</li>
-  <li>Proposal acceptance rate</li>
-  <li>Customer satisfaction scores</li>
-</ul>
-
-<hr />
-
-<h2>Quick Links for Sales Process</h2>
-
-<p><strong>Research Phase:</strong></p>
-<ul>
-  <li>Industry News: <code>/news?filter=paratransit</code></li>
-  <li>Agency Profiles: <code>/admin/agencies</code></li>
-  <li>Market Reports: <code>/reports</code></li>
-  <li>RFP Database: <code>/rfp-database</code></li>
-</ul>
-
-<p><strong>Engagement Phase:</strong></p>
-<ul>
-  <li>Opportunity Tracking: <code>/admin/opportunities</code></li>
-  <li>Product Portfolio: <code>/product-portfolio/operations</code></li>
-  <li>Case Studies: <code>/reports?filter=case-study</code></li>
-  <li>Competitive Intelligence: <code>/intelligence</code></li>
-</ul>
-
-<p><strong>Closing Phase:</strong></p>
-<ul>
-  <li>Proposal Templates: <code>/resources/proposals</code></li>
-  <li>Pricing Tools: <code>/resources/pricing</code></li>
-  <li>Reference Library: <code>/resources/references</code></li>
-  <li>Implementation Guides: <code>/resources/implementation</code></li>
+  <li>Convert this into a 3-month calendar with specific meeting templates and email follow-ups.</li>
+  <li>Generate a one-page RFP response template mapped to the agency's prioritized requirements. Which do you prefer?</li>
 </ul>
