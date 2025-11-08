@@ -294,6 +294,45 @@ export type Database = {
           },
         ]
       }
+      playbooks: {
+        Row: {
+          category: string | null
+          content: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          order_index: number | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          order_index?: number | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          order_index?: number | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       reports: {
         Row: {
           content: string | null

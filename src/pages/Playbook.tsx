@@ -3,8 +3,18 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Target, Users, TrendingUp, Calendar, FileText } from "lucide-react";
+import { usePlaybooks } from "@/hooks/usePlaybooks";
+import * as LucideIcons from "lucide-react";
 
 const Playbook = () => {
+  const { data: playbooks, isLoading } = usePlaybooks();
+
+  const getIcon = (iconName: string | null) => {
+    if (!iconName) return Target;
+    const Icon = (LucideIcons as any)[iconName];
+    return Icon || Target;
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -13,7 +23,7 @@ const Playbook = () => {
         <section className="section-container py-16 md:py-24">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-              Sales Playbook
+              Sales Playbooks
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
               Strategic frameworks and actionable tactics for winning transit technology deals
@@ -35,97 +45,33 @@ const Playbook = () => {
 
         {/* Key Sections */}
         <section className="section-container py-16">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card>
-              <CardHeader>
-                <Target className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>Account Targeting</CardTitle>
-                <CardDescription>
-                  Identify high-value prospects using fleet size, budget cycles, and technology deployment patterns
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="outline" className="w-full">
-                  View Framework
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <Calendar className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>Timing Strategies</CardTitle>
-                <CardDescription>
-                  Map procurement cycles, RFP timelines, and budget planning windows
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="outline" className="w-full">
-                  View Timeline
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <Users className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>Stakeholder Mapping</CardTitle>
-                <CardDescription>
-                  Navigate multi-level decision-making with transit managers, board members, and city officials
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="outline" className="w-full">
-                  View Guide
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <TrendingUp className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>Value Proposition</CardTitle>
-                <CardDescription>
-                  Craft compelling narratives around safety, efficiency, and ROI specific to transit operations
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="outline" className="w-full">
-                  View Templates
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <FileText className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>RFP Response Tactics</CardTitle>
-                <CardDescription>
-                  Win more bids with proven strategies for transit technology procurement responses
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="outline" className="w-full">
-                  View Tactics
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <BookOpen className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>Case Studies</CardTitle>
-                <CardDescription>
-                  Learn from successful deals across agencies of different sizes and service types
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="outline" className="w-full">
-                  View Studies
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+          {isLoading ? (
+            <div className="text-center py-8">Loading playbooks...</div>
+          ) : !playbooks || playbooks.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              No playbooks available yet. Check back soon!
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {playbooks.map((playbook) => {
+                const Icon = getIcon(playbook.icon);
+                return (
+                  <Card key={playbook.id}>
+                    <CardHeader>
+                      <Icon className="h-12 w-12 text-primary mb-4" />
+                      <CardTitle>{playbook.title}</CardTitle>
+                      <CardDescription>{playbook.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Button variant="outline" className="w-full">
+                        View Details
+                      </Button>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         {/* CTA Section */}

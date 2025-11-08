@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText } from "lucide-react";
+import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen } from "lucide-react";
 
 export default function AdminLayout() {
   const { user, isAdmin, loading, signOut } = useAuth();
@@ -69,6 +69,12 @@ export default function AdminLayout() {
                   <Link to="/admin/reports">
                     <FileText className="h-4 w-4 mr-2" />
                     Reports
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/admin/playbooks">
+                    <BookOpen className="h-4 w-4 mr-2" />
+                    Playbooks
                   </Link>
                 </Button>
               </div>
