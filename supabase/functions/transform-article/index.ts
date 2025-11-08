@@ -109,11 +109,15 @@ Analyze the original article and restructure it into this framework:
 
 ##### **A. Buying Triggers**
 - **Section Header**: <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Buying Triggers</h2>
-- Identify immediate procurement signals (6-18 month window)
-- List specific technology categories for likely RFPs
-- Include budget cycle implications
-- Note regulatory/compliance drivers creating urgency
-- Format as bulleted list of concrete technology needs
+- **CRITICAL DISTINCTION**: Differentiate between "postponed/rebid RFPs" and "new procurement intent"
+  - **Postponed/Rebid RFP**: Existing procurement being re-issued or delayed (state this explicitly, do NOT infer new procurement intent)
+  - **New Procurement Intent**: Agency explicitly announcing plans to procure new technology/services not previously acquired
+- Identify immediate procurement signals (6-18 month window) ONLY if explicitly stated in article
+- List specific technology categories for likely RFPs ONLY if article provides concrete evidence
+- Include budget cycle implications ONLY if mentioned in source
+- Note regulatory/compliance drivers creating urgency ONLY if stated
+- **DO NOT INFER**: If article says "postponed RFP" or "rebid," state that fact without inferring future procurement intent
+- Format as bulleted list of concrete technology needs with source-backed evidence
 
 ##### **B. Lookalike Prospects** (REQUIRED: 5-8 specific prospects)
 - **Section Header**: <h2 class="mt-16 text-3xl font-semibold tracking-tight text-pretty text-gray-900">Lookalike Prospects</h2>
