@@ -213,33 +213,135 @@ Return format (categories should be an array of ALL relevant categories):
         .insert(categoryInserts);
     }
 
-    // Process agencies
+    // Process agencies - match against imported database
     if (extracted.agencies?.length > 0) {
       for (const agency of extracted.agencies) {
-        const { data: existing } = await supabaseClient
-          .from('transit_agencies')
-          .select('id')
-          .ilike('name', agency.name)
-          .single();
-
-        if (existing) {
-          agencyIds.push(existing.id);
-        } else {
-          const { data: newAgency, error } = await supabaseClient
+        // Try multi-field matching with confidence scoring
+        let matchedAgency = null;
+        let matchType = 'no_match';
+        
+        // 1. Try exact NTD ID match (highest confidence)
+        if (agency.ntd_id) {
+          const { data: ntdMatch } = await supabaseClient
             .from('transit_agencies')
-            .insert({
-              name: agency.name,
-              location: agency.location || null,
-              notes: agency.notes || null
-            })
             .select('id')
-            .single();
+            .eq('ntd_id', agency.ntd_id)
+            .maybeSingle();
+          
+          if (ntdMatch) {
+            matchedAgency = ntdMatch;
+            matchType = 'exact_ntd_id';
+          }
+        }
+        
+        // 2. Try exact agency_name match
+        if (!matchedAgency) {
+          const { data: nameMatch } = await supabaseClient
+            .from('transit_agencies')
+            .select('id')
+            .ilike('agency_name', agency.name)
+            .maybeSingle();
+          
+          if (nameMatch) {
+            matchedAgency = nameMatch;
+            matchType = 'exact_name';
+          }
+        }
+        
+        // 3. Try doing_business_as match
+        if (!matchedAgency) {
+          const { data: dbaMatch } = await supabaseClient
+            .from('transit_agencies')
+            .select('id')
+            .ilike('doing_business_as', agency.name)
+            .maybeSingle();
+          
+          if (dbaMatch) {
+            matchedAgency = dbaMatch;
+            matchType = 'dba_match';
+          }
+        }
+        
+        // 4. Try fuzzy match with location
+        if (!matchedAgency && agency.location) {
+          const locationParts = agency.location.split(',').map((p: string) => p.trim());
+          if (locationParts.length >= 2) {
+            const city = locationParts[0];
+            const state = locationParts[1];
+            
+            const { data: locationMatches } = await supabaseClient
+              .from('transit_agencies')
+              .select('id, agency_name')
+              .ilike('city', city)
+              .ilike('state', state)
+              .limit(10);
+            
+            // Fuzzy match agency names in same location
+            if (locationMatches && locationMatches.length > 0) {
+              for (const candidate of locationMatches) {
+                const similarity = calculateSimilarity(
+                  agency.name.toLowerCase(),
+                  candidate.agency_name.toLowerCase()
+                );
+                
+                if (similarity > 0.8) {
+                  matchedAgency = candidate;
+                  matchType = 'fuzzy_location';
+                  break;
+                }
+              }
+            }
+          }
+        }
 
-          if (!error && newAgency) {
-            agencyIds.push(newAgency.id);
+        if (matchedAgency) {
+          agencyIds.push(matchedAgency.id);
+          console.log(`✓ Matched "${agency.name}" via ${matchType}`);
+        } else {
+          console.log(`✗ No match for "${agency.name}" ${agency.location || ''}`);
+          // Store as unmatched for manual review
+          matchType = 'unmatched';
+        }
+      }
+    }
+
+    // Helper function for fuzzy string matching
+    function calculateSimilarity(str1: string, str2: string): number {
+      const longer = str1.length > str2.length ? str1 : str2;
+      const shorter = str1.length > str2.length ? str2 : str1;
+      
+      if (longer.length === 0) return 1.0;
+      
+      const editDistance = levenshteinDistance(longer, shorter);
+      return (longer.length - editDistance) / longer.length;
+    }
+
+    function levenshteinDistance(str1: string, str2: string): number {
+      const matrix: number[][] = [];
+      
+      for (let i = 0; i <= str2.length; i++) {
+        matrix[i] = [i];
+      }
+      
+      for (let j = 0; j <= str1.length; j++) {
+        matrix[0][j] = j;
+      }
+      
+      for (let i = 1; i <= str2.length; i++) {
+        for (let j = 1; j <= str1.length; j++) {
+          if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            );
           }
         }
       }
+      
+      return matrix[str2.length][str1.length];
     }
 
     // Process providers
