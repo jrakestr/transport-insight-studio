@@ -18,17 +18,17 @@ export default function AgencyImport() {
 
   const parseCSV = (text: string) => {
     const lines = text.split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
+    const headers = parseCSVLine(lines[0]);
     const records = [];
 
     for (let i = 1; i < lines.length; i++) {
       if (!lines[i].trim()) continue;
       
-      const values = lines[i].split(',');
+      const values = parseCSVLine(lines[i]);
       const record: any = {};
       
       headers.forEach((header, index) => {
-        const value = values[index]?.trim();
+        const value = values[index]?.trim().replace(/^"|"$/g, ''); // Remove surrounding quotes
         record[header] = value === '' || value === undefined ? null : value;
       });
       
@@ -36,6 +36,29 @@ export default function AgencyImport() {
     }
     
     return records;
+  };
+
+  const parseCSVLine = (line: string): string[] => {
+    const result: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      
+      if (char === '"') {
+        inQuotes = !inQuotes;
+        current += char;
+      } else if (char === ',' && !inQuotes) {
+        result.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    
+    result.push(current);
+    return result.map(v => v.trim());
   };
 
   const handleImport = async () => {
