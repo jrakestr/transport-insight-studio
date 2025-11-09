@@ -31,14 +31,15 @@ async function processArticle(articleId: string, supabaseClient: any, LOVABLE_AP
 
     console.log(`Processing article: ${article.title}`);
 
-    // Extract entities using AI
-    const extractionPrompt = `Extract transit agencies, transportation providers, industry verticals, and article categories from this content. Return ONLY valid JSON.
+    // Extract entities using AI with tool calling for website fetching
+    const extractionPrompt = `Extract transit agencies, transportation providers, industry verticals, and article categories from this content.
 
 Industry verticals (transit sectors): paratransit, corporate-shuttles, school, healthcare, government, fixed-route
 Article categories (topics): Funding, RFPs & Procurement, Technology Partnerships, Safety & Security, Technology, Market Trends, Microtransit, Government
 
 CRITICAL INSTRUCTIONS FOR PROVIDERS:
 - Extract the provider's official company name
+- If a provider website is mentioned in the article, use the fetch_provider_website tool to get their official business description
 - In "notes", describe what the provider's core business actually is based on their official identity
 - Focus on their primary product or service offering (e.g., "paratransit contract operator", "transit scheduling software provider", "electric bus manufacturer", "fare payment technology vendor")
 - DO NOT describe why they were mentioned in this article
@@ -56,34 +57,139 @@ Return format (categories should be an array of ALL relevant categories):
   "categories": ["Technology", "RFPs & Procurement"]
 }`;
 
-    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: "You are a data extraction assistant. Return only valid JSON." },
-          { role: "user", content: extractionPrompt }
-        ],
-      }),
-    });
+    // Initial AI call with tools enabled
+    let messages = [
+      { role: "system", content: "You are a data extraction assistant. Use the fetch_provider_website tool when provider websites are mentioned to get accurate business descriptions. After gathering all information, return only valid JSON." },
+      { role: "user", content: extractionPrompt }
+    ];
 
-    if (!aiResponse.ok) {
-      throw new Error(`AI API error: ${aiResponse.status}`);
+    const tools = [{
+      type: "function",
+      function: {
+        name: "fetch_provider_website",
+        description: "Fetch a transportation provider's official website to determine their actual core business and service offerings. Use this when you find a provider mentioned with a website URL.",
+        parameters: {
+          type: "object",
+          properties: {
+            provider_name: {
+              type: "string",
+              description: "The name of the provider"
+            },
+            website_url: {
+              type: "string",
+              description: "The provider's website URL"
+            }
+          },
+          required: ["provider_name", "website_url"]
+        }
+      }
+    }];
+
+    let maxIterations = 5;
+    let iteration = 0;
+    let extracted = null;
+
+    while (iteration < maxIterations) {
+      iteration++;
+      
+      const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages,
+          tools,
+          tool_choice: iteration === 1 ? "auto" : "auto"
+        }),
+      });
+
+      if (!aiResponse.ok) {
+        throw new Error(`AI API error: ${aiResponse.status}`);
+      }
+
+      const aiData = await aiResponse.json();
+      const message = aiData.choices[0].message;
+      
+      // Add assistant's response to conversation
+      messages.push(message);
+
+      // Check if AI wants to use tools
+      if (message.tool_calls && message.tool_calls.length > 0) {
+        console.log(`AI requesting ${message.tool_calls.length} website fetches`);
+        
+        // Execute all tool calls
+        for (const toolCall of message.tool_calls) {
+          if (toolCall.function.name === "fetch_provider_website") {
+            const args = JSON.parse(toolCall.function.arguments);
+            console.log(`Fetching website for ${args.provider_name}: ${args.website_url}`);
+            
+            try {
+              // Fetch the website
+              const websiteResponse = await fetch(args.website_url, {
+                headers: {
+                  'User-Agent': 'Mozilla/5.0 (compatible; TransitBot/1.0)'
+                }
+              });
+              
+              let websiteContent = "Website could not be fetched";
+              if (websiteResponse.ok) {
+                const html = await websiteResponse.text();
+                // Extract text content from HTML (basic extraction)
+                const textContent = html
+                  .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+                  .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+                  .replace(/<[^>]+>/g, ' ')
+                  .replace(/\s+/g, ' ')
+                  .trim()
+                  .substring(0, 2000); // Limit to first 2000 chars
+                
+                websiteContent = `Website content for ${args.provider_name}: ${textContent}`;
+              }
+              
+              // Add tool result to conversation
+              messages.push({
+                role: "tool",
+                tool_call_id: toolCall.id,
+                content: websiteContent
+              } as any);
+              
+            } catch (error) {
+              console.error(`Error fetching ${args.website_url}:`, error);
+              messages.push({
+                role: "tool",
+                tool_call_id: toolCall.id,
+                content: `Could not fetch website for ${args.provider_name}`
+              } as any);
+            }
+          }
+        }
+        
+        // Continue conversation loop to let AI process tool results
+        continue;
+      }
+
+      // No more tool calls - extract final JSON response
+      const content = message.content;
+      if (content) {
+        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          extracted = JSON.parse(jsonMatch[0]);
+          break;
+        }
+      }
+      
+      // If we get here without extracted data, something went wrong
+      if (iteration === maxIterations) {
+        throw new Error('Max iterations reached without valid JSON response');
+      }
     }
 
-    const aiData = await aiResponse.json();
-    const content = aiData.choices[0].message.content;
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    
-    if (!jsonMatch) {
-      throw new Error('No JSON found in AI response');
+    if (!extracted) {
+      throw new Error('No valid extraction data produced');
     }
-
-    const extracted = JSON.parse(jsonMatch[0]);
     const agencyIds: string[] = [];
     const providerIds: string[] = [];
     const verticals: string[] = extracted.verticals || [];
