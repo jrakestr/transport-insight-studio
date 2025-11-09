@@ -61,6 +61,8 @@ export default function ArticleForm() {
   const [selectedAgencies, setSelectedAgencies] = useState<string[]>([]);
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [isTransforming, setIsTransforming] = useState(false);
+  const [agencySearch, setAgencySearch] = useState("");
+  const [providerSearch, setProviderSearch] = useState("");
 
   useEffect(() => {
     if (article) {
@@ -407,32 +409,46 @@ export default function ArticleForm() {
             <CardTitle>Transit Agencies</CardTitle>
           </CardHeader>
           <CardContent>
+            <Input
+              placeholder="Search agencies..."
+              value={agencySearch}
+              onChange={(e) => setAgencySearch(e.target.value)}
+              className="mb-4"
+            />
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {agencies && agencies.length > 0 ? (
-                agencies.map((agency) => (
-                  <label key={agency.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
-                    <input
-                      type="checkbox"
-                      checked={selectedAgencies.includes(agency.id)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedAgencies([...selectedAgencies, agency.id]);
-                        } else {
-                          setSelectedAgencies(selectedAgencies.filter((id) => id !== agency.id));
-                        }
-                      }}
-                      className="mt-1"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium">{agency.agency_name}</div>
-                      {(agency.city || agency.state) && (
-                        <div className="text-xs text-muted-foreground">
-                          {[agency.city, agency.state].filter(Boolean).join(", ")}
-                        </div>
-                      )}
-                    </div>
-                  </label>
-                ))
+                agencies
+                  .filter((agency) => 
+                    !agencySearch || 
+                    agency.agency_name.toLowerCase().includes(agencySearch.toLowerCase()) ||
+                    agency.city?.toLowerCase().includes(agencySearch.toLowerCase()) ||
+                    agency.state?.toLowerCase().includes(agencySearch.toLowerCase()) ||
+                    agency.ntd_id?.toLowerCase().includes(agencySearch.toLowerCase())
+                  )
+                  .map((agency) => (
+                    <label key={agency.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
+                      <input
+                        type="checkbox"
+                        checked={selectedAgencies.includes(agency.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedAgencies([...selectedAgencies, agency.id]);
+                          } else {
+                            setSelectedAgencies(selectedAgencies.filter((id) => id !== agency.id));
+                          }
+                        }}
+                        className="mt-1"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium">{agency.agency_name}</div>
+                        {(agency.city || agency.state) && (
+                          <div className="text-xs text-muted-foreground">
+                            {[agency.city, agency.state].filter(Boolean).join(", ")}
+                          </div>
+                        )}
+                      </div>
+                    </label>
+                  ))
               ) : (
                 <p className="text-sm text-muted-foreground">No agencies available</p>
               )}
@@ -450,30 +466,43 @@ export default function ArticleForm() {
             <CardTitle>Transportation Providers</CardTitle>
           </CardHeader>
           <CardContent>
+            <Input
+              placeholder="Search providers..."
+              value={providerSearch}
+              onChange={(e) => setProviderSearch(e.target.value)}
+              className="mb-4"
+            />
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {providers && providers.length > 0 ? (
-                providers.map((provider) => (
-                  <label key={provider.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
-                    <input
-                      type="checkbox"
-                      checked={selectedProviders.includes(provider.id)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedProviders([...selectedProviders, provider.id]);
-                        } else {
-                          setSelectedProviders(selectedProviders.filter((id) => id !== provider.id));
-                        }
-                      }}
-                      className="mt-1"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium">{provider.name}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {[provider.provider_type, provider.location].filter(Boolean).join(" - ")}
+                providers
+                  .filter((provider) => 
+                    !providerSearch || 
+                    provider.name.toLowerCase().includes(providerSearch.toLowerCase()) ||
+                    provider.provider_type?.toLowerCase().includes(providerSearch.toLowerCase()) ||
+                    provider.location?.toLowerCase().includes(providerSearch.toLowerCase())
+                  )
+                  .map((provider) => (
+                    <label key={provider.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
+                      <input
+                        type="checkbox"
+                        checked={selectedProviders.includes(provider.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedProviders([...selectedProviders, provider.id]);
+                          } else {
+                            setSelectedProviders(selectedProviders.filter((id) => id !== provider.id));
+                          }
+                        }}
+                        className="mt-1"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium">{provider.name}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {[provider.provider_type, provider.location].filter(Boolean).join(" - ")}
+                        </div>
                       </div>
-                    </div>
-                  </label>
-                ))
+                    </label>
+                  ))
               ) : (
                 <p className="text-sm text-muted-foreground">No providers available</p>
               )}
