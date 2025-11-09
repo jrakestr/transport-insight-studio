@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAgencies, useAgencyMutation } from "@/hooks/useAgencies";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, Plus, Pencil, Trash2 } from "lucide-react";
+import { Loader2, Plus, Pencil, Trash2, Upload } from "lucide-react";
 
 export default function AgenciesAdmin() {
   const { data: agencies, isLoading } = useAgencies();
@@ -20,12 +20,20 @@ export default function AgenciesAdmin() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Transit Agencies</h1>
-        <Button asChild>
-          <Link to="/admin/agencies/new">
-            <Plus className="h-4 w-4 mr-2" />
-            New Agency
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" asChild>
+            <Link to="/admin/agencies/import">
+              <Upload className="h-4 w-4 mr-2" />
+              Import CSV
+            </Link>
+          </Button>
+          <Button asChild>
+            <Link to="/admin/agencies/new">
+              <Plus className="h-4 w-4 mr-2" />
+              New Agency
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="space-y-4">
