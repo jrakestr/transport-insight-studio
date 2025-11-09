@@ -25,6 +25,9 @@ export default function AgencyForm() {
     zip_code: "",
     ntd_id: "",
     total_voms: "",
+    population: "",
+    density: "",
+    sq_miles: "",
     url: "",
     notes: "",
   });
@@ -40,6 +43,9 @@ export default function AgencyForm() {
         zip_code: agency.zip_code || "",
         ntd_id: agency.ntd_id || "",
         total_voms: agency.total_voms?.toString() || "",
+        population: agency.population?.toString() || "",
+        density: agency.density?.toString() || "",
+        sq_miles: agency.sq_miles?.toString() || "",
         url: agency.url || "",
         notes: agency.notes || "",
       });
@@ -52,6 +58,9 @@ export default function AgencyForm() {
     const data = {
       ...formData,
       total_voms: formData.total_voms ? parseInt(formData.total_voms) : null,
+      population: formData.population ? parseInt(formData.population) : null,
+      density: formData.density ? parseFloat(formData.density) : null,
+      sq_miles: formData.sq_miles ? parseFloat(formData.sq_miles) : null,
     };
 
     if (isEditing && id) {
@@ -155,6 +164,41 @@ export default function AgencyForm() {
                   type="number"
                   value={formData.total_voms}
                   onChange={(e) => setFormData({ ...formData, total_voms: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="population">Population</Label>
+                <Input
+                  id="population"
+                  type="number"
+                  value={formData.population}
+                  onChange={(e) => setFormData({ ...formData, population: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="density">Density</Label>
+                <Input
+                  id="density"
+                  type="number"
+                  step="0.01"
+                  placeholder="per sq mile"
+                  value={formData.density}
+                  onChange={(e) => setFormData({ ...formData, density: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="sq_miles">Square Miles</Label>
+                <Input
+                  id="sq_miles"
+                  type="number"
+                  step="0.01"
+                  value={formData.sq_miles}
+                  onChange={(e) => setFormData({ ...formData, sq_miles: e.target.value })}
                 />
               </div>
             </div>
