@@ -415,7 +415,7 @@ export default function ArticleForm() {
               onChange={(e) => setAgencySearch(e.target.value)}
               className="mb-4"
             />
-            <div className="space-y-2 max-h-64 overflow-y-auto">
+            <div className="space-y-2 max-h-64 overflow-y-auto border rounded-md p-2 bg-background">
               {agencies && agencies.length > 0 ? (
                 agencies
                   .filter((agency) => 
@@ -450,7 +450,7 @@ export default function ArticleForm() {
                     </label>
                   ))
               ) : (
-                <p className="text-sm text-muted-foreground">No agencies available</p>
+                <p className="text-sm text-muted-foreground p-2">No agencies available</p>
               )}
             </div>
             {selectedAgencies.length > 0 && (
@@ -472,7 +472,7 @@ export default function ArticleForm() {
               onChange={(e) => setProviderSearch(e.target.value)}
               className="mb-4"
             />
-            <div className="space-y-2 max-h-64 overflow-y-auto">
+            <div className="space-y-2 max-h-64 overflow-y-auto border rounded-md p-2 bg-background">
               {providers && providers.length > 0 ? (
                 providers
                   .filter((provider) => 
@@ -504,7 +504,7 @@ export default function ArticleForm() {
                     </label>
                   ))
               ) : (
-                <p className="text-sm text-muted-foreground">No providers available</p>
+                <p className="text-sm text-muted-foreground p-2">No providers available</p>
               )}
             </div>
             {selectedProviders.length > 0 && (
