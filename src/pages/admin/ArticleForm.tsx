@@ -417,40 +417,54 @@ export default function ArticleForm() {
             />
             <div className="space-y-2 max-h-64 overflow-y-auto border rounded-md p-2 bg-background">
               {agencies && agencies.length > 0 ? (
-                agencies
-                  .filter((agency) => 
+                (() => {
+                  const filtered = agencies.filter((agency) => 
                     !agencySearch || 
                     agency.agency_name.toLowerCase().includes(agencySearch.toLowerCase()) ||
                     agency.city?.toLowerCase().includes(agencySearch.toLowerCase()) ||
                     agency.state?.toLowerCase().includes(agencySearch.toLowerCase()) ||
                     agency.ntd_id?.toLowerCase().includes(agencySearch.toLowerCase())
-                  )
-                  .map((agency) => (
-                    <label key={agency.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
-                      <input
-                        type="checkbox"
-                        checked={selectedAgencies.includes(agency.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedAgencies([...selectedAgencies, agency.id]);
-                          } else {
-                            setSelectedAgencies(selectedAgencies.filter((id) => id !== agency.id));
-                          }
-                        }}
-                        className="mt-1"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium">{agency.agency_name}</div>
-                        {(agency.city || agency.state) && (
-                          <div className="text-xs text-muted-foreground">
-                            {[agency.city, agency.state].filter(Boolean).join(", ")}
-                          </div>
-                        )}
-                      </div>
-                    </label>
-                  ))
+                  );
+                  return (
+                    <>
+                      {filtered.length > 0 ? (
+                        <>
+                          {filtered.map((agency) => (
+                            <label key={agency.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
+                              <input
+                                type="checkbox"
+                                checked={selectedAgencies.includes(agency.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedAgencies([...selectedAgencies, agency.id]);
+                                  } else {
+                                    setSelectedAgencies(selectedAgencies.filter((id) => id !== agency.id));
+                                  }
+                                }}
+                                className="mt-1"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm font-medium">{agency.agency_name}</div>
+                                {(agency.city || agency.state) && (
+                                  <div className="text-xs text-muted-foreground">
+                                    {[agency.city, agency.state].filter(Boolean).join(", ")}
+                                  </div>
+                                )}
+                              </div>
+                            </label>
+                          ))}
+                          <p className="text-xs text-muted-foreground p-2 border-t mt-2">
+                            Showing {filtered.length} of {agencies.length} agencies
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-sm text-muted-foreground p-2">No agencies match your search</p>
+                      )}
+                    </>
+                  );
+                })()
               ) : (
-                <p className="text-sm text-muted-foreground p-2">No agencies available</p>
+                <p className="text-sm text-muted-foreground p-2">Loading agencies...</p>
               )}
             </div>
             {selectedAgencies.length > 0 && (

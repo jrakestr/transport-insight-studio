@@ -34,8 +34,9 @@ export function useAgencies(params: AgenciesQueryParams = {}) {
       // Apply sorting
       query = query.order(sortBy, { ascending: sortOrder === 'asc', nullsFirst: false });
 
-      // Apply pagination only if limit is not very large (used for selection lists)
-      if (limit < 1000) {
+      // Only apply pagination for smaller limits (normal list views)
+      // For large limits (10000+), fetch all without range to avoid pagination
+      if (limit <= 1000) {
         const from = (page - 1) * limit;
         const to = from + limit - 1;
         query = query.range(from, to);
