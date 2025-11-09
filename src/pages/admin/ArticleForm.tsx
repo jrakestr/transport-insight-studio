@@ -404,47 +404,84 @@ export default function ArticleForm() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Transit Agencies (Auto-extracted)</CardTitle>
+            <CardTitle>Transit Agencies</CardTitle>
           </CardHeader>
           <CardContent>
-            {selectedAgencies.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No agencies linked. Use "Transform with AI" to auto-extract.</p>
-            ) : (
-              <div className="space-y-2">
-                {selectedAgencies.map((agencyId) => {
-                  const agency = agencies?.find(a => a.id === agencyId);
-                  return agency ? (
-                    <div key={agencyId} className="text-sm p-2 bg-secondary rounded">
-                      <strong>{agency.agency_name}</strong>
-                      {(agency.city || agency.state) && <span className="text-muted-foreground"> - {[agency.city, agency.state].filter(Boolean).join(", ")}</span>}
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {agencies && agencies.length > 0 ? (
+                agencies.map((agency) => (
+                  <label key={agency.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
+                    <input
+                      type="checkbox"
+                      checked={selectedAgencies.includes(agency.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedAgencies([...selectedAgencies, agency.id]);
+                        } else {
+                          setSelectedAgencies(selectedAgencies.filter((id) => id !== agency.id));
+                        }
+                      }}
+                      className="mt-1"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium">{agency.agency_name}</div>
+                      {(agency.city || agency.state) && (
+                        <div className="text-xs text-muted-foreground">
+                          {[agency.city, agency.state].filter(Boolean).join(", ")}
+                        </div>
+                      )}
                     </div>
-                  ) : null;
-                })}
-              </div>
+                  </label>
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">No agencies available</p>
+              )}
+            </div>
+            {selectedAgencies.length > 0 && (
+              <p className="text-sm text-muted-foreground mt-2">
+                {selectedAgencies.length} {selectedAgencies.length === 1 ? 'agency' : 'agencies'} selected
+              </p>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Transportation Providers (Auto-extracted)</CardTitle>
+            <CardTitle>Transportation Providers</CardTitle>
           </CardHeader>
           <CardContent>
-            {selectedProviders.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No providers linked. Use "Transform with AI" to auto-extract.</p>
-            ) : (
-              <div className="space-y-2">
-                {selectedProviders.map((providerId) => {
-                  const provider = providers?.find(p => p.id === providerId);
-                  return provider ? (
-                    <div key={providerId} className="text-sm p-2 bg-secondary rounded">
-                      <strong>{provider.name}</strong>
-                      {provider.provider_type && <span className="text-muted-foreground"> ({provider.provider_type})</span>}
-                      {provider.location && <span className="text-muted-foreground"> - {provider.location}</span>}
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {providers && providers.length > 0 ? (
+                providers.map((provider) => (
+                  <label key={provider.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
+                    <input
+                      type="checkbox"
+                      checked={selectedProviders.includes(provider.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedProviders([...selectedProviders, provider.id]);
+                        } else {
+                          setSelectedProviders(selectedProviders.filter((id) => id !== provider.id));
+                        }
+                      }}
+                      className="mt-1"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium">{provider.name}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {[provider.provider_type, provider.location].filter(Boolean).join(" - ")}
+                      </div>
                     </div>
-                  ) : null;
-                })}
-              </div>
+                  </label>
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">No providers available</p>
+              )}
+            </div>
+            {selectedProviders.length > 0 && (
+              <p className="text-sm text-muted-foreground mt-2">
+                {selectedProviders.length} {selectedProviders.length === 1 ? 'provider' : 'providers'} selected
+              </p>
             )}
           </CardContent>
         </Card>
