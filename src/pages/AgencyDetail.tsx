@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 
 const AgencyDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { data: agency, isLoading } = useAgency(id);
   const { data: relationships, isLoading: isLoadingRelationships } = useAgencyRelationships(id);
 
@@ -50,11 +51,9 @@ const AgencyDetail = () => {
         <section className="relative overflow-hidden border-b">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
           <div className="section-container relative py-12 lg:py-16">
-            <Button variant="ghost" asChild className="mb-4">
-              <Link to="/agencies">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to All Agencies
-              </Link>
+            <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to All Agencies
             </Button>
             
             <div className="flex items-start gap-4 mb-6">
