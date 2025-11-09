@@ -11,6 +11,26 @@ const Article = () => {
   const { data: articles, isLoading } = useArticles();
   const article = articles?.find(a => a.slug === slug);
 
+  // Function to add links to agency names in content
+  const linkifyAgencies = (content: string, agencies: any[]) => {
+    if (!agencies || agencies.length === 0) return content;
+    
+    let linkedContent = content;
+    agencies.forEach((agencyRel: any) => {
+      const agency = agencyRel.transit_agencies;
+      if (!agency) return;
+      
+      // Match agency name (case insensitive) but not if already in a link
+      const regex = new RegExp(`(?<!<a[^>]*>)\\b(${agency.agency_name})\\b(?![^<]*<\\/a>)`, 'gi');
+      linkedContent = linkedContent.replace(
+        regex,
+        `<a href="/agencies/${agency.id}" class="text-primary hover:underline font-medium">$1</a>`
+      );
+    });
+    
+    return linkedContent;
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -117,7 +137,9 @@ const Article = () => {
               {article.content && (
                 <article 
                   className="article-content prose prose-lg dark:prose-invert max-w-none"
-                  dangerouslySetInnerHTML={{ __html: article.content }}
+                  dangerouslySetInnerHTML={{ 
+                    __html: linkifyAgencies(article.content, article.article_agencies || []) 
+                  }}
                 />
               )}
             </div>
