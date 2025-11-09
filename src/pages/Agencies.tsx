@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -11,11 +10,25 @@ import { useAgencies } from "@/hooks/useAgencies";
 import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowRight, Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 const Agencies = () => {
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [state, setState] = useState("");
-  const [sortBy, setSortBy] = useState("agency_name");
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>("asc");
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  const page = parseInt(searchParams.get("page") || "1");
+  const search = searchParams.get("search") || "";
+  const state = searchParams.get("state") || "";
+  const sortBy = searchParams.get("sortBy") || "agency_name";
+  const sortOrder = (searchParams.get("sortOrder") || "asc") as 'asc' | 'desc';
+  
+  const updateParams = (updates: Record<string, string>) => {
+    const newParams = new URLSearchParams(searchParams);
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value) {
+        newParams.set(key, value);
+      } else {
+        newParams.delete(key);
+      }
+    });
+    setSearchParams(newParams);
+  };
   
   const { data, isLoading } = useAgencies({
     page,
@@ -65,14 +78,15 @@ const Agencies = () => {
                       placeholder="Search agencies, NTD ID, or city..."
                       value={search}
                       onChange={(e) => {
-                        setSearch(e.target.value);
-                        setPage(1);
+                        updateParams({ search: e.target.value, page: "1" });
                       }}
                       className="pl-10"
                     />
                   </div>
                   
-                  <Select value={state || "all"} onValueChange={(val) => { setState(val === "all" ? "" : val); setPage(1); }}>
+                  <Select value={state || "all"} onValueChange={(val) => { 
+                    updateParams({ state: val === "all" ? "" : val, page: "1" });
+                  }}>
                     <SelectTrigger>
                       <SelectValue placeholder="Filter by State" />
                     </SelectTrigger>
@@ -86,8 +100,7 @@ const Agencies = () => {
                   
                   <Select value={`${sortBy}-${sortOrder}`} onValueChange={(val) => {
                     const [field, order] = val.split('-');
-                    setSortBy(field);
-                    setSortOrder(order as 'asc' | 'desc');
+                    updateParams({ sortBy: field, sortOrder: order });
                   }}>
                     <SelectTrigger>
                       <SelectValue placeholder="Sort by" />
@@ -111,9 +124,7 @@ const Agencies = () => {
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        setSearch("");
-                        setState("");
-                        setPage(1);
+                        setSearchParams({});
                       }}
                     >
                       Clear filters
@@ -210,7 +221,7 @@ const Agencies = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setPage(p => Math.max(1, p - 1))}
+                    onClick={() => updateParams({ page: String(Math.max(1, page - 1)) })}
                     disabled={page === 1}
                   >
                     <ChevronLeft className="h-4 w-4" />
@@ -235,7 +246,7 @@ const Agencies = () => {
                           key={pageNum}
                           variant={page === pageNum ? "default" : "outline"}
                           size="sm"
-                          onClick={() => setPage(pageNum)}
+                          onClick={() => updateParams({ page: String(pageNum) })}
                         >
                           {pageNum}
                         </Button>
@@ -246,7 +257,7 @@ const Agencies = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                    onClick={() => updateParams({ page: String(Math.min(totalPages, page + 1)) })}
                     disabled={page === totalPages}
                   >
                     Next
