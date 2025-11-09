@@ -67,13 +67,13 @@ const Opportunities = () => {
                               {opportunity.transit_agencies && (
                                 <div className="flex items-center gap-2">
                                   <Building2 className="h-4 w-4" />
-                                  <span>{opportunity.transit_agencies.name}</span>
+                                  <span>{opportunity.transit_agencies.agency_name}</span>
                                 </div>
                               )}
-                              {opportunity.transit_agencies?.location && (
+                              {(opportunity.transit_agencies?.city || opportunity.transit_agencies?.state) && (
                                 <div className="flex items-center gap-2">
                                   <MapPin className="h-4 w-4" />
-                                  <span>{opportunity.transit_agencies.location}</span>
+                                  <span>{[opportunity.transit_agencies.city, opportunity.transit_agencies.state].filter(Boolean).join(", ")}</span>
                                 </div>
                               )}
                               {opportunity.created_at && (

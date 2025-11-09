@@ -114,7 +114,7 @@ export default function ArticleForm() {
           const { data: existing } = await supabase
             .from('transit_agencies')
             .select('id')
-            .ilike('name', agency.name)
+            .ilike('agency_name', agency.name)
             .single();
 
           if (existing) {
@@ -123,8 +123,8 @@ export default function ArticleForm() {
             const { data: newAgency, error: agencyError } = await supabase
               .from('transit_agencies')
               .insert({
-                name: agency.name,
-                location: agency.location || null,
+                agency_name: agency.name,
+                city: agency.location || null,
                 notes: agency.notes || null
               })
               .select('id')
@@ -414,8 +414,8 @@ export default function ArticleForm() {
                   const agency = agencies?.find(a => a.id === agencyId);
                   return agency ? (
                     <div key={agencyId} className="text-sm p-2 bg-secondary rounded">
-                      <strong>{agency.name}</strong>
-                      {agency.location && <span className="text-muted-foreground"> - {agency.location}</span>}
+                      <strong>{agency.agency_name}</strong>
+                      {(agency.city || agency.state) && <span className="text-muted-foreground"> - {[agency.city, agency.state].filter(Boolean).join(", ")}</span>}
                     </div>
                   ) : null;
                 })}

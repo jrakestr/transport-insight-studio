@@ -81,16 +81,16 @@ const Opportunity = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="font-semibold text-lg">{opportunity.transit_agencies.name}</p>
-                    {opportunity.transit_agencies.location && (
+                    <p className="font-semibold text-lg">{opportunity.transit_agencies.agency_name}</p>
+                    {(opportunity.transit_agencies.city || opportunity.transit_agencies.state) && (
                       <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
                         <MapPin className="h-3 w-3" />
-                        {opportunity.transit_agencies.location}
+                        {[opportunity.transit_agencies.city, opportunity.transit_agencies.state].filter(Boolean).join(", ")}
                       </p>
                     )}
-                    {opportunity.transit_agencies.fleet_size && (
+                    {opportunity.transit_agencies.total_voms && (
                       <p className="text-sm text-muted-foreground mt-1">
-                        Fleet Size: {opportunity.transit_agencies.fleet_size}
+                        Fleet Size: {opportunity.transit_agencies.total_voms}
                       </p>
                     )}
                   </CardContent>

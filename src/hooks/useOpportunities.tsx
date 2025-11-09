@@ -10,7 +10,7 @@ export function useOpportunities() {
         .from("opportunities")
         .select(`
           *,
-          transit_agencies(name, location, fleet_size),
+          transit_agencies(agency_name, city, state, total_voms),
           transportation_providers(name, location),
           articles(title, slug, description)
         `)
@@ -32,7 +32,7 @@ export function useOpportunity(id: string | undefined) {
         .from("opportunities")
         .select(`
           *,
-          transit_agencies(name, location, fleet_size),
+          transit_agencies(agency_name, city, state, total_voms),
           transportation_providers(name, location),
           articles(title, slug, description)
         `)

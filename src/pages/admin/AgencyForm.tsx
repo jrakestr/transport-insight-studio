@@ -17,24 +17,30 @@ export default function AgencyForm() {
   const { createAgency, updateAgency } = useAgencyMutation();
 
   const [formData, setFormData] = useState({
-    name: "",
-    formal_name: "",
-    location: "",
+    agency_name: "",
+    doing_business_as: "",
+    address_line_1: "",
+    city: "",
+    state: "",
+    zip_code: "",
     ntd_id: "",
-    fleet_size: "",
-    website: "",
+    total_voms: "",
+    url: "",
     notes: "",
   });
 
   useEffect(() => {
     if (agency) {
       setFormData({
-        name: agency.name || "",
-        formal_name: agency.formal_name || "",
-        location: agency.location || "",
+        agency_name: agency.agency_name || "",
+        doing_business_as: agency.doing_business_as || "",
+        address_line_1: agency.address_line_1 || "",
+        city: agency.city || "",
+        state: agency.state || "",
+        zip_code: agency.zip_code || "",
         ntd_id: agency.ntd_id || "",
-        fleet_size: agency.fleet_size?.toString() || "",
-        website: agency.website || "",
+        total_voms: agency.total_voms?.toString() || "",
+        url: agency.url || "",
         notes: agency.notes || "",
       });
     }
@@ -45,7 +51,7 @@ export default function AgencyForm() {
 
     const data = {
       ...formData,
-      fleet_size: formData.fleet_size ? parseInt(formData.fleet_size) : null,
+      total_voms: formData.total_voms ? parseInt(formData.total_voms) : null,
     };
 
     if (isEditing && id) {
@@ -76,32 +82,60 @@ export default function AgencyForm() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="name">Name *</Label>
+              <Label htmlFor="agency_name">Agency Name *</Label>
               <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                id="agency_name"
+                value={formData.agency_name}
+                onChange={(e) => setFormData({ ...formData, agency_name: e.target.value })}
                 required
               />
             </div>
 
             <div>
-              <Label htmlFor="formal_name">Formal Name</Label>
+              <Label htmlFor="doing_business_as">Doing Business As</Label>
               <Input
-                id="formal_name"
-                value={formData.formal_name}
-                onChange={(e) => setFormData({ ...formData, formal_name: e.target.value })}
+                id="doing_business_as"
+                value={formData.doing_business_as}
+                onChange={(e) => setFormData({ ...formData, doing_business_as: e.target.value })}
               />
             </div>
 
             <div>
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="address_line_1">Address</Label>
               <Input
-                id="location"
-                placeholder="City, State"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                id="address_line_1"
+                value={formData.address_line_1}
+                onChange={(e) => setFormData({ ...formData, address_line_1: e.target.value })}
               />
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="city">City</Label>
+                <Input
+                  id="city"
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="state">State</Label>
+                <Input
+                  id="state"
+                  maxLength={2}
+                  placeholder="CA"
+                  value={formData.state}
+                  onChange={(e) => setFormData({ ...formData, state: e.target.value.toUpperCase() })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="zip_code">ZIP Code</Label>
+                <Input
+                  id="zip_code"
+                  value={formData.zip_code}
+                  onChange={(e) => setFormData({ ...formData, zip_code: e.target.value })}
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -115,23 +149,23 @@ export default function AgencyForm() {
               </div>
 
               <div>
-                <Label htmlFor="fleet_size">Fleet Size</Label>
+                <Label htmlFor="total_voms">Total VOMs</Label>
                 <Input
-                  id="fleet_size"
+                  id="total_voms"
                   type="number"
-                  value={formData.fleet_size}
-                  onChange={(e) => setFormData({ ...formData, fleet_size: e.target.value })}
+                  value={formData.total_voms}
+                  onChange={(e) => setFormData({ ...formData, total_voms: e.target.value })}
                 />
               </div>
             </div>
 
             <div>
-              <Label htmlFor="website">Website</Label>
+              <Label htmlFor="url">Website</Label>
               <Input
-                id="website"
+                id="url"
                 type="url"
-                value={formData.website}
-                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                value={formData.url}
+                onChange={(e) => setFormData({ ...formData, url: e.target.value })}
               />
             </div>
 

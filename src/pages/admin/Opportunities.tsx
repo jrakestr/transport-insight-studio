@@ -37,7 +37,7 @@ export default function OpportunitiesAdmin() {
                   <h3 className="text-xl font-semibold mb-2">{opportunity.title}</h3>
                   <div className="flex gap-4 text-sm text-muted-foreground mb-2">
                     {opportunity.transit_agencies && (
-                      <span>Agency: {opportunity.transit_agencies.name}</span>
+                      <span>Agency: {opportunity.transit_agencies.agency_name}</span>
                     )}
                     {opportunity.transportation_providers && (
                       <span>Provider: {opportunity.transportation_providers.name}</span>

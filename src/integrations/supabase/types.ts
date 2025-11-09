@@ -380,40 +380,139 @@ export type Database = {
       }
       transit_agencies: {
         Row: {
+          address_line_1: string | null
+          address_line_2: string | null
+          agency_name: string
+          city: string | null
           created_at: string
-          fleet_size: number | null
-          formal_name: string | null
+          density: number | null
+          division_department: string | null
+          doing_business_as: string | null
+          doing_business_as_old: string | null
+          fta_recipient_id: string | null
+          fy_end_date: string | null
           id: string
-          location: string | null
-          name: string
+          legacy_ntd_id: string | null
           notes: string | null
           ntd_id: string | null
+          organization_type: string | null
+          original_due_date: string | null
+          personal_vehicles: number | null
+          population: number | null
+          primary_uza_uace_code: string | null
+          region: string | null
+          reported_by_name: string | null
+          reported_by_ntd_id: string | null
+          reporter_acronym: string | null
+          reporter_type: string | null
+          reporting_module: string | null
+          service_area_pop: number | null
+          service_area_sq_miles: number | null
+          sq_miles: number | null
+          state: string | null
+          state_parent_ntd_id: string | null
+          subrecipient_type: string | null
+          tam_tier: string | null
+          total_voms: number | null
+          ueid: string | null
           updated_at: string
-          website: string | null
+          url: string | null
+          uza_name: string | null
+          volunteer_drivers: number | null
+          voms_do: number | null
+          voms_pt: number | null
+          zip_code: string | null
+          zip_code_ext: string | null
         }
         Insert: {
+          address_line_1?: string | null
+          address_line_2?: string | null
+          agency_name: string
+          city?: string | null
           created_at?: string
-          fleet_size?: number | null
-          formal_name?: string | null
+          density?: number | null
+          division_department?: string | null
+          doing_business_as?: string | null
+          doing_business_as_old?: string | null
+          fta_recipient_id?: string | null
+          fy_end_date?: string | null
           id?: string
-          location?: string | null
-          name: string
+          legacy_ntd_id?: string | null
           notes?: string | null
           ntd_id?: string | null
+          organization_type?: string | null
+          original_due_date?: string | null
+          personal_vehicles?: number | null
+          population?: number | null
+          primary_uza_uace_code?: string | null
+          region?: string | null
+          reported_by_name?: string | null
+          reported_by_ntd_id?: string | null
+          reporter_acronym?: string | null
+          reporter_type?: string | null
+          reporting_module?: string | null
+          service_area_pop?: number | null
+          service_area_sq_miles?: number | null
+          sq_miles?: number | null
+          state?: string | null
+          state_parent_ntd_id?: string | null
+          subrecipient_type?: string | null
+          tam_tier?: string | null
+          total_voms?: number | null
+          ueid?: string | null
           updated_at?: string
-          website?: string | null
+          url?: string | null
+          uza_name?: string | null
+          volunteer_drivers?: number | null
+          voms_do?: number | null
+          voms_pt?: number | null
+          zip_code?: string | null
+          zip_code_ext?: string | null
         }
         Update: {
+          address_line_1?: string | null
+          address_line_2?: string | null
+          agency_name?: string
+          city?: string | null
           created_at?: string
-          fleet_size?: number | null
-          formal_name?: string | null
+          density?: number | null
+          division_department?: string | null
+          doing_business_as?: string | null
+          doing_business_as_old?: string | null
+          fta_recipient_id?: string | null
+          fy_end_date?: string | null
           id?: string
-          location?: string | null
-          name?: string
+          legacy_ntd_id?: string | null
           notes?: string | null
           ntd_id?: string | null
+          organization_type?: string | null
+          original_due_date?: string | null
+          personal_vehicles?: number | null
+          population?: number | null
+          primary_uza_uace_code?: string | null
+          region?: string | null
+          reported_by_name?: string | null
+          reported_by_ntd_id?: string | null
+          reporter_acronym?: string | null
+          reporter_type?: string | null
+          reporting_module?: string | null
+          service_area_pop?: number | null
+          service_area_sq_miles?: number | null
+          sq_miles?: number | null
+          state?: string | null
+          state_parent_ntd_id?: string | null
+          subrecipient_type?: string | null
+          tam_tier?: string | null
+          total_voms?: number | null
+          ueid?: string | null
           updated_at?: string
-          website?: string | null
+          url?: string | null
+          uza_name?: string | null
+          volunteer_drivers?: number | null
+          voms_do?: number | null
+          voms_pt?: number | null
+          zip_code?: string | null
+          zip_code_ext?: string | null
         }
         Relationships: []
       }

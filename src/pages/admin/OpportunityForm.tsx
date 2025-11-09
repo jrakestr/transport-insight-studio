@@ -161,7 +161,7 @@ export default function OpportunityForm() {
                   <SelectItem value="none">None</SelectItem>
                   {agencies?.map((agency) => (
                     <SelectItem key={agency.id} value={agency.id}>
-                      {agency.name}
+                      {agency.agency_name}
                     </SelectItem>
                   ))}
                 </SelectContent>

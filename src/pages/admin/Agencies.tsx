@@ -34,13 +34,13 @@ export default function AgenciesAdmin() {
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold mb-2">{agency.name}</h3>
-                  {agency.formal_name && (
-                    <p className="text-sm text-muted-foreground mb-2">{agency.formal_name}</p>
+                  <h3 className="text-xl font-semibold mb-2">{agency.agency_name}</h3>
+                  {agency.doing_business_as && (
+                    <p className="text-sm text-muted-foreground mb-2">{agency.doing_business_as}</p>
                   )}
                   <div className="flex gap-4 text-sm text-muted-foreground">
-                    {agency.location && <span>{agency.location}</span>}
-                    {agency.fleet_size && <span>Fleet: {agency.fleet_size}</span>}
+                    {(agency.city || agency.state) && <span>{[agency.city, agency.state].filter(Boolean).join(", ")}</span>}
+                    {agency.total_voms && <span>Fleet: {agency.total_voms}</span>}
                     {agency.ntd_id && <span>NTD: {agency.ntd_id}</span>}
                   </div>
                 </div>

@@ -53,27 +53,27 @@ const Agencies = () => {
                           </div>
                           <div className="flex-1 min-w-0">
                             <h3 className="font-semibold text-lg mb-1 line-clamp-2">
-                              {agency.name}
+                              {agency.agency_name}
                             </h3>
-                            {agency.formal_name && (
+                            {agency.doing_business_as && (
                               <p className="text-sm text-muted-foreground line-clamp-1">
-                                {agency.formal_name}
+                                {agency.doing_business_as}
                               </p>
                             )}
                           </div>
                         </div>
 
                         <div className="space-y-2 mb-4">
-                          {agency.location && (
+                          {(agency.city || agency.state) && (
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                               <MapPin className="h-4 w-4 flex-shrink-0" />
-                              <span className="line-clamp-1">{agency.location}</span>
+                              <span className="line-clamp-1">{[agency.city, agency.state].filter(Boolean).join(", ")}</span>
                             </div>
                           )}
-                          {agency.fleet_size && (
+                          {agency.total_voms && (
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                               <Users className="h-4 w-4 flex-shrink-0" />
-                              <span>Fleet: {agency.fleet_size} vehicles</span>
+                              <span>Fleet: {agency.total_voms} vehicles</span>
                             </div>
                           )}
                           {agency.ntd_id && (
@@ -83,9 +83,9 @@ const Agencies = () => {
                           )}
                         </div>
 
-                        {agency.website && (
+                        {agency.url && (
                           <a 
-                            href={agency.website}
+                            href={agency.url}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
