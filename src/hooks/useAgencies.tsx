@@ -9,7 +9,7 @@ export function useAgencies() {
       const { data, error } = await supabase
         .from("transit_agencies")
         .select("*")
-        .order("name");
+        .order("agency_name");
 
       if (error) throw error;
       return data;
