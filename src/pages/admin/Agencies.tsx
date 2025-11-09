@@ -5,7 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Plus, Pencil, Trash2, Upload } from "lucide-react";
 
 export default function AgenciesAdmin() {
-  const { data: agencies, isLoading } = useAgencies();
+  const { data, isLoading } = useAgencies();
+  const agencies = data?.agencies || [];
   const { deleteAgency } = useAgencyMutation();
 
   if (isLoading) {

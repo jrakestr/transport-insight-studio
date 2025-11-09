@@ -1,13 +1,33 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAgencies } from "@/hooks/useAgencies";
-import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowRight } from "lucide-react";
+import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowRight, Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 const Agencies = () => {
-  const { data: agencies, isLoading } = useAgencies();
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [state, setState] = useState("");
+  const [sortBy, setSortBy] = useState("agency_name");
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>("asc");
+  
+  const { data, isLoading } = useAgencies({
+    page,
+    limit: 20,
+    sortBy,
+    sortOrder,
+    search: search || undefined,
+    state: state || undefined
+  });
+
+  const agencies = data?.agencies || [];
+  const totalPages = data?.totalPages || 0;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -36,6 +56,72 @@ const Agencies = () => {
         <section className="py-16 lg:py-24">
           <div className="section-container">
             <div className="max-w-6xl mx-auto">
+              {/* Filters & Search */}
+              <div className="mb-8 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="md:col-span-2 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search agencies, NTD ID, or city..."
+                      value={search}
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                        setPage(1);
+                      }}
+                      className="pl-10"
+                    />
+                  </div>
+                  
+                  <Select value={state} onValueChange={(val) => { setState(val); setPage(1); }}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Filter by State" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All States</SelectItem>
+                      {["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map(s => (
+                        <SelectItem key={s} value={s}>{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select value={`${sortBy}-${sortOrder}`} onValueChange={(val) => {
+                    const [field, order] = val.split('-');
+                    setSortBy(field);
+                    setSortOrder(order as 'asc' | 'desc');
+                  }}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="agency_name-asc">Name (A-Z)</SelectItem>
+                      <SelectItem value="agency_name-desc">Name (Z-A)</SelectItem>
+                      <SelectItem value="state-asc">State (A-Z)</SelectItem>
+                      <SelectItem value="total_voms-desc">Fleet Size (High-Low)</SelectItem>
+                      <SelectItem value="total_voms-asc">Fleet Size (Low-High)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <p>
+                    Showing {agencies.length > 0 ? ((page - 1) * 20) + 1 : 0} - {Math.min(page * 20, data?.total || 0)} of {data?.total || 0} agencies
+                  </p>
+                  {(search || state) && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setSearch("");
+                        setState("");
+                        setPage(1);
+                      }}
+                    >
+                      Clear filters
+                    </Button>
+                  )}
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {isLoading ? (
                   <div className="col-span-full flex items-center justify-center py-12">
@@ -117,6 +203,57 @@ const Agencies = () => {
                   </div>
                 )}
               </div>
+              
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex items-center justify-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPage(p => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Previous
+                  </Button>
+                  
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (page <= 3) {
+                        pageNum = i + 1;
+                      } else if (page >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = page - 2 + i;
+                      }
+                      
+                      return (
+                        <Button
+                          key={pageNum}
+                          variant={page === pageNum ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setPage(pageNum)}
+                        >
+                          {pageNum}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                    disabled={page === totalPages}
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </section>

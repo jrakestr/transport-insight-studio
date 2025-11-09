@@ -20,7 +20,8 @@ export default function OpportunityForm() {
   const isEditing = !!id;
 
   const { data: opportunity, isLoading: loadingOpportunity } = useOpportunity(id);
-  const { data: agencies } = useAgencies();
+  const { data: agenciesData } = useAgencies();
+  const agencies = agenciesData?.agencies || [];
   const { data: providers } = useProviders();
   const { data: articles } = useArticles();
   const { createOpportunity, updateOpportunity } = useOpportunityMutation();

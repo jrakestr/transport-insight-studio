@@ -38,7 +38,8 @@ export default function ArticleForm() {
   const isEditing = !!id;
 
   const { data: article, isLoading: loadingArticle } = useArticle(id);
-  const { data: agencies } = useAgencies();
+  const { data: agenciesData } = useAgencies();
+  const agencies = agenciesData?.agencies || [];
   const { data: providers } = useProviders();
   const { createArticle, updateArticle } = useArticleMutation();
 
