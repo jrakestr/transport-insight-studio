@@ -4,12 +4,14 @@ import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAgency } from "@/hooks/useAgencies";
-import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, FileText, Calendar } from "lucide-react";
+import { useAgencyRelationships } from "@/hooks/useAgencyRelationships";
+import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, FileText, Calendar, Newspaper, Briefcase, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AgencyDetail = () => {
   const { id } = useParams();
   const { data: agency, isLoading } = useAgency(id);
+  const { data: relationships, isLoading: isLoadingRelationships } = useAgencyRelationships(id);
 
   if (isLoading) {
     return (
@@ -290,6 +292,138 @@ const AgencyDetail = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground whitespace-pre-wrap">{agency.notes}</p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Related Articles */}
+              {!isLoadingRelationships && relationships?.articles && relationships.articles.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Newspaper className="h-5 w-5" />
+                      Related Articles ({relationships.articles.length})
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {relationships.articles.map((article: any) => (
+                        <Link
+                          key={article.id}
+                          to={`/article/${article.slug}`}
+                          className="block p-4 rounded-lg border hover:border-primary hover:bg-accent/50 transition-colors"
+                        >
+                          <div className="flex gap-4">
+                            {article.image_url && (
+                              <img
+                                src={article.image_url}
+                                alt={article.title}
+                                className="w-20 h-20 rounded object-cover"
+                              />
+                            )}
+                            <div className="flex-1">
+                              <h3 className="font-semibold mb-1 hover:text-primary transition-colors">
+                                {article.title}
+                              </h3>
+                              {article.description && (
+                                <p className="text-sm text-muted-foreground line-clamp-2">
+                                  {article.description}
+                                </p>
+                              )}
+                              <p className="text-xs text-muted-foreground mt-2">
+                                {new Date(article.published_at).toLocaleDateString()}
+                              </p>
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Related Opportunities */}
+              {!isLoadingRelationships && relationships?.opportunities && relationships.opportunities.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Briefcase className="h-5 w-5" />
+                      Related Opportunities ({relationships.opportunities.length})
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {relationships.opportunities.map((opportunity: any) => (
+                        <Link
+                          key={opportunity.id}
+                          to={`/opportunities/${opportunity.id}`}
+                          className="block p-4 rounded-lg border hover:border-primary hover:bg-accent/50 transition-colors"
+                        >
+                          <h3 className="font-semibold mb-2 hover:text-primary transition-colors">
+                            {opportunity.title}
+                          </h3>
+                          {opportunity.notes && (
+                            <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
+                              {opportunity.notes}
+                            </p>
+                          )}
+                          <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                            {opportunity.articles && (
+                              <span>Source: {opportunity.articles.title}</span>
+                            )}
+                            {opportunity.transportation_providers && (
+                              <span>• Provider: {opportunity.transportation_providers.name}</span>
+                            )}
+                            <span>• {new Date(opportunity.created_at).toLocaleDateString()}</span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Related Providers */}
+              {!isLoadingRelationships && relationships?.providers && relationships.providers.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Truck className="h-5 w-5" />
+                      Related Transportation Providers ({relationships.providers.length})
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {relationships.providers.map((provider: any) => (
+                        <Link
+                          key={provider.id}
+                          to={`/providers/${provider.id}`}
+                          className="block p-4 rounded-lg border hover:border-primary hover:bg-accent/50 transition-colors"
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <h3 className="font-semibold mb-1 hover:text-primary transition-colors">
+                                {provider.name}
+                              </h3>
+                              <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+                                {provider.provider_type && (
+                                  <Badge variant="secondary">{provider.provider_type}</Badge>
+                                )}
+                                {provider.location && (
+                                  <span className="flex items-center gap-1">
+                                    <MapPin className="h-3 w-3" />
+                                    {provider.location}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            {provider.website && (
+                              <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                            )}
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
                   </CardContent>
                 </Card>
               )}
