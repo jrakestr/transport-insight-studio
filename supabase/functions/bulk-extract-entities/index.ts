@@ -37,13 +37,21 @@ async function processArticle(articleId: string, supabaseClient: any, LOVABLE_AP
 Industry verticals (transit sectors): paratransit, corporate-shuttles, school, healthcare, government, fixed-route
 Article categories (topics): Funding, RFPs & Procurement, Technology Partnerships, Safety & Security, Technology, Market Trends, Microtransit, Government
 
+CRITICAL INSTRUCTIONS FOR PROVIDERS:
+- Extract the provider's official company name
+- In "notes", describe what the provider's core business actually is based on their official identity
+- Focus on their primary product or service offering (e.g., "paratransit contract operator", "transit scheduling software provider", "electric bus manufacturer", "fare payment technology vendor")
+- DO NOT describe why they were mentioned in this article
+- DO NOT describe projects they're working on
+- Describe what the company fundamentally does as their business
+
 Article content:
 ${article.content}
 
 Return format (categories should be an array of ALL relevant categories):
 {
   "agencies": [{"name": "Agency Name", "location": "City, State", "notes": "relevant details"}],
-  "providers": [{"name": "Provider Name", "location": "City, State", "provider_type": "technology/service", "notes": "relevant details"}],
+  "providers": [{"name": "Official Provider Name", "location": "City, State", "provider_type": "technology/service", "notes": "Core business: what this company actually does as their primary offering"}],
   "verticals": ["paratransit", "fixed-route"],
   "categories": ["Technology", "RFPs & Procurement"]
 }`;
