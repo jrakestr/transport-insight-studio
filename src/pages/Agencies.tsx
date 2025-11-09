@@ -72,12 +72,12 @@ const Agencies = () => {
                     />
                   </div>
                   
-                  <Select value={state} onValueChange={(val) => { setState(val); setPage(1); }}>
+                  <Select value={state || "all"} onValueChange={(val) => { setState(val === "all" ? "" : val); setPage(1); }}>
                     <SelectTrigger>
                       <SelectValue placeholder="Filter by State" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All States</SelectItem>
+                      <SelectItem value="all">All States</SelectItem>
                       {["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map(s => (
                         <SelectItem key={s} value={s}>{s}</SelectItem>
                       ))}
