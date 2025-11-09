@@ -124,6 +124,10 @@ const Index = () => {
                                 src={article.image_url}
                                 alt={article.title}
                                 className="w-full h-48 lg:h-full object-cover hover:opacity-90 transition-opacity"
+                                loading="lazy"
+                                onError={(e) => {
+                                  e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23f3f4f6"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="18" fill="%239ca3af"%3EImage unavailable%3C/text%3E%3C/svg%3E';
+                                }}
                               />
                             </Link>
                           </div>
