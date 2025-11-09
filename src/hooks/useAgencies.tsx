@@ -32,7 +32,7 @@ export function useAgencies(params: AgenciesQueryParams = {}) {
       }
 
       // Apply sorting
-      query = query.order(sortBy, { ascending: sortOrder === 'asc' });
+      query = query.order(sortBy, { ascending: sortOrder === 'asc', nullsFirst: false });
 
       // Apply pagination
       const from = (page - 1) * limit;
