@@ -10,6 +10,7 @@ import Article from "./pages/Article";
 import Opportunities from "./pages/Opportunities";
 import Opportunity from "./pages/Opportunity";
 import Agencies from "./pages/Agencies";
+import AgencyDetail from "./pages/AgencyDetail";
 import Providers from "./pages/Providers";
 import ProviderDetail from "./pages/ProviderDetail";
 import Playbook from "./pages/Playbook";
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/opportunities" element={<Opportunities />} />
           <Route path="/opportunities/:id" element={<Opportunity />} />
           <Route path="/agencies" element={<Agencies />} />
+          <Route path="/agencies/:id" element={<AgencyDetail />} />
           <Route path="/providers" element={<Providers />} />
           <Route path="/providers/:id" element={<ProviderDetail />} />
           <Route path="/playbook" element={<Playbook />} />

@@ -1,9 +1,10 @@
+import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAgencies } from "@/hooks/useAgencies";
-import { Loader2, Building2, MapPin, Users, ExternalLink } from "lucide-react";
+import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowRight } from "lucide-react";
 
 const Agencies = () => {
   const { data: agencies, isLoading } = useAgencies();
@@ -42,11 +43,12 @@ const Agencies = () => {
                   </div>
                 ) : agencies && agencies.length > 0 ? (
                   agencies.map((agency) => (
-                    <Card 
-                      key={agency.id} 
-                      className="border border-border hover:border-primary transition-colors"
+                    <Link 
+                      key={agency.id}
+                      to={`/agencies/${agency.id}`}
                     >
-                      <CardContent className="p-6">
+                      <Card className="border border-border hover:border-primary transition-colors h-full">
+                        <CardContent className="p-6">
                         <div className="flex items-start gap-3 mb-4">
                           <div className="p-2 rounded-lg bg-primary/10">
                             <Building2 className="h-5 w-5 text-primary" />
@@ -100,8 +102,14 @@ const Agencies = () => {
                             {agency.notes}
                           </p>
                         )}
+                        
+                        <div className="mt-4 flex items-center gap-2 text-sm text-primary font-medium">
+                          View Details
+                          <ArrowRight className="h-4 w-4" />
+                        </div>
                       </CardContent>
                     </Card>
+                    </Link>
                   ))
                 ) : (
                   <div className="col-span-full text-center py-12 text-muted-foreground">
