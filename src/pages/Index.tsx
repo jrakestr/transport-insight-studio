@@ -7,6 +7,11 @@ import { useArticles } from "@/hooks/useArticles";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { format } from "date-fns";
+import electricBus from "@/assets/electric-bus.jpg";
+import autonomousVehicle from "@/assets/autonomous-vehicle.jpg";
+import contactlessPayment from "@/assets/contactless-payment.jpg";
+import chicagoCta from "@/assets/chicago-cta-train.jpg";
+import technologyDashboard from "@/assets/technology-dashboard.jpg";
 
 const Index = () => {
   const { data: articles, isLoading } = useArticles();
@@ -58,27 +63,27 @@ const Index = () => {
                 <div className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
                   <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
                     <div className="relative">
-                      <img src="/src/assets/electric-bus.jpg" alt="Electric bus technology" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
+                      <img src={electricBus} alt="Electric bus technology" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
                       <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-border ring-inset"></div>
                     </div>
                   </div>
                   <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
                     <div className="relative">
-                      <img src="/src/assets/autonomous-vehicle.jpg" alt="Autonomous transit vehicle" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
+                      <img src={autonomousVehicle} alt="Autonomous transit vehicle" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
                       <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-border ring-inset"></div>
                     </div>
                     <div className="relative">
-                      <img src="/src/assets/contactless-payment.jpg" alt="Contactless payment system" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
+                      <img src={contactlessPayment} alt="Contactless payment system" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
                       <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-border ring-inset"></div>
                     </div>
                   </div>
                   <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
                     <div className="relative">
-                      <img src="/src/assets/chicago-cta-train.jpg" alt="Chicago CTA train" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
+                      <img src={chicagoCta} alt="Chicago CTA train" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
                       <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-border ring-inset"></div>
                     </div>
                     <div className="relative">
-                      <img src="/src/assets/technology-dashboard.jpg" alt="Transit technology dashboard" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
+                      <img src={technologyDashboard} alt="Transit technology dashboard" className="aspect-[2/3] w-full rounded-xl bg-muted object-cover shadow-lg" />
                       <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-border ring-inset"></div>
                     </div>
                   </div>
