@@ -2,15 +2,26 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-export function useProviders() {
+export function useProviders(params?: { search?: string; limit?: number }) {
+  const { search, limit = 100 } = params || {};
+  
   return useQuery({
-    queryKey: ["providers"],
+    queryKey: ["providers", search, limit],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from("transportation_providers")
         .select("*")
-        .order("name");
+        .order("name", { ascending: true });
 
+      if (search) {
+        query = query.or(`name.ilike.%${search}%,provider_type.ilike.%${search}%,location.ilike.%${search}%`);
+      }
+
+      if (limit <= 1000) {
+        query = query.limit(limit);
+      }
+
+      const { data, error } = await query;
       if (error) throw error;
       return data;
     },

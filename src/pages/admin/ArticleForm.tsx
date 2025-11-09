@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useArticle, useArticleMutation } from "@/hooks/useArticles";
 import { useAgencies } from "@/hooks/useAgencies";
 import { useProviders } from "@/hooks/useProviders";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,11 +39,7 @@ export default function ArticleForm() {
   const isEditing = !!id;
 
   const { data: article, isLoading: loadingArticle } = useArticle(id);
-  const { data: agenciesData } = useAgencies({ limit: 10000 }); // Load all agencies for selection
-  const agencies = agenciesData?.agencies || [];
-  const { data: providers } = useProviders();
-  const { createArticle, updateArticle } = useArticleMutation();
-
+  
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -63,6 +60,30 @@ export default function ArticleForm() {
   const [isTransforming, setIsTransforming] = useState(false);
   const [agencySearch, setAgencySearch] = useState("");
   const [providerSearch, setProviderSearch] = useState("");
+  
+  // Track initially selected agencies/providers for display
+  const [initialAgencies, setInitialAgencies] = useState<any[]>([]);
+  const [initialProviders, setInitialProviders] = useState<any[]>([]);
+  
+  // Server-side search with debouncing
+  const debouncedAgencySearch = useDebounce(agencySearch, 300);
+  const debouncedProviderSearch = useDebounce(providerSearch, 300);
+  
+  const { data: agenciesData, isLoading: loadingAgencies } = useAgencies({ 
+    search: debouncedAgencySearch.length >= 2 ? debouncedAgencySearch : undefined,
+    limit: 100,
+    sortBy: 'agency_name',
+    sortOrder: 'asc'
+  });
+  const agencies = agenciesData?.agencies || [];
+  
+  const { data: providersData, isLoading: loadingProviders } = useProviders({
+    search: debouncedProviderSearch.length >= 2 ? debouncedProviderSearch : undefined,
+    limit: 100
+  });
+  const providers = providersData || [];
+  
+  const { createArticle, updateArticle } = useArticleMutation();
 
   useEffect(() => {
     if (article) {
@@ -83,6 +104,23 @@ export default function ArticleForm() {
       setSelectedCategories(article.article_categories?.map((c: any) => c.category) || []);
       setSelectedAgencies(article.article_agencies?.map((a: any) => a.agency_id) || []);
       setSelectedProviders(article.article_providers?.map((p: any) => p.provider_id) || []);
+      
+      // Store initial selections with full data for display
+      if (article.article_agencies) {
+        const agencyPromises = article.article_agencies.map(async (a: any) => {
+          const { data } = await supabase.from('transit_agencies').select('*').eq('id', a.agency_id).single();
+          return data;
+        });
+        Promise.all(agencyPromises).then(data => setInitialAgencies(data.filter(Boolean)));
+      }
+      
+      if (article.article_providers) {
+        const providerPromises = article.article_providers.map(async (p: any) => {
+          const { data } = await supabase.from('transportation_providers').select('*').eq('id', p.provider_id).single();
+          return data;
+        });
+        Promise.all(providerPromises).then(data => setInitialProviders(data.filter(Boolean)));
+      }
     }
   }, [article]);
 
@@ -410,68 +448,100 @@ export default function ArticleForm() {
           </CardHeader>
           <CardContent>
             <Input
-              placeholder="Search agencies..."
+              placeholder="Type at least 2 characters to search agencies..."
               value={agencySearch}
               onChange={(e) => setAgencySearch(e.target.value)}
               className="mb-4"
             />
+            
+            {selectedAgencies.length > 0 && (
+              <div className="mb-4 p-3 bg-muted rounded-md">
+                <p className="text-sm font-medium mb-2">Selected ({selectedAgencies.length}):</p>
+                <div className="space-y-1">
+                  {initialAgencies.filter(a => selectedAgencies.includes(a.id)).map(agency => (
+                    <div key={agency.id} className="text-sm flex items-center justify-between p-2 bg-background rounded">
+                      <span>
+                        <strong>{agency.agency_name}</strong>
+                        {(agency.city || agency.state) && (
+                          <span className="text-muted-foreground ml-2">
+                            {[agency.city, agency.state].filter(Boolean).join(", ")}
+                          </span>
+                        )}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedAgencies(prev => prev.filter(id => id !== agency.id))}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+                  {agencies.filter(a => selectedAgencies.includes(a.id) && !initialAgencies.find(ia => ia.id === a.id)).map(agency => (
+                    <div key={agency.id} className="text-sm flex items-center justify-between p-2 bg-background rounded">
+                      <span>
+                        <strong>{agency.agency_name}</strong>
+                        {(agency.city || agency.state) && (
+                          <span className="text-muted-foreground ml-2">
+                            {[agency.city, agency.state].filter(Boolean).join(", ")}
+                          </span>
+                        )}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedAgencies(prev => prev.filter(id => id !== agency.id))}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             <div className="space-y-2 max-h-64 overflow-y-auto border rounded-md p-2 bg-background">
-              {agencies && agencies.length > 0 ? (
-                (() => {
-                  const filtered = agencies.filter((agency) => 
-                    !agencySearch || 
-                    agency.agency_name.toLowerCase().includes(agencySearch.toLowerCase()) ||
-                    agency.city?.toLowerCase().includes(agencySearch.toLowerCase()) ||
-                    agency.state?.toLowerCase().includes(agencySearch.toLowerCase()) ||
-                    agency.ntd_id?.toLowerCase().includes(agencySearch.toLowerCase())
-                  );
-                  return (
-                    <>
-                      {filtered.length > 0 ? (
-                        <>
-                          {filtered.map((agency) => (
-                            <label key={agency.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
-                              <input
-                                type="checkbox"
-                                checked={selectedAgencies.includes(agency.id)}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setSelectedAgencies([...selectedAgencies, agency.id]);
-                                  } else {
-                                    setSelectedAgencies(selectedAgencies.filter((id) => id !== agency.id));
-                                  }
-                                }}
-                                className="mt-1"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <div className="text-sm font-medium">{agency.agency_name}</div>
-                                {(agency.city || agency.state) && (
-                                  <div className="text-xs text-muted-foreground">
-                                    {[agency.city, agency.state].filter(Boolean).join(", ")}
-                                  </div>
-                                )}
-                              </div>
-                            </label>
-                          ))}
-                          <p className="text-xs text-muted-foreground p-2 border-t mt-2">
-                            Showing {filtered.length} of {agencies.length} agencies
-                          </p>
-                        </>
-                      ) : (
-                        <p className="text-sm text-muted-foreground p-2">No agencies match your search</p>
-                      )}
-                    </>
-                  );
-                })()
+              {agencySearch.length < 2 ? (
+                <p className="text-sm text-muted-foreground p-2 text-center">Type at least 2 characters to search</p>
+              ) : loadingAgencies ? (
+                <div className="flex items-center justify-center p-4">
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                </div>
+              ) : agencies.length > 0 ? (
+                <>
+                  {agencies.filter(a => !selectedAgencies.includes(a.id)).map((agency) => (
+                    <label key={agency.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
+                      <input
+                        type="checkbox"
+                        checked={false}
+                        onChange={() => {
+                          setSelectedAgencies([...selectedAgencies, agency.id]);
+                          if (!initialAgencies.find(a => a.id === agency.id)) {
+                            setInitialAgencies([...initialAgencies, agency]);
+                          }
+                        }}
+                        className="mt-1"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium">{agency.agency_name}</div>
+                        {(agency.city || agency.state) && (
+                          <div className="text-xs text-muted-foreground">
+                            {[agency.city, agency.state].filter(Boolean).join(", ")}
+                          </div>
+                        )}
+                      </div>
+                    </label>
+                  ))}
+                  <p className="text-xs text-muted-foreground p-2 border-t mt-2">
+                    Showing {agencies.filter(a => !selectedAgencies.includes(a.id)).length} results
+                  </p>
+                </>
               ) : (
-                <p className="text-sm text-muted-foreground p-2">Loading agencies...</p>
+                <p className="text-sm text-muted-foreground p-2 text-center">No agencies found</p>
               )}
             </div>
-            {selectedAgencies.length > 0 && (
-              <p className="text-sm text-muted-foreground mt-2">
-                {selectedAgencies.length} {selectedAgencies.length === 1 ? 'agency' : 'agencies'} selected
-              </p>
-            )}
           </CardContent>
         </Card>
 
@@ -481,30 +551,78 @@ export default function ArticleForm() {
           </CardHeader>
           <CardContent>
             <Input
-              placeholder="Search providers..."
+              placeholder="Type at least 2 characters to search providers..."
               value={providerSearch}
               onChange={(e) => setProviderSearch(e.target.value)}
               className="mb-4"
             />
+            
+            {selectedProviders.length > 0 && (
+              <div className="mb-4 p-3 bg-muted rounded-md">
+                <p className="text-sm font-medium mb-2">Selected ({selectedProviders.length}):</p>
+                <div className="space-y-1">
+                  {initialProviders.filter(p => selectedProviders.includes(p.id)).map(provider => (
+                    <div key={provider.id} className="text-sm flex items-center justify-between p-2 bg-background rounded">
+                      <span>
+                        <strong>{provider.name}</strong>
+                        {(provider.provider_type || provider.location) && (
+                          <span className="text-muted-foreground ml-2">
+                            {[provider.provider_type, provider.location].filter(Boolean).join(" - ")}
+                          </span>
+                        )}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedProviders(prev => prev.filter(id => id !== provider.id))}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+                  {providers.filter(p => selectedProviders.includes(p.id) && !initialProviders.find(ip => ip.id === p.id)).map(provider => (
+                    <div key={provider.id} className="text-sm flex items-center justify-between p-2 bg-background rounded">
+                      <span>
+                        <strong>{provider.name}</strong>
+                        {(provider.provider_type || provider.location) && (
+                          <span className="text-muted-foreground ml-2">
+                            {[provider.provider_type, provider.location].filter(Boolean).join(" - ")}
+                          </span>
+                        )}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedProviders(prev => prev.filter(id => id !== provider.id))}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             <div className="space-y-2 max-h-64 overflow-y-auto border rounded-md p-2 bg-background">
-              {providers && providers.length > 0 ? (
-                providers
-                  .filter((provider) => 
-                    !providerSearch || 
-                    provider.name.toLowerCase().includes(providerSearch.toLowerCase()) ||
-                    provider.provider_type?.toLowerCase().includes(providerSearch.toLowerCase()) ||
-                    provider.location?.toLowerCase().includes(providerSearch.toLowerCase())
-                  )
-                  .map((provider) => (
+              {providerSearch.length < 2 ? (
+                <p className="text-sm text-muted-foreground p-2 text-center">Type at least 2 characters to search</p>
+              ) : loadingProviders ? (
+                <div className="flex items-center justify-center p-4">
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                </div>
+              ) : providers.length > 0 ? (
+                <>
+                  {providers.filter(p => !selectedProviders.includes(p.id)).map((provider) => (
                     <label key={provider.id} className="flex items-start gap-2 cursor-pointer p-2 hover:bg-accent rounded">
                       <input
                         type="checkbox"
-                        checked={selectedProviders.includes(provider.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedProviders([...selectedProviders, provider.id]);
-                          } else {
-                            setSelectedProviders(selectedProviders.filter((id) => id !== provider.id));
+                        checked={false}
+                        onChange={() => {
+                          setSelectedProviders([...selectedProviders, provider.id]);
+                          if (!initialProviders.find(p => p.id === provider.id)) {
+                            setInitialProviders([...initialProviders, provider]);
                           }
                         }}
                         className="mt-1"
@@ -516,16 +634,15 @@ export default function ArticleForm() {
                         </div>
                       </div>
                     </label>
-                  ))
+                  ))}
+                  <p className="text-xs text-muted-foreground p-2 border-t mt-2">
+                    Showing {providers.filter(p => !selectedProviders.includes(p.id)).length} results
+                  </p>
+                </>
               ) : (
-                <p className="text-sm text-muted-foreground p-2">No providers available</p>
+                <p className="text-sm text-muted-foreground p-2 text-center">No providers found</p>
               )}
             </div>
-            {selectedProviders.length > 0 && (
-              <p className="text-sm text-muted-foreground mt-2">
-                {selectedProviders.length} {selectedProviders.length === 1 ? 'provider' : 'providers'} selected
-              </p>
-            )}
           </CardContent>
         </Card>
 
