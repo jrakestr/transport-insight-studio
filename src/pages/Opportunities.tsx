@@ -38,13 +38,6 @@ const Opportunities = () => {
         <section className="py-16 lg:py-24">
           <div className="section-container">
             <div className="max-w-5xl mx-auto">
-              <div className="mb-12">
-                <h2 className="text-4xl font-bold mb-4">Active Opportunities</h2>
-                <p className="text-lg text-muted-foreground">
-                  Current procurement opportunities and competitive intelligence from transit agencies nationwide.
-                </p>
-              </div>
-              
               <div className="space-y-6">
                 {isLoading ? (
                   <div className="flex items-center justify-center py-12">

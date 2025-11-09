@@ -38,13 +38,6 @@ const Reports = () => {
         <section className="py-16 lg:py-24">
           <div className="section-container">
             <div className="max-w-6xl mx-auto">
-              <div className="mb-12">
-                <h2 className="text-4xl font-bold mb-4">Available Reports</h2>
-                <p className="text-lg text-muted-foreground">
-                  Deep-dive analysis and market intelligence from transit industry sources.
-                </p>
-              </div>
-              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {isLoading ? (
                   <div className="col-span-2 flex items-center justify-center py-12">
