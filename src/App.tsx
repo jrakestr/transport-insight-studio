@@ -11,6 +11,7 @@ import Opportunities from "./pages/Opportunities";
 import Opportunity from "./pages/Opportunity";
 import Agencies from "./pages/Agencies";
 import Providers from "./pages/Providers";
+import ProviderDetail from "./pages/ProviderDetail";
 import Playbook from "./pages/Playbook";
 import PlaybookDetail from "./pages/PlaybookDetail";
 import Auth from "./pages/Auth";
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/opportunities/:id" element={<Opportunity />} />
           <Route path="/agencies" element={<Agencies />} />
           <Route path="/providers" element={<Providers />} />
+          <Route path="/providers/:id" element={<ProviderDetail />} />
           <Route path="/playbook" element={<Playbook />} />
           <Route path="/playbook/:slug" element={<PlaybookDetail />} />
           <Route path="/auth" element={<Auth />} />

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -49,55 +50,55 @@ const Providers = () => {
                   </div>
                 ) : providers && providers.length > 0 ? (
                   providers.map((provider) => (
-                    <Card 
-                      key={provider.id} 
-                      className="border border-border hover:border-primary transition-colors"
+                    <Link 
+                      key={provider.id}
+                      to={`/providers/${provider.id}`}
+                      className="block"
                     >
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-3 mb-4">
-                          <div className="p-2 rounded-lg bg-primary/10">
-                            <Truck className="h-5 w-5 text-primary" />
+                      <Card 
+                        className="border border-border hover:border-primary transition-colors cursor-pointer h-full"
+                      >
+                        <CardContent className="p-6">
+                          <div className="flex items-start gap-3 mb-4">
+                            <div className="p-2 rounded-lg bg-primary/10">
+                              <Truck className="h-5 w-5 text-primary" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-lg mb-1 line-clamp-2">
+                                {provider.name}
+                              </h3>
+                              {provider.provider_type && (
+                                <Badge variant="outline" className="mt-1">
+                                  {provider.provider_type}
+                                </Badge>
+                              )}
+                            </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-lg mb-1 line-clamp-2">
-                              {provider.name}
-                            </h3>
-                            {provider.provider_type && (
-                              <Badge variant="outline" className="mt-1">
-                                {provider.provider_type}
-                              </Badge>
+
+                          <div className="space-y-2 mb-4">
+                            {provider.location && (
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <MapPin className="h-4 w-4 flex-shrink-0" />
+                                <span className="line-clamp-1">{provider.location}</span>
+                              </div>
                             )}
                           </div>
-                        </div>
 
-                        <div className="space-y-2 mb-4">
-                          {provider.location && (
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <MapPin className="h-4 w-4 flex-shrink-0" />
-                              <span className="line-clamp-1">{provider.location}</span>
+                          {provider.website && (
+                            <div className="inline-flex items-center gap-2 text-sm text-primary">
+                              <ExternalLink className="h-3 w-3" />
+                              Visit Website
                             </div>
                           )}
-                        </div>
 
-                        {provider.website && (
-                          <a 
-                            href={provider.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
-                          >
-                            <ExternalLink className="h-3 w-3" />
-                            Visit Website
-                          </a>
-                        )}
-
-                        {provider.notes && (
-                          <p className="mt-4 text-sm text-muted-foreground line-clamp-3 border-t pt-4">
-                            {provider.notes}
-                          </p>
-                        )}
-                      </CardContent>
-                    </Card>
+                          {provider.notes && (
+                            <p className="mt-4 text-sm text-muted-foreground line-clamp-3 border-t pt-4">
+                              {provider.notes}
+                            </p>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Link>
                   ))
                 ) : (
                   <div className="col-span-full text-center py-12 text-muted-foreground">
