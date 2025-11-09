@@ -34,10 +34,12 @@ export function useAgencies(params: AgenciesQueryParams = {}) {
       // Apply sorting
       query = query.order(sortBy, { ascending: sortOrder === 'asc', nullsFirst: false });
 
-      // Apply pagination
-      const from = (page - 1) * limit;
-      const to = from + limit - 1;
-      query = query.range(from, to);
+      // Apply pagination only if limit is not very large (used for selection lists)
+      if (limit < 1000) {
+        const from = (page - 1) * limit;
+        const to = from + limit - 1;
+        query = query.range(from, to);
+      }
 
       const { data, error, count } = await query;
 
