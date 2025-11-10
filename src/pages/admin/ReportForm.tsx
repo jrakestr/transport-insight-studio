@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export default function ReportForm() {
   const { id } = useParams();
@@ -15,6 +17,7 @@ export default function ReportForm() {
 
   const { data: report, isLoading } = useReport(id);
   const { createReport, updateReport } = useReportMutation();
+  const [isTransforming, setIsTransforming] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -50,6 +53,32 @@ export default function ReportForm() {
     }
 
     navigate("/admin/reports");
+  };
+
+  const handleTransform = async () => {
+    if (!formData.content) {
+      toast.error("Please enter content to transform");
+      return;
+    }
+
+    setIsTransforming(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("transform-report", {
+        body: { content: formData.content },
+      });
+
+      if (error) throw error;
+
+      if (data?.transformedContent) {
+        setFormData({ ...formData, content: data.transformedContent });
+        toast.success("Content transformed to rich HTML!");
+      }
+    } catch (error) {
+      console.error("Transform error:", error);
+      toast.error("Failed to transform content");
+    } finally {
+      setIsTransforming(false);
+    }
   };
 
   if (isLoading) {
@@ -101,12 +130,34 @@ export default function ReportForm() {
             </div>
 
             <div>
-              <Label htmlFor="content">Content (Markdown)</Label>
+              <div className="flex items-center justify-between mb-2">
+                <Label htmlFor="content">Content</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleTransform}
+                  disabled={isTransforming || !formData.content}
+                >
+                  {isTransforming ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Transforming...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      Transform to Rich HTML
+                    </>
+                  )}
+                </Button>
+              </div>
               <Textarea
                 id="content"
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 rows={12}
+                placeholder="Paste your plain text report here, then click 'Transform to Rich HTML' to convert it to styled HTML..."
               />
             </div>
 
