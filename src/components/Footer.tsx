@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { TrendingUp } from "lucide-react";
+import { TrackerLogo } from "@/components/TrackerLogo";
 
 export const Footer = () => {
   const footerNavigation = {
@@ -29,7 +29,7 @@ export const Footer = () => {
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           <div className="col-span-2">
             <Link to="/" className="flex items-center gap-2 font-bold text-xl mb-4">
-              <TrendingUp className="h-6 w-6 text-primary" />
+              <TrackerLogo className="h-7 w-7 text-primary" />
               <span>transit-track<span className="text-primary">.ai</span></span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">

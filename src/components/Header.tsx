@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, TrendingUp, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import { TrackerLogo } from "@/components/TrackerLogo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +20,7 @@ export const Header = () => {
       <nav className="section-container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2 font-bold text-xl">
-            <TrendingUp className="h-6 w-6 text-primary" />
+            <TrackerLogo className="h-7 w-7 text-primary" />
             <span>transit-track<span className="text-primary">.ai</span></span>
           </Link>
         </div>
