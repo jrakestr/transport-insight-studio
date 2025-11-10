@@ -20,7 +20,7 @@ export const Header = () => {
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2 font-bold text-xl">
             <TrendingUp className="h-6 w-6 text-primary" />
-            <span>Transit<span className="text-primary">Intel</span></span>
+            <span>transit-track<span className="text-primary">.ai</span></span>
           </Link>
         </div>
 

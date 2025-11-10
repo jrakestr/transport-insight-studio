@@ -30,7 +30,7 @@ export const Footer = () => {
           <div className="col-span-2">
             <Link to="/" className="flex items-center gap-2 font-bold text-xl mb-4">
               <TrendingUp className="h-6 w-6 text-primary" />
-              <span>Transit<span className="text-primary">Intel</span></span>
+              <span>transit-track<span className="text-primary">.ai</span></span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
               Your trusted source for transportation industry market intelligence, covering transit technology, RFPs, and competitive analysis.
@@ -72,7 +72,7 @@ export const Footer = () => {
 
         <div className="mt-12 border-t pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} TransitIntel. All rights reserved.
+            © {new Date().getFullYear()} transit-track.ai. All rights reserved.
           </p>
           <div className="flex gap-6">
             {footerNavigation.legal.map((item) => (

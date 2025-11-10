@@ -18,7 +18,7 @@ export const articles = [
     sourceName: "CBS News Chicago",
     imageUrl: chicagoCTA,
     author: {
-      name: "TransitIntel Editorial",
+      name: "transit-track.ai Editorial",
       role: "Market Intelligence Team",
       href: "#",
     },
@@ -52,7 +52,7 @@ State rescue packages typically include technology modernization provisions. Ill
     sourceName: "MARTA Press Release",
     imageUrl: contactlessPayment,
     author: {
-      name: "TransitIntel Editorial",
+      name: "transit-track.ai Editorial",
       role: "Market Intelligence Team",
       href: "#",
     },
@@ -84,7 +84,7 @@ Contactless payment integration is now baseline requirement, not competitive dif
     sourceName: "RTD Denver",
     imageUrl: transitSecurity,
     author: {
-      name: "TransitIntel Editorial",
+      name: "transit-track.ai Editorial",
       role: "Market Intelligence Team",
       href: "#",
     },
@@ -123,7 +123,7 @@ RTD's model represents growing trend toward transit-specific law enforcement req
     sourceName: "Autocab",
     imageUrl: taxiFleet,
     author: {
-      name: "TransitIntel Editorial",
+      name: "transit-track.ai Editorial",
       role: "Market Intelligence Team",
       href: "#",
     },
@@ -159,7 +159,7 @@ The taxi-to-TNC platform integration validates demand response software provider
     sourceName: "KCATA Procurement",
     imageUrl: cityBus,
     author: {
-      name: "TransitIntel Editorial",
+      name: "transit-track.ai Editorial",
       role: "Market Intelligence Team",
       href: "#",
     },
@@ -206,7 +206,7 @@ Response deadline typically allows 60-90 days. Prime vendor shortlist likely est
     sourceName: "Community Impact",
     imageUrl: microtransitShuttle,
     author: {
-      name: "TransitIntel Editorial",
+      name: "transit-track.ai Editorial",
       role: "Market Intelligence Team",
       href: "#",
     },
