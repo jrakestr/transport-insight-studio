@@ -44,7 +44,7 @@ const Index = () => {
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
                   <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-7xl">
-                    We're transforming transit technology intelligence
+                    Real-time transit news and market insights
                   </h1>
                   <p className="mt-8 text-lg font-medium text-muted-foreground sm:max-w-md sm:text-xl/8 lg:max-w-none">
                     Breaking news, RFP opportunities, and competitive intelligence for transit technology companies. Stay informed with data-driven insights from industry sources across the transportation sector.
