@@ -161,7 +161,7 @@ serve(async (req) => {
                   role: 'system',
                   content: `You are an expert at analyzing transit industry news. Extract key information and entities from articles.
 
-Return a JSON object with:
+Return ONLY a raw JSON object (no markdown code blocks, no explanation) with:
 - relevance_score (0-1): How relevant is this to transit technology/RFPs?
 - category: One of [Technology, Policy, RFP, Contract Award, Partnership, Infrastructure]
 - verticals: Array of relevant verticals [Electric Buses, Autonomous Vehicles, Fare Payment, etc.]
@@ -186,7 +186,14 @@ Return a JSON object with:
           }
 
           const aiData = await aiResponse.json();
-          const analysis = JSON.parse(aiData.choices[0].message.content);
+          // Strip markdown code blocks if present
+          let content = aiData.choices[0].message.content.trim();
+          if (content.startsWith('```json')) {
+            content = content.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+          } else if (content.startsWith('```')) {
+            content = content.replace(/^```\s*/, '').replace(/\s*```$/, '');
+          }
+          const analysis = JSON.parse(content);
           
           console.log(`✅ AI Analysis complete - Relevance: ${analysis.relevance_score}`);
 
