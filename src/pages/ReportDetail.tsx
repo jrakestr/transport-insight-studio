@@ -107,24 +107,20 @@ const ReportDetail = () => {
           </div>
         </section>
 
-        {/* Report Content */}
-        {report.image_url && (
-          <section className="border-b bg-muted/30">
-            <div className="section-container py-8">
-              <div className="max-w-5xl mx-auto">
+        {/* Report Content - Rich Layout */}
+        <div className="bg-background px-6 py-16 lg:px-8 lg:py-24">
+          <div className="mx-auto max-w-3xl text-base/7 text-foreground">
+            {report.image_url && (
+              <figure className="mb-10">
                 <img
-                  src={report.image_url}
                   alt={report.title}
-                  className="w-full aspect-video rounded-xl object-cover"
+                  src={report.image_url}
+                  className="aspect-video rounded-xl bg-muted object-cover w-full"
                 />
-              </div>
-            </div>
-          </section>
-        )}
-
-        <section className="py-16 lg:py-20">
-          <div className="section-container">
-            <div className="max-w-4xl mx-auto">
+              </figure>
+            )}
+            
+            <div className="max-w-2xl">
               {report.content ? (
                 <article 
                   className="article-content prose prose-lg dark:prose-invert max-w-none"
@@ -137,7 +133,7 @@ const ReportDetail = () => {
               )}
             </div>
           </div>
-        </section>
+        </div>
 
         {/* Related Reports */}
         <section className="border-t bg-muted/30 py-12">
