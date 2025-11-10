@@ -52,7 +52,7 @@ const Index = () => {
                   <div className="mt-10 flex items-center gap-x-6">
                     <Button size="lg" asChild>
                       <Link to="/reports">
-                        View {reportMonthYear} Report
+                        View {reportMonthYear} Data Dispatch
                       </Link>
                     </Button>
                     <Link to="/opportunities" className="text-sm/6 font-semibold text-foreground hover:text-primary transition-colors">
