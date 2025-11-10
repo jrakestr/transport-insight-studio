@@ -14,7 +14,7 @@ export function useArticles() {
           article_categories(category),
           article_agencies(agency_id, mention_type, transit_agencies(id, agency_name))
         `)
-        .order("created_at", { ascending: false });
+        .order("published_at", { ascending: false });
 
       if (error) throw error;
       return data;
