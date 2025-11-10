@@ -5,3 +5,9 @@ verify_jwt = false
 
 [functions.bulk-extract-entities]
 verify_jwt = false
+
+[functions.discover-articles]
+verify_jwt = true
+
+[functions.agentic-review]
+verify_jwt = true

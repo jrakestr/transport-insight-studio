@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen } from "lucide-react";
+import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen, Sparkles, Inbox } from "lucide-react";
 
-export default function AdminLayout() {
+export default function AdminLayout({ children }: { children?: ReactNode }) {
   const { user, isAdmin, loading, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -77,6 +77,18 @@ export default function AdminLayout() {
                     Playbooks
                   </Link>
                 </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/admin/pending-articles">
+                    <Inbox className="h-4 w-4 mr-2" />
+                    Review Queue
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/admin/agentic-review">
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    AI Assistant
+                  </Link>
+                </Button>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -92,7 +104,7 @@ export default function AdminLayout() {
         </div>
       </nav>
       <main className="container mx-auto px-4 py-8">
-        <Outlet />
+        {children || <Outlet />}
       </main>
     </div>
   );
