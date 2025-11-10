@@ -239,6 +239,42 @@ export type Database = {
         }
         Relationships: []
       }
+      discovery_runs: {
+        Row: {
+          articles_added: number | null
+          articles_discovered: number | null
+          articles_processed: number | null
+          completed_at: string | null
+          error_message: string | null
+          id: string
+          run_metadata: Json | null
+          started_at: string
+          status: string
+        }
+        Insert: {
+          articles_added?: number | null
+          articles_discovered?: number | null
+          articles_processed?: number | null
+          completed_at?: string | null
+          error_message?: string | null
+          id?: string
+          run_metadata?: Json | null
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          articles_added?: number | null
+          articles_discovered?: number | null
+          articles_processed?: number | null
+          completed_at?: string | null
+          error_message?: string | null
+          id?: string
+          run_metadata?: Json | null
+          started_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
       opportunities: {
         Row: {
           agency_id: string | null
@@ -296,6 +332,101 @@ export type Database = {
             columns: ["provider_id"]
             isOneToOne: false
             referencedRelation: "transportation_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pending_articles: {
+        Row: {
+          ai_analysis: Json | null
+          ai_confidence_score: number | null
+          author_name: string | null
+          author_role: string | null
+          content: string | null
+          created_at: string
+          description: string | null
+          discovered_at: string
+          discovery_method: string | null
+          extracted_agencies: Json | null
+          extracted_category: string | null
+          extracted_opportunities: Json | null
+          extracted_providers: Json | null
+          extracted_verticals: string[] | null
+          id: string
+          image_url: string | null
+          published_article_id: string | null
+          published_at: string | null
+          review_status: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewer_notes: string | null
+          source_name: string | null
+          source_url: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          ai_analysis?: Json | null
+          ai_confidence_score?: number | null
+          author_name?: string | null
+          author_role?: string | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          discovered_at?: string
+          discovery_method?: string | null
+          extracted_agencies?: Json | null
+          extracted_category?: string | null
+          extracted_opportunities?: Json | null
+          extracted_providers?: Json | null
+          extracted_verticals?: string[] | null
+          id?: string
+          image_url?: string | null
+          published_article_id?: string | null
+          published_at?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          source_name?: string | null
+          source_url: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          ai_analysis?: Json | null
+          ai_confidence_score?: number | null
+          author_name?: string | null
+          author_role?: string | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          discovered_at?: string
+          discovery_method?: string | null
+          extracted_agencies?: Json | null
+          extracted_category?: string | null
+          extracted_opportunities?: Json | null
+          extracted_providers?: Json | null
+          extracted_verticals?: string[] | null
+          id?: string
+          image_url?: string | null
+          published_article_id?: string | null
+          published_at?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          source_name?: string | null
+          source_url?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pending_articles_published_article_id_fkey"
+            columns: ["published_article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
             referencedColumns: ["id"]
           },
         ]
