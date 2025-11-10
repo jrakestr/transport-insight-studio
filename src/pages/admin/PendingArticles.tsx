@@ -1,12 +1,11 @@
 import { useState } from "react";
-import AdminLayout from "@/components/AdminLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { usePendingArticles, usePendingArticleMutations } from "@/hooks/usePendingArticles";
-import { Loader2, CheckCircle, XCircle, Search, Sparkles } from "lucide-react";
+import { Loader2, CheckCircle, XCircle, Search } from "lucide-react";
 import { format } from "date-fns";
 import {
   Dialog,
@@ -44,8 +43,7 @@ const PendingArticles = () => {
   };
 
   return (
-    <AdminLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold mb-2">Article Review Queue</h1>
@@ -270,8 +268,7 @@ const PendingArticles = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </div>
-    </AdminLayout>
+    </div>
   );
 };
 

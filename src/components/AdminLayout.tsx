@@ -1,10 +1,10 @@
-import { useEffect, ReactNode } from "react";
+import { useEffect } from "react";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen, Sparkles, Inbox } from "lucide-react";
 
-export default function AdminLayout({ children }: { children?: ReactNode }) {
+export default function AdminLayout() {
   const { user, isAdmin, loading, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -104,7 +104,7 @@ export default function AdminLayout({ children }: { children?: ReactNode }) {
         </div>
       </nav>
       <main className="container mx-auto px-4 py-8">
-        {children || <Outlet />}
+        <Outlet />
       </main>
     </div>
   );

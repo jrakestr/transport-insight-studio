@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import AdminLayout from "@/components/AdminLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -111,8 +110,7 @@ const AgenticReview = () => {
   };
 
   return (
-    <AdminLayout>
-      <div className="h-[calc(100vh-8rem)] flex flex-col">
+    <div className="h-[calc(100vh-8rem)] flex flex-col">
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className="h-6 w-6 text-primary" />
@@ -206,8 +204,7 @@ const AgenticReview = () => {
             </form>
           </div>
         </Card>
-      </div>
-    </AdminLayout>
+    </div>
   );
 };
 
