@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export const usePendingArticles = (status = 'pending') => {
   return useQuery({
@@ -20,7 +20,6 @@ export const usePendingArticles = (status = 'pending') => {
 
 export const usePendingArticleMutations = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
 
   const approveArticle = useMutation({
     mutationFn: async ({ articleId, notes }: { articleId: string; notes?: string }) => {
@@ -78,17 +77,10 @@ export const usePendingArticleMutations = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pending-articles"] });
       queryClient.invalidateQueries({ queryKey: ["articles"] });
-      toast({
-        title: "Article Approved",
-        description: "The article has been published successfully.",
-      });
+      toast.success("Article published successfully");
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error(error.message);
     },
   });
 
@@ -107,17 +99,10 @@ export const usePendingArticleMutations = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pending-articles"] });
-      toast({
-        title: "Article Rejected",
-        description: "The article has been marked as rejected.",
-      });
+      toast.success("Article rejected");
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error(error.message);
     },
   });
 
@@ -129,17 +114,10 @@ export const usePendingArticleMutations = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["pending-articles"] });
-      toast({
-        title: "Discovery Complete",
-        description: `Found ${data.articles_added} new articles to review.`,
-      });
+      toast.success(`Found ${data.articles_added} new articles to review`);
     },
     onError: (error) => {
-      toast({
-        title: "Discovery Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error(`Discovery failed: ${error.message}`);
     },
   });
 
