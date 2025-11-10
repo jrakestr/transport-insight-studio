@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Loader2, Calendar, Clock, Download, Share2 } from "lucide-react";
 import { useReports } from "@/hooks/useReports";
 import { format } from "date-fns";
+import { marked } from "marked";
 
 const ReportDetail = () => {
   const { slug } = useParams();
@@ -126,8 +127,8 @@ const ReportDetail = () => {
             <div className="max-w-4xl mx-auto">
               {report.content ? (
                 <article 
-                  className="prose prose-lg dark:prose-invert max-w-none"
-                  dangerouslySetInnerHTML={{ __html: report.content }}
+                  className="article-content prose prose-lg dark:prose-invert max-w-none"
+                  dangerouslySetInnerHTML={{ __html: marked(report.content) as string }}
                 />
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
