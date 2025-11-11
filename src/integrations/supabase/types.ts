@@ -14,6 +14,126 @@ export type Database = {
   }
   public: {
     Tables: {
+      agency_contractors: {
+        Row: {
+          agency_id: string
+          agency_name: string | null
+          buyer_provides_maintenance_facility_to_seller: boolean | null
+          buyer_supplies_vehicles_to_seller: boolean | null
+          contract_capital_leasing_expenses: number | null
+          contractee_agency_id: string | null
+          contractee_ntd_id: string | null
+          contractee_operator_name: string | null
+          created_at: string
+          direct_payment_agency_subsidy: number | null
+          fares_retained_by: string | null
+          id: string
+          mode: string | null
+          months_seller_operated_in_fy: number | null
+          ntd_id: string | null
+          other_operating_expenses_incurred_by_the_buyer: number | null
+          other_party: string | null
+          other_public_assets_provided: boolean | null
+          other_public_assets_provided_desc: string | null
+          other_reconciling_item_expenses_incurred_by_the_buyer: number | null
+          passenger_out_of_pocket_expenses: number | null
+          primary_feature: string | null
+          pt_fare_revenues_passenger_fees: number | null
+          reporter_contractual_position: string | null
+          reporter_type: string | null
+          reporting_module: string | null
+          service_captured: string | null
+          tos: string | null
+          total_modal_expenses: number | null
+          type_of_contract: string | null
+          updated_at: string
+          voms_under_contract: number | null
+        }
+        Insert: {
+          agency_id: string
+          agency_name?: string | null
+          buyer_provides_maintenance_facility_to_seller?: boolean | null
+          buyer_supplies_vehicles_to_seller?: boolean | null
+          contract_capital_leasing_expenses?: number | null
+          contractee_agency_id?: string | null
+          contractee_ntd_id?: string | null
+          contractee_operator_name?: string | null
+          created_at?: string
+          direct_payment_agency_subsidy?: number | null
+          fares_retained_by?: string | null
+          id?: string
+          mode?: string | null
+          months_seller_operated_in_fy?: number | null
+          ntd_id?: string | null
+          other_operating_expenses_incurred_by_the_buyer?: number | null
+          other_party?: string | null
+          other_public_assets_provided?: boolean | null
+          other_public_assets_provided_desc?: string | null
+          other_reconciling_item_expenses_incurred_by_the_buyer?: number | null
+          passenger_out_of_pocket_expenses?: number | null
+          primary_feature?: string | null
+          pt_fare_revenues_passenger_fees?: number | null
+          reporter_contractual_position?: string | null
+          reporter_type?: string | null
+          reporting_module?: string | null
+          service_captured?: string | null
+          tos?: string | null
+          total_modal_expenses?: number | null
+          type_of_contract?: string | null
+          updated_at?: string
+          voms_under_contract?: number | null
+        }
+        Update: {
+          agency_id?: string
+          agency_name?: string | null
+          buyer_provides_maintenance_facility_to_seller?: boolean | null
+          buyer_supplies_vehicles_to_seller?: boolean | null
+          contract_capital_leasing_expenses?: number | null
+          contractee_agency_id?: string | null
+          contractee_ntd_id?: string | null
+          contractee_operator_name?: string | null
+          created_at?: string
+          direct_payment_agency_subsidy?: number | null
+          fares_retained_by?: string | null
+          id?: string
+          mode?: string | null
+          months_seller_operated_in_fy?: number | null
+          ntd_id?: string | null
+          other_operating_expenses_incurred_by_the_buyer?: number | null
+          other_party?: string | null
+          other_public_assets_provided?: boolean | null
+          other_public_assets_provided_desc?: string | null
+          other_reconciling_item_expenses_incurred_by_the_buyer?: number | null
+          passenger_out_of_pocket_expenses?: number | null
+          primary_feature?: string | null
+          pt_fare_revenues_passenger_fees?: number | null
+          reporter_contractual_position?: string | null
+          reporter_type?: string | null
+          reporting_module?: string | null
+          service_captured?: string | null
+          tos?: string | null
+          total_modal_expenses?: number | null
+          type_of_contract?: string | null
+          updated_at?: string
+          voms_under_contract?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_contractors_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_contractors_contractee_agency_id_fkey"
+            columns: ["contractee_agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       article_agencies: {
         Row: {
           agency_id: string
