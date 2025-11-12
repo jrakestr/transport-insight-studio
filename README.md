@@ -1,73 +1,52 @@
-# Welcome to your Lovable project
+# TransitTrack
 
-## Project info
+Real-time transit news and market insights for the transportation technology industry.
 
-**URL**: https://lovable.dev/projects/a45a0fad-db41-43a6-9c2d-1e681e57190f
+## Overview
 
-## How can I edit this code?
+TransitIntel provides breaking news, RFP opportunities, and competitive intelligence for transit technology companies. Stay informed with data-driven insights from industry sources across the transportation sector.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+### 📰 Latest Industry News
+- Breaking developments in transit technology, policy, and market intelligence
+- Curated articles from authoritative industry sources
+- Real-time updates on transit sector developments
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a45a0fad-db41-43a6-9c2d-1e681e57190f) and start prompting.
+### 📊 Market Intelligence
+- Monthly Data Dispatch reports with comprehensive analysis
+- Transit expansion tracking and trend adoption
+- Competitive intelligence across the transit sector
 
-Changes made via Lovable will be committed automatically to this repo.
+### 💼 RFP Opportunities
+- Procurement tracking for transit technology vendors
+- Major contract opportunities (e.g., fare payment systems, software solutions)
+- Estimated project values and timelines
 
-**Use your preferred IDE**
+### 🔍 Coverage Areas
+- **Microtransit** - On-demand and flexible transit services
+- **Funding** - Budget allocations and financial developments
+- **Technology** - Fare collection, scheduling platforms, mobile apps
+- **Paratransit** - ADA-compliant transportation services
+- **Safety & Security** - Transit crime prevention and enforcement
+- **Government** - Policy changes and legislative updates
+- **Market Trends** - Service expansions and industry patterns
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Content Categories
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Alternative School Transportation
+- Urban Mobility Partnerships
+- Microtransit Pilots and Expansions
+- Transit Funding Bills
+- Technology Integrations
+- RFPs & Procurement
+- Safety & Security Initiatives
 
-Follow these steps:
+## Resources
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- Browse current RFP opportunities
+- Access monthly Data Dispatch reports
+- Read full articles with expert analysis
+- Track competitive intelligence
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/a45a0fad-db41-43a6-9c2d-1e681e57190f) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
