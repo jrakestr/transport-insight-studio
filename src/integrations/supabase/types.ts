@@ -134,6 +134,104 @@ export type Database = {
           },
         ]
       }
+      agency_performance_metrics: {
+        Row: {
+          agency_id: string | null
+          agency_voms: number | null
+          cost_per_hour: number | null
+          cost_per_hour_questionable: boolean | null
+          cost_per_passenger: number | null
+          cost_per_passenger_mile: number | null
+          created_at: string
+          fare_revenues_earned: number | null
+          fare_revenues_per_total: number | null
+          fare_revenues_per_unlinked: number | null
+          id: string
+          mode: string | null
+          mode_name: string | null
+          mode_voms: number | null
+          passenger_miles: number | null
+          passenger_miles_questionable: boolean | null
+          passengers_per_hour: number | null
+          primary_uza_population: number | null
+          report_year: number | null
+          total_operating_expenses: number | null
+          type_of_service: string | null
+          uace_code: string | null
+          unlinked_passenger_trips: number | null
+          updated_at: string
+          uza_name: string | null
+          vehicle_revenue_hours: number | null
+          vehicle_revenue_miles: number | null
+        }
+        Insert: {
+          agency_id?: string | null
+          agency_voms?: number | null
+          cost_per_hour?: number | null
+          cost_per_hour_questionable?: boolean | null
+          cost_per_passenger?: number | null
+          cost_per_passenger_mile?: number | null
+          created_at?: string
+          fare_revenues_earned?: number | null
+          fare_revenues_per_total?: number | null
+          fare_revenues_per_unlinked?: number | null
+          id?: string
+          mode?: string | null
+          mode_name?: string | null
+          mode_voms?: number | null
+          passenger_miles?: number | null
+          passenger_miles_questionable?: boolean | null
+          passengers_per_hour?: number | null
+          primary_uza_population?: number | null
+          report_year?: number | null
+          total_operating_expenses?: number | null
+          type_of_service?: string | null
+          uace_code?: string | null
+          unlinked_passenger_trips?: number | null
+          updated_at?: string
+          uza_name?: string | null
+          vehicle_revenue_hours?: number | null
+          vehicle_revenue_miles?: number | null
+        }
+        Update: {
+          agency_id?: string | null
+          agency_voms?: number | null
+          cost_per_hour?: number | null
+          cost_per_hour_questionable?: boolean | null
+          cost_per_passenger?: number | null
+          cost_per_passenger_mile?: number | null
+          created_at?: string
+          fare_revenues_earned?: number | null
+          fare_revenues_per_total?: number | null
+          fare_revenues_per_unlinked?: number | null
+          id?: string
+          mode?: string | null
+          mode_name?: string | null
+          mode_voms?: number | null
+          passenger_miles?: number | null
+          passenger_miles_questionable?: boolean | null
+          passengers_per_hour?: number | null
+          primary_uza_population?: number | null
+          report_year?: number | null
+          total_operating_expenses?: number | null
+          type_of_service?: string | null
+          uace_code?: string | null
+          unlinked_passenger_trips?: number | null
+          updated_at?: string
+          uza_name?: string | null
+          vehicle_revenue_hours?: number | null
+          vehicle_revenue_miles?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_performance_metrics_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       article_agencies: {
         Row: {
           agency_id: string

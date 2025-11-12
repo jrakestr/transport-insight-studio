@@ -23,6 +23,7 @@ import ArticleForm from "./pages/admin/ArticleForm";
 import AgenciesAdmin from "./pages/admin/Agencies";
 import AgencyForm from "./pages/admin/AgencyForm";
 import AgencyImport from "./pages/admin/AgencyImport";
+import MetricsImport from "./pages/admin/MetricsImport";
 import ProvidersAdmin from "./pages/admin/Providers";
 import ProviderForm from "./pages/admin/ProviderForm";
 import OpportunitiesAdmin from "./pages/admin/Opportunities";
@@ -76,6 +77,7 @@ const App = () => (
             <Route path="agencies/new" element={<AgencyForm />} />
             <Route path="agencies/:id/edit" element={<AgencyForm />} />
             <Route path="agencies/import" element={<AgencyImport />} />
+            <Route path="metrics-import" element={<MetricsImport />} />
             <Route path="providers" element={<ProvidersAdmin />} />
             <Route path="providers/new" element={<ProviderForm />} />
             <Route path="providers/:id/edit" element={<ProviderForm />} />
