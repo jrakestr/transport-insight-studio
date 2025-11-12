@@ -3,11 +3,20 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Building2, MapPin, Users, DollarSign } from "lucide-react";
+import { Loader2, Building2, MapPin, Users, DollarSign, Search } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 const TransportationProviders = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [contractTypeFilter, setContractTypeFilter] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
+
   const { data: contractors, isLoading } = useQuery({
     queryKey: ["transportation-providers"],
     queryFn: async () => {
@@ -46,6 +55,52 @@ const TransportationProviders = () => {
     },
   });
 
+  // Extract unique contract types
+  const contractTypes = useMemo(() => {
+    if (!contractors) return [];
+    const types = new Set<string>();
+    contractors.forEach((provider: any) => {
+      provider.contractTypes.forEach((type: string) => types.add(type));
+    });
+    return Array.from(types).sort();
+  }, [contractors]);
+
+  // Filter and paginate data
+  const filteredContractors = useMemo(() => {
+    if (!contractors) return [];
+    
+    return contractors.filter((provider: any) => {
+      const matchesSearch = provider.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesContractType = contractTypeFilter === "all" || 
+        provider.contractTypes.some((type: string) => type === contractTypeFilter);
+      
+      return matchesSearch && matchesContractType;
+    });
+  }, [contractors, searchQuery, contractTypeFilter]);
+
+  const paginatedContractors = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return filteredContractors.slice(startIndex, endIndex);
+  }, [filteredContractors, currentPage, pageSize]);
+
+  const totalPages = Math.ceil(filteredContractors.length / pageSize);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleContractTypeFilterChange = (value: string) => {
+    setContractTypeFilter(value);
+    setCurrentPage(1);
+  };
+
+  const handlePageSizeChange = (value: string) => {
+    setPageSize(parseInt(value));
+    setCurrentPage(1);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -73,13 +128,57 @@ const TransportationProviders = () => {
         <section className="py-16 lg:py-24">
           <div className="section-container">
             <div className="max-w-6xl mx-auto">
+              {/* Search and Filters */}
+              <div className="mb-8 space-y-4">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder="Search providers..."
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                      className="pl-10"
+                    />
+                  </div>
+                  <Select value={contractTypeFilter} onValueChange={handleContractTypeFilterChange}>
+                    <SelectTrigger className="w-full md:w-[240px]">
+                      <SelectValue placeholder="Contract Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Contract Types</SelectItem>
+                      {contractTypes.map((type) => (
+                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">
+                    Showing {filteredContractors.length} {filteredContractors.length === 1 ? 'provider' : 'providers'}
+                  </p>
+                  <Select value={pageSize.toString()} onValueChange={handlePageSizeChange}>
+                    <SelectTrigger className="w-[140px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="12">12 per page</SelectItem>
+                      <SelectItem value="24">24 per page</SelectItem>
+                      <SelectItem value="48">48 per page</SelectItem>
+                      <SelectItem value="96">96 per page</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {isLoading ? (
                   <div className="col-span-full flex items-center justify-center py-12">
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
                   </div>
-                ) : contractors && contractors.length > 0 ? (
-                  contractors.map((provider: any) => (
+                ) : paginatedContractors && paginatedContractors.length > 0 ? (
+                  paginatedContractors.map((provider: any) => (
                     <Link key={provider.name} to={`/transportation-providers/${encodeURIComponent(provider.name)}`}>
                       <Card className="border border-border hover:border-primary transition-colors h-full">
                         <CardContent className="p-6">
@@ -143,6 +242,70 @@ const TransportationProviders = () => {
                   </div>
                 )}
               </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex justify-center">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationLink
+                          onClick={() => setCurrentPage(1)}
+                          className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        >
+                          First
+                        </PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                          className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                      
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        let pageNum;
+                        if (totalPages <= 5) {
+                          pageNum = i + 1;
+                        } else if (currentPage <= 3) {
+                          pageNum = i + 1;
+                        } else if (currentPage >= totalPages - 2) {
+                          pageNum = totalPages - 4 + i;
+                        } else {
+                          pageNum = currentPage - 2 + i;
+                        }
+                        
+                        return (
+                          <PaginationItem key={pageNum}>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(pageNum)}
+                              isActive={currentPage === pageNum}
+                              className="cursor-pointer"
+                            >
+                              {pageNum}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      })}
+                      
+                      <PaginationItem>
+                        <PaginationNext
+                          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                          className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink
+                          onClick={() => setCurrentPage(totalPages)}
+                          className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        >
+                          Last
+                        </PaginationLink>
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
             </div>
           </div>
         </section>
