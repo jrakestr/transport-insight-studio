@@ -53,7 +53,6 @@ export default function MetricsImport() {
       for (let i = 1; i < lines.length; i += batchSize) {
         const batch = lines.slice(i, Math.min(i + batchSize, lines.length));
         
-        const metricsRecords = [];
         const contractorRecords = [];
 
         for (const line of batch) {
