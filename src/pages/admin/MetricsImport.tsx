@@ -63,10 +63,12 @@ export default function MetricsImport() {
             row[header] = values[index] || '';
           });
 
-          // Parse ALL CSV columns into metrics record
-          const metricsRecord: any = {
-            agency_id: row.agency_id || null,
-            agency: row.agency || null,
+          // Parse ALL CSV columns into contract record
+          const contractRecord: any = {
+            // Will be set after lookup
+            agency_id: null,
+            provider_name: row.contractee_operator_name || null,
+            agency_name: row.agency || null,
             city: row.city || null,
             state: row.state || null,
             ntd_id: row.ntd_id || null,
@@ -106,13 +108,12 @@ export default function MetricsImport() {
             vehicle_revenue_miles: row.vehicle_revenue_miles ? parseFloat(row.vehicle_revenue_miles) : null,
             vehicle_revenue_miles_1: row.vehicle_revenue_miles_1 ? parseFloat(row.vehicle_revenue_miles_1) : null,
             ntd_id_contract: row.ntd_id_contract || null,
-            agency_name: row.agency_name || null,
             reporter_type_contract: row.reporter_type_contract || null,
             reporting_module: row.reporting_module || null,
             mode_contract: row.mode_contract || null,
             tos: row.tos || null,
             contractee_ntd_id: row.contractee_ntd_id || null,
-            transportation_provider: row.contractee_operator_name || null,
+            
             reporter_contractual_position: row.reporter_contractual_position || null,
             type_of_contract: row.type_of_contract || null,
             primary_feature: row.primary_feature || null,
@@ -135,17 +136,26 @@ export default function MetricsImport() {
             contractee_agency_id: row.contractee_agency_id || null,
           };
 
-          // Add record if agency_id exists
-          if (metricsRecord.agency_id) {
-            metricsRecords.push(metricsRecord);
+          // Lookup agency_id from transit_agencies by ntd_id
+          if (contractRecord.ntd_id) {
+            const { data: agency } = await supabase
+              .from('transit_agencies')
+              .select('id')
+              .eq('ntd_id', contractRecord.ntd_id)
+              .single();
+            
+            if (agency) {
+              contractRecord.agency_id = agency.id;
+              contractorRecords.push(contractRecord);
+            }
           }
         }
 
-        // Insert into transportation_providers table
-        if (metricsRecords.length > 0) {
+        // Insert into agency_contractors table
+        if (contractorRecords.length > 0) {
           const { error } = await supabase
-            .from('transportation_providers')
-            .insert(metricsRecords);
+            .from('agency_contractors')
+            .insert(contractorRecords);
           
           if (error) {
             console.error('Import error:', error);
@@ -155,8 +165,8 @@ export default function MetricsImport() {
         setProgress({ current: Math.min(i + batchSize, lines.length - 1), total: lines.length - 1 });
       }
 
-      toast.success(`Successfully imported ${lines.length - 1} records`);
-      navigate('/admin/providers');
+      toast.success(`Successfully imported contract records to agency_contractors table`);
+      navigate('/admin/agencies');
     } catch (error: any) {
       console.error('Import error:', error);
       toast.error(error.message || 'Failed to import data');
@@ -169,18 +179,18 @@ export default function MetricsImport() {
   return (
     <div className="container mx-auto py-8">
       <div className="mb-8">
-        <Button variant="outline" onClick={() => navigate('/admin/providers')}>
-          Back to Providers
+        <Button variant="outline" onClick={() => navigate('/admin/agencies')}>
+          Back to Agencies
         </Button>
       </div>
 
       <Card className="p-6">
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Import Transportation Providers Data</h2>
+            <h2 className="text-2xl font-bold mb-2">Import Agency Contract Metrics</h2>
             <p className="text-muted-foreground">
-              Upload CSV file with all 68 columns. Data will be imported into the transportation_providers table.
-              Provider names from contractee_operator_name will be stored in the transportation_provider column.
+              Upload CSV file with all 68 columns. Data will be imported into the agency_contractors table.
+              Each row represents a unique agency-provider-mode contract with performance metrics.
             </p>
           </div>
 
@@ -224,11 +234,11 @@ export default function MetricsImport() {
               <FileSpreadsheet className="h-4 w-4" />
               Expected CSV Format
             </h3>
-            <p className="text-sm text-muted-foreground">
-              All 68 CSV columns will be imported: agency_id, agency, city, state, ntd_id, organization_type, 
-              reporter_type, report_year, uace_code, uza_name, primary_uza_population, agency_voms, mode, mode_name, 
-              type_of_service, mode_voms, all fare/cost/passenger metrics (with _1 variants), contract fields 
-              (ntd_id_contract through contractee_agency_id), with transportation provider names stored in transportation_provider column.
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              All 68 CSV columns will be imported into agency_contractors: agency info, mode details, 
+              contract information, performance metrics (fare revenues, operating expenses, passenger counts, etc.), 
+              and provider information (contractee_operator_name → provider_name). Each row creates a contract record linking 
+              an agency to a provider with specific service and performance data. The agency_id is looked up from transit_agencies using the ntd_id column.
             </p>
           </div>
         </div>

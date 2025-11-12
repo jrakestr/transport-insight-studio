@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAgency } from "@/hooks/useAgencies";
 import { useAgencyRelationships } from "@/hooks/useAgencyRelationships";
-import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, FileText, Calendar, Newspaper, Briefcase, Truck } from "lucide-react";
+import { useAgencyContractors } from "@/hooks/useAgencyContractors";
+import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, FileText, Calendar, Newspaper, Briefcase, Truck, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AgencyDetail = () => {
@@ -13,6 +14,7 @@ const AgencyDetail = () => {
   const navigate = useNavigate();
   const { data: agency, isLoading } = useAgency(id);
   const { data: relationships, isLoading: isLoadingRelationships } = useAgencyRelationships(id);
+  const { data: contractors, isLoading: isLoadingContractors } = useAgencyContractors(id);
 
   if (isLoading) {
     return (
@@ -376,6 +378,75 @@ const AgencyDetail = () => {
                             <span>• {new Date(opportunity.created_at).toLocaleDateString()}</span>
                           </div>
                         </Link>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Agency Contracts */}
+              {!isLoadingContractors && contractors && contractors.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <DollarSign className="h-5 w-5" />
+                      Service Contracts & Performance ({contractors.length})
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      {contractors.map((contract: any) => (
+                        <div key={contract.id} className="p-4 rounded-lg border bg-card">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <h3 className="font-semibold text-lg">{contract.provider_name || "Unknown Provider"}</h3>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {contract.mode && <Badge variant="outline">{contract.mode}</Badge>}
+                                {contract.type_of_service && <Badge variant="secondary">{contract.type_of_service}</Badge>}
+                                {contract.type_of_contract && <Badge>{contract.type_of_contract}</Badge>}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="grid md:grid-cols-3 gap-4 mt-4">
+                            {contract.voms_under_contract && (
+                              <div>
+                                <p className="text-sm text-muted-foreground">Vehicles</p>
+                                <p className="text-xl font-bold">{contract.voms_under_contract}</p>
+                              </div>
+                            )}
+                            {contract.unlinked_passenger_trips && (
+                              <div>
+                                <p className="text-sm text-muted-foreground">Passenger Trips</p>
+                                <p className="text-xl font-bold">{contract.unlinked_passenger_trips.toLocaleString()}</p>
+                              </div>
+                            )}
+                            {contract.total_modal_expenses && (
+                              <div>
+                                <p className="text-sm text-muted-foreground">Total Expenses</p>
+                                <p className="text-xl font-bold">${(contract.total_modal_expenses / 1000000).toFixed(2)}M</p>
+                              </div>
+                            )}
+                            {contract.cost_per_passenger && (
+                              <div>
+                                <p className="text-sm text-muted-foreground">Cost Per Passenger</p>
+                                <p className="text-xl font-bold">${contract.cost_per_passenger.toFixed(2)}</p>
+                              </div>
+                            )}
+                            {contract.passengers_per_hour && (
+                              <div>
+                                <p className="text-sm text-muted-foreground">Passengers/Hour</p>
+                                <p className="text-xl font-bold">{contract.passengers_per_hour.toFixed(1)}</p>
+                              </div>
+                            )}
+                            {contract.fare_revenues_earned && (
+                              <div>
+                                <p className="text-sm text-muted-foreground">Fare Revenue</p>
+                                <p className="text-xl font-bold">${(contract.fare_revenues_earned / 1000000).toFixed(2)}M</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </CardContent>

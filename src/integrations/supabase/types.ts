@@ -38,6 +38,8 @@ export type Database = {
           other_reconciling_item_expenses_incurred_by_the_buyer: number | null
           passenger_out_of_pocket_expenses: number | null
           primary_feature: string | null
+          provider_id: string | null
+          provider_name: string | null
           pt_fare_revenues_passenger_fees: number | null
           reporter_contractual_position: string | null
           reporter_type: string | null
@@ -72,6 +74,8 @@ export type Database = {
           other_reconciling_item_expenses_incurred_by_the_buyer?: number | null
           passenger_out_of_pocket_expenses?: number | null
           primary_feature?: string | null
+          provider_id?: string | null
+          provider_name?: string | null
           pt_fare_revenues_passenger_fees?: number | null
           reporter_contractual_position?: string | null
           reporter_type?: string | null
@@ -106,6 +110,8 @@ export type Database = {
           other_reconciling_item_expenses_incurred_by_the_buyer?: number | null
           passenger_out_of_pocket_expenses?: number | null
           primary_feature?: string | null
+          provider_id?: string | null
+          provider_name?: string | null
           pt_fare_revenues_passenger_fees?: number | null
           reporter_contractual_position?: string | null
           reporter_type?: string | null
@@ -130,6 +136,13 @@ export type Database = {
             columns: ["contractee_agency_id"]
             isOneToOne: false
             referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_contractors_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "transportation_providers"
             referencedColumns: ["id"]
           },
         ]
