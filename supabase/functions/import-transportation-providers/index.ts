@@ -96,8 +96,23 @@ Deno.serve(async (req) => {
 
     console.log('Starting transportation providers import...');
 
-    // Get CSV content from request body
-    const { csvContent } = await req.json();
+    // Get CSV content and pagination params from request body
+    const { csvContent, offset = 0, clearExisting = false } = await req.json();
+    
+    // Clear existing data if this is the first batch
+    if (clearExisting && offset === 0) {
+      console.log('Clearing existing transportation providers data...');
+      const { error: deleteError } = await supabaseClient
+        .from('transportation_providers')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+      
+      if (deleteError) {
+        console.error('Error clearing data:', deleteError);
+        throw new Error(`Failed to clear existing data: ${deleteError.message}`);
+      }
+      console.log('Existing data cleared successfully');
+    }
     
     if (!csvContent) {
       throw new Error('No CSV content provided');
@@ -119,10 +134,15 @@ Deno.serve(async (req) => {
     let skippedCount = 0;
     const errors: string[] = [];
 
-    // Process in batches of 50
+    // Process in batches of 50, with a maximum of 500 rows per function call
     const batchSize = 50;
+    const maxRowsPerCall = 500;
+    const startLine = 1 + offset;
+    const endLine = Math.min(startLine + maxRowsPerCall, lines.length);
     
-    for (let i = 1; i < lines.length; i += batchSize) {
+    console.log(`Processing rows ${startLine} to ${endLine} of ${lines.length - 1}`);
+    
+    for (let i = startLine; i < endLine; i += batchSize) {
       const batch = lines.slice(i, Math.min(i + batchSize, lines.length));
       const records: ContractRecord[] = [];
 
@@ -224,18 +244,27 @@ Deno.serve(async (req) => {
       console.log(`Progress: ${i}/${lines.length - 1} lines processed`);
     }
 
+    const totalLines = lines.length - 1;
+    const hasMore = endLine < lines.length;
+    const nextOffset = hasMore ? offset + maxRowsPerCall : null;
+    
     const result = {
       success: true,
       stats: {
-        total_lines: lines.length - 1,
+        total_lines: totalLines,
         processed: processedCount,
         inserted: insertedCount,
         skipped: skippedCount,
+        current_batch_start: startLine,
+        current_batch_end: endLine - 1,
+        has_more: hasMore,
+        next_offset: nextOffset,
+        progress_percentage: Math.round((endLine - 1) / totalLines * 100),
         errors: errors.slice(0, 10), // Return first 10 errors
       },
     };
 
-    console.log('Import completed:', result);
+    console.log('Batch completed:', result);
 
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

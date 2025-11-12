@@ -63,20 +63,43 @@ export default function TransportationProvidersAdmin() {
       
       toast.info("Starting import of transportation providers data...");
       
-      const { data, error } = await supabase.functions.invoke('import-transportation-providers', {
-        body: { csvContent }
-      });
+      let offset = 0;
+      let totalInserted = 0;
+      let clearExisting = true;
       
-      if (error) throw error;
-      
-      if (data.success) {
-        toast.success(`Import completed! Inserted ${data.stats.inserted} records.`);
-        refetch();
-      } else {
-        toast.error("Import failed. Check console for details.");
+      // Keep calling the function until all data is imported
+      while (true) {
+        console.log(`Importing batch starting at offset ${offset}...`);
+        
+        const { data, error } = await supabase.functions.invoke('import-transportation-providers', {
+          body: { csvContent, offset, clearExisting }
+        });
+        
+        if (error) throw error;
+        
+        if (!data.success) {
+          toast.error("Import failed. Check console for details.");
+          console.error("Import error:", data);
+          break;
+        }
+        
+        totalInserted += data.stats.inserted;
+        console.log(`Batch completed: ${data.stats.inserted} records, Progress: ${data.stats.progress_percentage}%`);
+        
+        toast.info(`Importing... ${data.stats.progress_percentage}% (${totalInserted} records)`);
+        
+        // If there's more data, continue with next batch
+        if (data.stats.has_more && data.stats.next_offset !== null) {
+          offset = data.stats.next_offset;
+          clearExisting = false; // Only clear on first batch
+        } else {
+          // All done!
+          toast.success(`Import completed! Inserted ${totalInserted} records total.`);
+          break;
+        }
       }
       
-      console.log("Import results:", data);
+      refetch();
     } catch (error) {
       console.error("Import error:", error);
       toast.error(`Import failed: ${error.message}`);
