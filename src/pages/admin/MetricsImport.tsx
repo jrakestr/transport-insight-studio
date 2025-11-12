@@ -66,6 +66,12 @@ export default function MetricsImport() {
           // Parse metrics data
           const metricsRecord: any = {
             agency_id: row.agency_id || null,
+            agency_name: row.agency || null,
+            city: row.city || null,
+            state: row.state || null,
+            ntd_id: row.ntd_id || null,
+            organization_type: row.organization_type || null,
+            reporter_type: row.reporter_type || null,
             report_year: row.report_year ? parseInt(row.report_year) : null,
             uace_code: row.uace_code || null,
             uza_name: row.uza_name || null,

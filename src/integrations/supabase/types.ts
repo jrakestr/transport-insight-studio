@@ -137,7 +137,9 @@ export type Database = {
       agency_performance_metrics: {
         Row: {
           agency_id: string | null
+          agency_name: string | null
           agency_voms: number | null
+          city: string | null
           cost_per_hour: number | null
           cost_per_hour_questionable: boolean | null
           cost_per_passenger: number | null
@@ -150,11 +152,15 @@ export type Database = {
           mode: string | null
           mode_name: string | null
           mode_voms: number | null
+          ntd_id: string | null
+          organization_type: string | null
           passenger_miles: number | null
           passenger_miles_questionable: boolean | null
           passengers_per_hour: number | null
           primary_uza_population: number | null
           report_year: number | null
+          reporter_type: string | null
+          state: string | null
           total_operating_expenses: number | null
           type_of_service: string | null
           uace_code: string | null
@@ -166,7 +172,9 @@ export type Database = {
         }
         Insert: {
           agency_id?: string | null
+          agency_name?: string | null
           agency_voms?: number | null
+          city?: string | null
           cost_per_hour?: number | null
           cost_per_hour_questionable?: boolean | null
           cost_per_passenger?: number | null
@@ -179,11 +187,15 @@ export type Database = {
           mode?: string | null
           mode_name?: string | null
           mode_voms?: number | null
+          ntd_id?: string | null
+          organization_type?: string | null
           passenger_miles?: number | null
           passenger_miles_questionable?: boolean | null
           passengers_per_hour?: number | null
           primary_uza_population?: number | null
           report_year?: number | null
+          reporter_type?: string | null
+          state?: string | null
           total_operating_expenses?: number | null
           type_of_service?: string | null
           uace_code?: string | null
@@ -195,7 +207,9 @@ export type Database = {
         }
         Update: {
           agency_id?: string | null
+          agency_name?: string | null
           agency_voms?: number | null
+          city?: string | null
           cost_per_hour?: number | null
           cost_per_hour_questionable?: boolean | null
           cost_per_passenger?: number | null
@@ -208,11 +222,15 @@ export type Database = {
           mode?: string | null
           mode_name?: string | null
           mode_voms?: number | null
+          ntd_id?: string | null
+          organization_type?: string | null
           passenger_miles?: number | null
           passenger_miles_questionable?: boolean | null
           passengers_per_hour?: number | null
           primary_uza_population?: number | null
           report_year?: number | null
+          reporter_type?: string | null
+          state?: string | null
           total_operating_expenses?: number | null
           type_of_service?: string | null
           uace_code?: string | null
