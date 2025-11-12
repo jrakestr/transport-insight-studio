@@ -22,7 +22,7 @@ const Providers = () => {
               <Badge variant="secondary" className="mb-4">
                 Providers Directory
               </Badge>
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">Service Providers & Vendors<span className="text-primary">Providers</span>
+              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">Vendors<span className="text-primary">Providers</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
                 Leading service providers, vendors, and organizations serving the transit industry. (Auto-extracted from News Articles)          
