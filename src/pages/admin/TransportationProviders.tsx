@@ -5,9 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload, Building2, Users, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function TransportationProvidersAdmin() {
-  const { data: contractors, isLoading } = useQuery({
+  const [isImporting, setIsImporting] = useState(false);
+  
+  const { data: contractors, isLoading, refetch } = useQuery({
     queryKey: ["transportation-providers-admin"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -45,6 +49,31 @@ export default function TransportationProvidersAdmin() {
     },
   });
 
+  const handleImport = async () => {
+    setIsImporting(true);
+    try {
+      toast.info("Starting import of transportation providers data...");
+      
+      const { data, error } = await supabase.functions.invoke('import-transportation-providers');
+      
+      if (error) throw error;
+      
+      if (data.success) {
+        toast.success(`Import completed! Inserted ${data.stats.inserted} records.`);
+        refetch();
+      } else {
+        toast.error("Import failed. Check console for details.");
+      }
+      
+      console.log("Import results:", data);
+    } catch (error) {
+      console.error("Import error:", error);
+      toast.error(`Import failed: ${error.message}`);
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -57,11 +86,18 @@ export default function TransportationProvidersAdmin() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Transportation Providers</h1>
-        <Button asChild>
-          <Link to="/admin/metrics-import">
-            <Upload className="h-4 w-4 mr-2" />
-            Import Data
-          </Link>
+        <Button onClick={handleImport} disabled={isImporting}>
+          {isImporting ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Importing...
+            </>
+          ) : (
+            <>
+              <Upload className="h-4 w-4 mr-2" />
+              Import NTD Data
+            </>
+          )}
         </Button>
       </div>
 
