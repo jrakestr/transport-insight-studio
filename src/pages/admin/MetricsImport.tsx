@@ -141,14 +141,14 @@ export default function MetricsImport() {
           }
         }
 
-        // Insert metrics batch
+        // Insert into transportation_providers table
         if (metricsRecords.length > 0) {
-          const { error: metricsError } = await supabase
-            .from('agency_performance_metrics')
+          const { error } = await supabase
+            .from('transportation_providers')
             .insert(metricsRecords);
           
-          if (metricsError) {
-            console.error('Metrics insert error:', metricsError);
+          if (error) {
+            console.error('Import error:', error);
           }
         }
 
@@ -156,7 +156,7 @@ export default function MetricsImport() {
       }
 
       toast.success(`Successfully imported ${lines.length - 1} records`);
-      navigate('/admin/agencies');
+      navigate('/admin/providers');
     } catch (error: any) {
       console.error('Import error:', error);
       toast.error(error.message || 'Failed to import data');
@@ -169,18 +169,18 @@ export default function MetricsImport() {
   return (
     <div className="container mx-auto py-8">
       <div className="mb-8">
-        <Button variant="outline" onClick={() => navigate('/admin/agencies')}>
-          Back to Agencies
+        <Button variant="outline" onClick={() => navigate('/admin/providers')}>
+          Back to Providers
         </Button>
       </div>
 
       <Card className="p-6">
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Import Metrics & Contracts Data</h2>
+            <h2 className="text-2xl font-bold mb-2">Import Transportation Providers Data</h2>
             <p className="text-muted-foreground">
-              Upload CSV file with all 68 columns including agency metrics and contract data.
-              Transportation providers are in the contractee_operator_name column.
+              Upload CSV file with all 68 columns. Data will be imported into the transportation_providers table.
+              Provider names are in the contractee_operator_name column.
             </p>
           </div>
 
