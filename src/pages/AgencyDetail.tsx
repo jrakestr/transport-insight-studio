@@ -479,7 +479,16 @@ const AgencyDetail = () => {
                           {contractors.map((contract: any) => (
                             <tr key={contract.id} className="hover:bg-accent/50 transition-colors">
                               <td className="py-3 px-4">
-                                <div className="font-medium">{contract.contractee_operator_name || "Unknown Contractor"}</div>
+                                {contract.contractee_operator_name ? (
+                                  <Link 
+                                    to={`/transportation-providers/${encodeURIComponent(contract.contractee_operator_name)}`}
+                                    className="font-medium hover:text-primary transition-colors"
+                                  >
+                                    {contract.contractee_operator_name}
+                                  </Link>
+                                ) : (
+                                  <div className="font-medium">Unknown Contractor</div>
+                                )}
                                 {contract.type_of_contract && (
                                   <div className="text-xs text-muted-foreground mt-1">{contract.type_of_contract}</div>
                                 )}
