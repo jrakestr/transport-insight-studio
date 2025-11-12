@@ -25,7 +25,7 @@ export default function AgenciesAdmin() {
           <Button variant="outline" asChild>
             <Link to="/admin/agencies/import">
               <Upload className="h-4 w-4 mr-2" />
-              Import CSV
+              Import Agencies CSV
             </Link>
           </Button>
           <Button asChild>

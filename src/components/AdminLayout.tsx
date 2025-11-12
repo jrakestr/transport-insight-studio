@@ -54,15 +54,15 @@ export default function AdminLayout() {
                   </Link>
                 </Button>
                 <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/metrics-import">
-                    <FileText className="h-4 w-4 mr-2" />
-                    Import Metrics
+                  <Link to="/admin/providers">
+                    <Truck className="h-4 w-4 mr-2" />
+                    Service Providers
                   </Link>
                 </Button>
                 <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/providers">
-                    <Truck className="h-4 w-4 mr-2" />
-                    Providers
+                  <Link to="/admin/transportation-providers">
+                    <Building2 className="h-4 w-4 mr-2" />
+                    Transportation Providers
                   </Link>
                 </Button>
                 <Button variant="ghost" size="sm" asChild>
