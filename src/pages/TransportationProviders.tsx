@@ -80,60 +80,62 @@ const TransportationProviders = () => {
                   </div>
                 ) : contractors && contractors.length > 0 ? (
                   contractors.map((provider: any) => (
-                    <Card key={provider.name} className="border border-border hover:border-primary transition-colors h-full">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-3 mb-4">
-                          <div className="p-2 rounded-lg bg-primary/10">
-                            <Building2 className="h-5 w-5 text-primary" />
+                    <Link key={provider.name} to={`/transportation-providers/${encodeURIComponent(provider.name)}`}>
+                      <Card className="border border-border hover:border-primary transition-colors h-full">
+                        <CardContent className="p-6">
+                          <div className="flex items-start gap-3 mb-4">
+                            <div className="p-2 rounded-lg bg-primary/10">
+                              <Building2 className="h-5 w-5 text-primary" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-lg mb-1 line-clamp-2">
+                                {provider.name}
+                              </h3>
+                            </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-lg mb-1 line-clamp-2">
-                              {provider.name}
-                            </h3>
-                          </div>
-                        </div>
 
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Users className="h-4 w-4 flex-shrink-0" />
-                            <span>{provider.contracts.length} {provider.contracts.length === 1 ? 'contract' : 'contracts'}</span>
-                          </div>
-                          
-                          {provider.totalVoms > 0 && (
+                          <div className="space-y-3">
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <DollarSign className="h-4 w-4 flex-shrink-0" />
-                              <span>{provider.totalVoms} vehicles under contract</span>
+                              <Users className="h-4 w-4 flex-shrink-0" />
+                              <span>{provider.contracts.length} {provider.contracts.length === 1 ? 'contract' : 'contracts'}</span>
                             </div>
-                          )}
-
-                          {provider.agencies.length > 0 && (
-                            <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                              <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                              <div className="flex-1 min-w-0">
-                                <span className="line-clamp-2">
-                                  Serving {provider.agencies.length} {provider.agencies.length === 1 ? 'agency' : 'agencies'}
-                                </span>
+                            
+                            {provider.totalVoms > 0 && (
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <DollarSign className="h-4 w-4 flex-shrink-0" />
+                                <span>{provider.totalVoms} vehicles under contract</span>
                               </div>
-                            </div>
-                          )}
+                            )}
 
-                          {provider.contractTypes.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mt-3">
-                              {provider.contractTypes.slice(0, 2).map((type: string) => (
-                                <Badge key={type} variant="outline" className="text-xs">
-                                  {type.split(',')[0]}
-                                </Badge>
-                              ))}
-                              {provider.contractTypes.length > 2 && (
-                                <Badge variant="outline" className="text-xs">
-                                  +{provider.contractTypes.length - 2} more
-                                </Badge>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
+                            {provider.agencies.length > 0 && (
+                              <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                                <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                                <div className="flex-1 min-w-0">
+                                  <span className="line-clamp-2">
+                                    Serving {provider.agencies.length} {provider.agencies.length === 1 ? 'agency' : 'agencies'}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+
+                            {provider.contractTypes.length > 0 && (
+                              <div className="flex flex-wrap gap-1 mt-3">
+                                {provider.contractTypes.slice(0, 2).map((type: string) => (
+                                  <Badge key={type} variant="outline" className="text-xs">
+                                    {type.split(',')[0]}
+                                  </Badge>
+                                ))}
+                                {provider.contractTypes.length > 2 && (
+                                  <Badge variant="outline" className="text-xs">
+                                    +{provider.contractTypes.length - 2} more
+                                  </Badge>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   ))
                 ) : (
                   <div className="col-span-full text-center py-12 text-muted-foreground">

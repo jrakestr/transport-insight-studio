@@ -14,6 +14,7 @@ import AgencyDetail from "./pages/AgencyDetail";
 import Providers from "./pages/Providers";
 import ProviderDetail from "./pages/ProviderDetail";
 import TransportationProviders from "./pages/TransportationProviders";
+import TransportationProviderDetail from "./pages/TransportationProviderDetail";
 import Playbook from "./pages/Playbook";
 import PlaybookDetail from "./pages/PlaybookDetail";
 import Auth from "./pages/Auth";
@@ -68,6 +69,7 @@ const App = () => (
           <Route path="/providers" element={<Providers />} />
           <Route path="/providers/:id" element={<ProviderDetail />} />
           <Route path="/transportation-providers" element={<TransportationProviders />} />
+          <Route path="/transportation-providers/:name" element={<TransportationProviderDetail />} />
           <Route path="/playbook" element={<Playbook />} />
           <Route path="/playbook/:slug" element={<PlaybookDetail />} />
           <Route path="/auth" element={<Auth />} />

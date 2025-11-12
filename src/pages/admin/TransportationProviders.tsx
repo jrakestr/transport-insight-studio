@@ -115,8 +115,9 @@ export default function TransportationProvidersAdmin() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {contractors && contractors.length > 0 ? (
           contractors.map((provider: any) => (
-            <Card key={provider.name}>
-              <CardContent className="p-6">
+            <Link key={provider.name} to={`/transportation-providers/${encodeURIComponent(provider.name)}`}>
+              <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50">
+                <CardContent className="p-6">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <Building2 className="h-5 w-5 text-primary" />
@@ -168,6 +169,7 @@ export default function TransportationProvidersAdmin() {
                 </div>
               </CardContent>
             </Card>
+            </Link>
           ))
         ) : (
           <div className="col-span-full text-center py-12 text-muted-foreground">
