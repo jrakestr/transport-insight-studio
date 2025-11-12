@@ -1,19 +1,19 @@
 /**
  * MetricsImport Component
  * 
- * Purpose: Import agency contract metrics from CSV files into the agency_contractors table.
+ * Purpose: Import agency contract metrics from CSV files into the transportation_providers table.
  * 
  * Data Flow:
  * 1. Parse CSV file with 68 columns containing contract and performance data
  * 2. For each row:
  *    a. Look up agency_id from transit_agencies using ntd_id
- *    b. Create or find transportation provider by name
+ *    b. Create or find service provider by name
  *    c. Build contract record with metrics and relationships
- * 3. Batch insert into agency_contractors table
+ * 3. Batch insert into transportation_providers table
  * 
  * Database Structure:
- * - transportation_providers: Directory of provider entities (id, name, type, location, website, notes)
- * - agency_contractors: Contract records with 68 metric columns + foreign keys (agency_id, provider_id)
+ * - service_providers: Directory of provider entities (id, name, type, location, website, notes)
+ * - transportation_providers: Contract records with 68 metric columns + foreign keys (agency_id, provider_id)
  * - transit_agencies: Agency directory (used for ntd_id lookup)
  * 
  * Each row in the CSV represents a unique agency-provider-mode contract with performance metrics.
@@ -202,7 +202,7 @@ export default function MetricsImport() {
     try {
       // Try to find existing provider
       const { data: existingProvider, error: findError } = await supabase
-        .from('transportation_providers')
+        .from('service_providers')
         .select('id')
         .eq('name', providerName)
         .maybeSingle();
@@ -218,7 +218,7 @@ export default function MetricsImport() {
 
       // Create new provider if not found
       const { data: newProvider, error: createError } = await supabase
-        .from('transportation_providers')
+        .from('service_providers')
         .insert({ name: providerName })
         .select('id')
         .single();
@@ -350,10 +350,10 @@ export default function MetricsImport() {
           }
         }
 
-        // Batch insert into agency_contractors table
+        // Batch insert into transportation_providers table
         if (contractorRecords.length > 0) {
           const { error, count } = await supabase
-            .from('agency_contractors')
+            .from('transportation_providers')
             .insert(contractorRecords);
 
           if (error) {
@@ -464,11 +464,11 @@ export default function MetricsImport() {
               </p>
               <p>
                 <strong>Processing:</strong> Each row is validated, agency_id is looked up via ntd_id, 
-                provider records are created/found, then inserted into agency_contractors table.
+                provider records are created/found, then inserted into transportation_providers table.
               </p>
               <p>
                 <strong>Result:</strong> Contract records with proper relationships to both 
-                transit_agencies and transportation_providers tables.
+                transit_agencies and service_providers tables.
               </p>
             </div>
           </div>

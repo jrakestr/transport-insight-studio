@@ -372,8 +372,8 @@ const AgencyDetail = () => {
                             {opportunity.articles && (
                               <span>Source: {opportunity.articles.title}</span>
                             )}
-                            {opportunity.transportation_providers && (
-                              <span>• Provider: {opportunity.transportation_providers.name}</span>
+                            {opportunity.service_providers && (
+                              <span>• Provider: {opportunity.service_providers.name}</span>
                             )}
                             <span>• {new Date(opportunity.created_at).toLocaleDateString()}</span>
                           </div>

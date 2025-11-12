@@ -8,10 +8,10 @@ import { Badge } from "@/components/ui/badge";
 
 export default function TransportationProvidersAdmin() {
   const { data: contractors, isLoading } = useQuery({
-    queryKey: ["agency-contractors-admin"],
+    queryKey: ["transportation-providers-admin"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("agency_contractors")
+        .from("transportation_providers")
         .select("*")
         .not("contractee_operator_name", "is", null)
         .order("contractee_operator_name");

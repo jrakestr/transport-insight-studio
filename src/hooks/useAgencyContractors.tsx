@@ -51,7 +51,7 @@ export function useAgencyContractors(agencyId: string | undefined) {
       if (!agencyId) return null;
       
       const { data, error } = await supabase
-        .from("agency_contractors")
+        .from("transportation_providers")
         .select("*")
         .eq("agency_id", agencyId)
         .order("provider_name", { ascending: true });
@@ -86,7 +86,7 @@ export function useProviderContracts(providerName: string | undefined) {
       if (!providerName) return null;
       
       const { data, error } = await supabase
-        .from("agency_contractors")
+        .from("transportation_providers")
         .select(`
           *,
           transit_agencies (

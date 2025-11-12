@@ -9,10 +9,10 @@ import { Loader2, Building2, MapPin, Users, DollarSign } from "lucide-react";
 
 const TransportationProviders = () => {
   const { data: contractors, isLoading } = useQuery({
-    queryKey: ["agency-contractors"],
+    queryKey: ["transportation-providers"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("agency_contractors")
+        .from("transportation_providers")
         .select("*")
         .not("contractee_operator_name", "is", null)
         .order("contractee_operator_name");

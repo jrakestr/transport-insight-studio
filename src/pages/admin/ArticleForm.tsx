@@ -116,7 +116,7 @@ export default function ArticleForm() {
       
       if (article.article_providers) {
         const providerPromises = article.article_providers.map(async (p: any) => {
-          const { data } = await supabase.from('transportation_providers').select('*').eq('id', p.provider_id).single();
+          const { data } = await supabase.from('service_providers').select('*').eq('id', p.provider_id).single();
           return data;
         });
         Promise.all(providerPromises).then(data => setInitialProviders(data.filter(Boolean)));
@@ -182,7 +182,7 @@ export default function ArticleForm() {
         for (const provider of data.providers) {
           // Check if provider already exists by name
           const { data: existing } = await supabase
-            .from('transportation_providers')
+            .from('service_providers')
             .select('id')
             .ilike('name', provider.name)
             .single();
@@ -191,7 +191,7 @@ export default function ArticleForm() {
             createdProviderIds.push(existing.id);
           } else {
             const { data: newProvider, error: providerError } = await supabase
-              .from('transportation_providers')
+              .from('service_providers')
               .insert({
                 name: provider.name,
                 location: provider.location || null,
