@@ -56,7 +56,8 @@ const TransportationProviders = () => {
         .from("transportation_providers")
         .select("*")
         .not("contractee_operator_name", "is", null)
-        .order("contractee_operator_name");
+        .order("contractee_operator_name")
+        .limit(10000);
       
       if (error) throw error;
       
