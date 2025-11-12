@@ -205,17 +205,19 @@ Deno.serve(async (req) => {
         }
       }
 
-      // Batch insert
+      // Batch insert with better error handling
       if (records.length > 0) {
         const { error: insertError } = await supabaseClient
           .from('transportation_providers')
           .insert(records);
 
         if (insertError) {
-          console.error('Batch insert error:', insertError);
-          errors.push(`Batch insert failed: ${insertError.message}`);
+          console.error(`Batch ${Math.floor(i/batchSize)} insert error:`, insertError);
+          errors.push(`Batch ${Math.floor(i/batchSize)}: ${insertError.message}`);
+          // Continue processing other batches
         } else {
           insertedCount += records.length;
+          console.log(`Batch ${Math.floor(i/batchSize)} completed: ${records.length} records inserted`);
         }
       }
 
