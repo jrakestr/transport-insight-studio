@@ -5,12 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useProviders } from "@/hooks/useProviders";
 import { Loader2, Truck, MapPin, ExternalLink, Tag } from "lucide-react";
-
 const Providers = () => {
-  const { data: providers, isLoading } = useProviders();
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  const {
+    data: providers,
+    isLoading
+  } = useProviders();
+  return <div className="min-h-screen flex flex-col">
       <Header />
       
       <main className="flex-1">
@@ -22,11 +22,10 @@ const Providers = () => {
               <Badge variant="secondary" className="mb-4">
                 Providers Directory
               </Badge>
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Transportation <span className="text-primary">Providers</span>
+              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">Service Providers & Vendors<span className="text-primary">Providers</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
-                Leading transportation service providers, contractors, and operators serving the transit industry.
+                Leading service providers, vendors, and organizations serving the transit industry. (Auto-extracted from News Articles)          
               </p>
             </div>
           </div>
@@ -37,20 +36,10 @@ const Providers = () => {
           <div className="section-container">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {isLoading ? (
-                  <div className="col-span-full flex items-center justify-center py-12">
+                {isLoading ? <div className="col-span-full flex items-center justify-center py-12">
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                  </div>
-                ) : providers && providers.length > 0 ? (
-                  providers.map((provider) => (
-                    <Link 
-                      key={provider.id}
-                      to={`/providers/${provider.id}`}
-                      className="block"
-                    >
-                      <Card 
-                        className="border border-border hover:border-primary transition-colors cursor-pointer h-full"
-                      >
+                  </div> : providers && providers.length > 0 ? providers.map(provider => <Link key={provider.id} to={`/providers/${provider.id}`} className="block">
+                      <Card className="border border-border hover:border-primary transition-colors cursor-pointer h-full">
                         <CardContent className="p-6">
                           <div className="flex items-start gap-3 mb-4">
                             <div className="p-2 rounded-lg bg-primary/10">
@@ -60,44 +49,32 @@ const Providers = () => {
                               <h3 className="font-semibold text-lg mb-1 line-clamp-2">
                                 {provider.name}
                               </h3>
-                              {provider.provider_type && (
-                                <Badge variant="outline" className="mt-1">
+                              {provider.provider_type && <Badge variant="outline" className="mt-1">
                                   {provider.provider_type}
-                                </Badge>
-                              )}
+                                </Badge>}
                             </div>
                           </div>
 
                           <div className="space-y-2 mb-4">
-                            {provider.location && (
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            {provider.location && <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <MapPin className="h-4 w-4 flex-shrink-0" />
                                 <span className="line-clamp-1">{provider.location}</span>
-                              </div>
-                            )}
+                              </div>}
                           </div>
 
-                          {provider.website && (
-                            <div className="inline-flex items-center gap-2 text-sm text-primary">
+                          {provider.website && <div className="inline-flex items-center gap-2 text-sm text-primary">
                               <ExternalLink className="h-3 w-3" />
                               Visit Website
-                            </div>
-                          )}
+                            </div>}
 
-                          {provider.notes && (
-                            <p className="mt-4 text-sm text-muted-foreground line-clamp-3 border-t pt-4">
+                          {provider.notes && <p className="mt-4 text-sm text-muted-foreground line-clamp-3 border-t pt-4">
                               {provider.notes}
-                            </p>
-                          )}
+                            </p>}
                         </CardContent>
                       </Card>
-                    </Link>
-                  ))
-                ) : (
-                  <div className="col-span-full text-center py-12 text-muted-foreground">
+                    </Link>) : <div className="col-span-full text-center py-12 text-muted-foreground">
                     No providers available at this time.
-                  </div>
-                )}
+                  </div>}
               </div>
             </div>
           </div>
@@ -105,8 +82,6 @@ const Providers = () => {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Providers;
