@@ -20,12 +20,12 @@ const Providers = () => {
           <div className="section-container relative py-16 lg:py-24">
             <div className="max-w-3xl">
               <Badge variant="secondary" className="mb-4">
-                Providers Directory
+                Transportation Providers Directory
               </Badge>
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">Service Providers <span className="text-primary">& Vendors</span>
+              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">Transportation <span className="text-primary">Providers</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
-                Leading service providers, vendors, and organizations serving the transit industry. (Auto-extracted from News Articles)          
+                Transportation providers with contractual relationships to transit agencies. Data from National Transit Database (NTD).
               </p>
             </div>
           </div>
