@@ -112,7 +112,7 @@ export default function MetricsImport() {
             mode_contract: row.mode_contract || null,
             tos: row.tos || null,
             contractee_ntd_id: row.contractee_ntd_id || null,
-            contractee_operator_name: row.contractee_operator_name || null,
+            transportation_provider: row.contractee_operator_name || null,
             reporter_contractual_position: row.reporter_contractual_position || null,
             type_of_contract: row.type_of_contract || null,
             primary_feature: row.primary_feature || null,
@@ -180,7 +180,7 @@ export default function MetricsImport() {
             <h2 className="text-2xl font-bold mb-2">Import Transportation Providers Data</h2>
             <p className="text-muted-foreground">
               Upload CSV file with all 68 columns. Data will be imported into the transportation_providers table.
-              Provider names are in the contractee_operator_name column.
+              Provider names from contractee_operator_name will be stored in the transportation_provider column.
             </p>
           </div>
 
@@ -228,7 +228,7 @@ export default function MetricsImport() {
               All 68 CSV columns will be imported: agency_id, agency, city, state, ntd_id, organization_type, 
               reporter_type, report_year, uace_code, uza_name, primary_uza_population, agency_voms, mode, mode_name, 
               type_of_service, mode_voms, all fare/cost/passenger metrics (with _1 variants), contract fields 
-              (ntd_id_contract through contractee_agency_id), and transportation provider in contractee_operator_name.
+              (ntd_id_contract through contractee_agency_id), with transportation provider names stored in transportation_provider column.
             </p>
           </div>
         </div>

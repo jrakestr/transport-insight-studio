@@ -779,7 +779,6 @@ export type Database = {
           contract_capital_leasing_expenses: number | null
           contractee_agency_id: string | null
           contractee_ntd_id: string | null
-          contractee_operator_name: string | null
           cost_per_hour: number | null
           cost_per_hour_questionable: string | null
           cost_per_passenger: number | null
@@ -832,6 +831,7 @@ export type Database = {
           total_modal_expenses: number | null
           total_operating_expenses: number | null
           total_operating_expenses_1: number | null
+          transportation_provider: string | null
           type_of_contract: string | null
           type_of_service: string | null
           uace_code: string | null
@@ -857,7 +857,6 @@ export type Database = {
           contract_capital_leasing_expenses?: number | null
           contractee_agency_id?: string | null
           contractee_ntd_id?: string | null
-          contractee_operator_name?: string | null
           cost_per_hour?: number | null
           cost_per_hour_questionable?: string | null
           cost_per_passenger?: number | null
@@ -910,6 +909,7 @@ export type Database = {
           total_modal_expenses?: number | null
           total_operating_expenses?: number | null
           total_operating_expenses_1?: number | null
+          transportation_provider?: string | null
           type_of_contract?: string | null
           type_of_service?: string | null
           uace_code?: string | null
@@ -935,7 +935,6 @@ export type Database = {
           contract_capital_leasing_expenses?: number | null
           contractee_agency_id?: string | null
           contractee_ntd_id?: string | null
-          contractee_operator_name?: string | null
           cost_per_hour?: number | null
           cost_per_hour_questionable?: string | null
           cost_per_passenger?: number | null
@@ -988,6 +987,7 @@ export type Database = {
           total_modal_expenses?: number | null
           total_operating_expenses?: number | null
           total_operating_expenses_1?: number | null
+          transportation_provider?: string | null
           type_of_contract?: string | null
           type_of_service?: string | null
           uace_code?: string | null
