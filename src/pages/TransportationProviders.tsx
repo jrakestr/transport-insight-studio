@@ -14,6 +14,9 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 const TransportationProviders = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [contractTypeFilter, setContractTypeFilter] = useState<string>("all");
+  const [modeFilter, setModeFilter] = useState<string>("all");
+  const [tosFilter, setTosFilter] = useState<string>("all");
+  const [stateFilter, setStateFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
 
@@ -38,12 +41,25 @@ const TransportationProviders = () => {
             totalVoms: 0,
             agencies: new Set(),
             contractTypes: new Set(),
+            modes: new Set(),
+            typeOfServices: new Set(),
+            states: new Set(),
           };
         }
         acc[name].contracts.push(contractor);
         acc[name].totalVoms += contractor.voms_under_contract || 0;
         if (contractor.agency_name) acc[name].agencies.add(contractor.agency_name);
         if (contractor.type_of_contract) acc[name].contractTypes.add(contractor.type_of_contract);
+        if (contractor.mode) acc[name].modes.add(contractor.mode);
+        if (contractor.tos) acc[name].typeOfServices.add(contractor.tos);
+        
+        // Get state from agency relationship
+        const stateMatch = data.find((d: any) => d.agency_id === contractor.agency_id);
+        if (stateMatch?.agency_name) {
+          // Extract state from agency if available through joined data
+          acc[name].states.add(contractor.contractee_ntd_id?.substring(0, 2) || 'Unknown');
+        }
+        
         return acc;
       }, {});
       
@@ -51,11 +67,14 @@ const TransportationProviders = () => {
         ...provider,
         agencies: Array.from(provider.agencies),
         contractTypes: Array.from(provider.contractTypes),
+        modes: Array.from(provider.modes),
+        typeOfServices: Array.from(provider.typeOfServices),
+        states: Array.from(provider.states),
       }));
     },
   });
 
-  // Extract unique contract types
+  // Extract unique filter options
   const contractTypes = useMemo(() => {
     if (!contractors) return [];
     const types = new Set<string>();
@@ -63,6 +82,33 @@ const TransportationProviders = () => {
       provider.contractTypes.forEach((type: string) => types.add(type));
     });
     return Array.from(types).sort();
+  }, [contractors]);
+
+  const modes = useMemo(() => {
+    if (!contractors) return [];
+    const modeSet = new Set<string>();
+    contractors.forEach((provider: any) => {
+      provider.modes.forEach((mode: string) => modeSet.add(mode));
+    });
+    return Array.from(modeSet).sort();
+  }, [contractors]);
+
+  const typeOfServices = useMemo(() => {
+    if (!contractors) return [];
+    const tosSet = new Set<string>();
+    contractors.forEach((provider: any) => {
+      provider.typeOfServices.forEach((tos: string) => tosSet.add(tos));
+    });
+    return Array.from(tosSet).sort();
+  }, [contractors]);
+
+  const states = useMemo(() => {
+    if (!contractors) return [];
+    const stateSet = new Set<string>();
+    contractors.forEach((provider: any) => {
+      provider.states.forEach((state: string) => stateSet.add(state));
+    });
+    return Array.from(stateSet).sort();
   }, [contractors]);
 
   // Filter and paginate data
@@ -73,10 +119,16 @@ const TransportationProviders = () => {
       const matchesSearch = provider.name.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesContractType = contractTypeFilter === "all" || 
         provider.contractTypes.some((type: string) => type === contractTypeFilter);
+      const matchesMode = modeFilter === "all" || 
+        provider.modes.some((mode: string) => mode === modeFilter);
+      const matchesTos = tosFilter === "all" || 
+        provider.typeOfServices.some((tos: string) => tos === tosFilter);
+      const matchesState = stateFilter === "all" || 
+        provider.states.some((state: string) => state === stateFilter);
       
-      return matchesSearch && matchesContractType;
+      return matchesSearch && matchesContractType && matchesMode && matchesTos && matchesState;
     });
-  }, [contractors, searchQuery, contractTypeFilter]);
+  }, [contractors, searchQuery, contractTypeFilter, modeFilter, tosFilter, stateFilter]);
 
   const paginatedContractors = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;
@@ -93,6 +145,21 @@ const TransportationProviders = () => {
 
   const handleContractTypeFilterChange = (value: string) => {
     setContractTypeFilter(value);
+    setCurrentPage(1);
+  };
+
+  const handleModeFilterChange = (value: string) => {
+    setModeFilter(value);
+    setCurrentPage(1);
+  };
+
+  const handleTosFilterChange = (value: string) => {
+    setTosFilter(value);
+    setCurrentPage(1);
+  };
+
+  const handleStateFilterChange = (value: string) => {
+    setStateFilter(value);
     setCurrentPage(1);
   };
 
@@ -141,8 +208,41 @@ const TransportationProviders = () => {
                       className="pl-10"
                     />
                   </div>
+                  <Select value={modeFilter} onValueChange={handleModeFilterChange}>
+                    <SelectTrigger className="w-full md:w-[180px]">
+                      <SelectValue placeholder="Mode" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Modes</SelectItem>
+                      {modes.map((mode) => (
+                        <SelectItem key={mode} value={mode}>{mode}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select value={tosFilter} onValueChange={handleTosFilterChange}>
+                    <SelectTrigger className="w-full md:w-[200px]">
+                      <SelectValue placeholder="Type of Service" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Service Types</SelectItem>
+                      {typeOfServices.map((tos) => (
+                        <SelectItem key={tos} value={tos}>{tos}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select value={stateFilter} onValueChange={handleStateFilterChange}>
+                    <SelectTrigger className="w-full md:w-[140px]">
+                      <SelectValue placeholder="State" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All States</SelectItem>
+                      {states.map((state) => (
+                        <SelectItem key={state} value={state}>{state}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <Select value={contractTypeFilter} onValueChange={handleContractTypeFilterChange}>
-                    <SelectTrigger className="w-full md:w-[240px]">
+                    <SelectTrigger className="w-full md:w-[200px]">
                       <SelectValue placeholder="Contract Type" />
                     </SelectTrigger>
                     <SelectContent>
