@@ -96,18 +96,16 @@ Deno.serve(async (req) => {
 
     console.log('Starting transportation providers import...');
 
-    // Fetch the CSV file from storage
-    const csvUrl = `${Deno.env.get('SUPABASE_URL')}/storage/v1/object/public/data-files/2024_Metrics_With_Contracts_JOINED.csv`;
+    // Get CSV content from request body
+    const { csvContent } = await req.json();
     
-    console.log('Fetching CSV from:', csvUrl);
-    const csvResponse = await fetch(csvUrl);
-    
-    if (!csvResponse.ok) {
-      throw new Error(`Failed to fetch CSV: ${csvResponse.statusText}`);
+    if (!csvContent) {
+      throw new Error('No CSV content provided');
     }
-
-    const csvText = await csvResponse.text();
-    const lines = csvText.split('\n').filter(line => line.trim());
+    
+    console.log('Processing CSV content...');
+    const csvText = csvContent;
+    const lines = csvText.split('\n').filter((line: string) => line.trim());
     
     if (lines.length < 2) {
       throw new Error('CSV file is empty or invalid');

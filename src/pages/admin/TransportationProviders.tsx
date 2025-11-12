@@ -52,9 +52,20 @@ export default function TransportationProvidersAdmin() {
   const handleImport = async () => {
     setIsImporting(true);
     try {
+      toast.info("Loading CSV file...");
+      
+      // Fetch the CSV from public folder
+      const response = await fetch('/data/2024_Metrics_With_Contracts_JOINED.csv');
+      if (!response.ok) {
+        throw new Error('Failed to load CSV file');
+      }
+      const csvContent = await response.text();
+      
       toast.info("Starting import of transportation providers data...");
       
-      const { data, error } = await supabase.functions.invoke('import-transportation-providers');
+      const { data, error } = await supabase.functions.invoke('import-transportation-providers', {
+        body: { csvContent }
+      });
       
       if (error) throw error;
       
