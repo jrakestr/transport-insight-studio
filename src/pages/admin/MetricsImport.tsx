@@ -146,6 +146,32 @@ export default function MetricsImport() {
             
             if (agency) {
               contractRecord.agency_id = agency.id;
+              
+              // Create or find provider in transportation_providers table
+              if (contractRecord.provider_name) {
+                // Try to find existing provider
+                const { data: existingProvider } = await supabase
+                  .from('transportation_providers')
+                  .select('id')
+                  .eq('name', contractRecord.provider_name)
+                  .single();
+                
+                if (existingProvider) {
+                  contractRecord.provider_id = existingProvider.id;
+                } else {
+                  // Create new provider
+                  const { data: newProvider } = await supabase
+                    .from('transportation_providers')
+                    .insert({ name: contractRecord.provider_name })
+                    .select('id')
+                    .single();
+                  
+                  if (newProvider) {
+                    contractRecord.provider_id = newProvider.id;
+                  }
+                }
+              }
+              
               contractorRecords.push(contractRecord);
             }
           }
