@@ -63,10 +63,10 @@ export default function MetricsImport() {
             row[header] = values[index] || '';
           });
 
-          // Parse metrics data
+          // Parse ALL CSV columns into metrics record
           const metricsRecord: any = {
             agency_id: row.agency_id || null,
-            agency_name: row.agency || null,
+            agency: row.agency || null,
             city: row.city || null,
             state: row.state || null,
             ntd_id: row.ntd_id || null,
@@ -81,65 +81,67 @@ export default function MetricsImport() {
             mode_name: row.mode_name || null,
             type_of_service: row.type_of_service || null,
             mode_voms: row.mode_voms ? parseInt(row.mode_voms) : null,
-            fare_revenues_per_unlinked: row.fare_revenues_per_unlinked_1 ? parseFloat(row.fare_revenues_per_unlinked_1) : null,
-            fare_revenues_per_total: row.fare_revenues_per_total_1 ? parseFloat(row.fare_revenues_per_total_1) : null,
+            fare_revenues_per_unlinked: row.fare_revenues_per_unlinked ? parseFloat(row.fare_revenues_per_unlinked) : null,
+            fare_revenues_per_unlinked_1: row.fare_revenues_per_unlinked_1 ? parseFloat(row.fare_revenues_per_unlinked_1) : null,
+            fare_revenues_per_total: row.fare_revenues_per_total ? parseFloat(row.fare_revenues_per_total) : null,
+            fare_revenues_per_total_1: row.fare_revenues_per_total_1 ? parseFloat(row.fare_revenues_per_total_1) : null,
             cost_per_hour: row.cost_per_hour ? parseFloat(row.cost_per_hour) : null,
-            cost_per_hour_questionable: row.cost_per_hour_questionable === 'true',
-            passengers_per_hour: row.passengers_per_hour_1 ? parseFloat(row.passengers_per_hour_1) : null,
-            cost_per_passenger: row.cost_per_passenger_1 ? parseFloat(row.cost_per_passenger_1) : null,
-            cost_per_passenger_mile: row.cost_per_passenger_mile_1 ? parseFloat(row.cost_per_passenger_mile_1) : null,
-            fare_revenues_earned: row.fare_revenues_earned_1 ? parseFloat(row.fare_revenues_earned_1) : null,
-            total_operating_expenses: row.total_operating_expenses_1 ? parseFloat(row.total_operating_expenses_1) : null,
-            unlinked_passenger_trips: row.unlinked_passenger_trips_1 ? parseInt(row.unlinked_passenger_trips_1) : null,
-            vehicle_revenue_hours: row.vehicle_revenue_hours_1 ? parseFloat(row.vehicle_revenue_hours_1) : null,
+            cost_per_hour_questionable: row.cost_per_hour_questionable || null,
+            passengers_per_hour: row.passengers_per_hour ? parseFloat(row.passengers_per_hour) : null,
+            passengers_per_hour_1: row.passengers_per_hour_1 ? parseFloat(row.passengers_per_hour_1) : null,
+            cost_per_passenger: row.cost_per_passenger ? parseFloat(row.cost_per_passenger) : null,
+            cost_per_passenger_1: row.cost_per_passenger_1 ? parseFloat(row.cost_per_passenger_1) : null,
+            cost_per_passenger_mile: row.cost_per_passenger_mile ? parseFloat(row.cost_per_passenger_mile) : null,
+            cost_per_passenger_mile_1: row.cost_per_passenger_mile_1 ? parseFloat(row.cost_per_passenger_mile_1) : null,
+            fare_revenues_earned: row.fare_revenues_earned ? parseFloat(row.fare_revenues_earned) : null,
+            fare_revenues_earned_1: row.fare_revenues_earned_1 ? parseFloat(row.fare_revenues_earned_1) : null,
+            total_operating_expenses: row.total_operating_expenses ? parseFloat(row.total_operating_expenses) : null,
+            total_operating_expenses_1: row.total_operating_expenses_1 ? parseFloat(row.total_operating_expenses_1) : null,
+            unlinked_passenger_trips: row.unlinked_passenger_trips ? parseInt(row.unlinked_passenger_trips) : null,
+            unlinked_passenger_trips_1: row.unlinked_passenger_trips_1 ? parseInt(row.unlinked_passenger_trips_1) : null,
+            vehicle_revenue_hours: row.vehicle_revenue_hours ? parseFloat(row.vehicle_revenue_hours) : null,
+            vehicle_revenue_hours_1: row.vehicle_revenue_hours_1 ? parseFloat(row.vehicle_revenue_hours_1) : null,
             passenger_miles: row.passenger_miles ? parseFloat(row.passenger_miles) : null,
-            passenger_miles_questionable: row.passenger_miles_questionable === 'true',
-            vehicle_revenue_miles: row.vehicle_revenue_miles_1 ? parseFloat(row.vehicle_revenue_miles_1) : null,
+            passenger_miles_questionable: row.passenger_miles_questionable || null,
+            vehicle_revenue_miles: row.vehicle_revenue_miles ? parseFloat(row.vehicle_revenue_miles) : null,
+            vehicle_revenue_miles_1: row.vehicle_revenue_miles_1 ? parseFloat(row.vehicle_revenue_miles_1) : null,
+            ntd_id_contract: row.ntd_id_contract || null,
+            agency_name: row.agency_name || null,
+            reporter_type_contract: row.reporter_type_contract || null,
+            reporting_module: row.reporting_module || null,
+            mode_contract: row.mode_contract || null,
+            tos: row.tos || null,
+            contractee_ntd_id: row.contractee_ntd_id || null,
+            contractee_operator_name: row.contractee_operator_name || null,
+            reporter_contractual_position: row.reporter_contractual_position || null,
+            type_of_contract: row.type_of_contract || null,
+            primary_feature: row.primary_feature || null,
+            buyer_supplies_vehicles_to_seller: row.buyer_supplies_vehicles_to_seller || null,
+            buyer_provides_maintenance_facility_to_seller: row.buyer_provides_maintenance_facility_to_seller || null,
+            other_public_assets_provided: row.other_public_assets_provided || null,
+            other_public_assets_provided_desc: row.other_public_assets_provided_desc || null,
+            service_captured: row.service_captured || null,
+            other_party: row.other_party || null,
+            fares_retained_by: row.fares_retained_by || null,
+            voms_under_contract: row.voms_under_contract ? parseInt(row.voms_under_contract) : null,
+            months_seller_operated_in_fy: row.months_seller_operated_in_fy ? parseInt(row.months_seller_operated_in_fy) : null,
+            pt_fare_revenues_passenger_fees: row.pt_fare_revenues_passenger_fees ? parseFloat(row.pt_fare_revenues_passenger_fees) : null,
+            passenger_out_of_pocket_expenses: row.passenger_out_of_pocket_expenses ? parseFloat(row.passenger_out_of_pocket_expenses) : null,
+            direct_payment_agency_subsidy: row.direct_payment_agency_subsidy ? parseFloat(row.direct_payment_agency_subsidy) : null,
+            contract_capital_leasing_expenses: row.contract_capital_leasing_expenses ? parseFloat(row.contract_capital_leasing_expenses) : null,
+            other_operating_expenses_incurred_by_the_buyer: row.other_operating_expenses_incurred_by_the_buyer ? parseFloat(row.other_operating_expenses_incurred_by_the_buyer) : null,
+            total_modal_expenses: row.total_modal_expenses ? parseFloat(row.total_modal_expenses) : null,
+            other_reconciling_item_expenses_incurred_by_the_buyer: row.other_reconciling_item_expenses_incurred_by_the_buyer ? parseFloat(row.other_reconciling_item_expenses_incurred_by_the_buyer) : null,
+            contractee_agency_id: row.contractee_agency_id || null,
           };
 
+          // Add record if agency_id exists
           if (metricsRecord.agency_id) {
             metricsRecords.push(metricsRecord);
           }
-
-          // Parse contractor data if present
-          if (row.ntd_id_contract && row.agency_id) {
-            const contractorRecord: any = {
-              agency_id: row.agency_id,
-              ntd_id: row.ntd_id_contract || null,
-              agency_name: row.agency_name || null,
-              reporter_type: row.reporter_type_contract || null,
-              reporting_module: row.reporting_module || null,
-              mode: row.mode_contract || null,
-              tos: row.tos || null,
-              contractee_ntd_id: row.contractee_ntd_id || null,
-              contractee_operator_name: row.contractee_operator_name || null,
-              reporter_contractual_position: row.reporter_contractual_position || null,
-              type_of_contract: row.type_of_contract || null,
-              primary_feature: row.primary_feature || null,
-              buyer_supplies_vehicles_to_seller: row.buyer_supplies_vehicles_to_seller === 'Y',
-              buyer_provides_maintenance_facility_to_seller: row.buyer_provides_maintenance_facility_to_seller === 'Y',
-              other_public_assets_provided: row.other_public_assets_provided === 'Y',
-              other_public_assets_provided_desc: row.other_public_assets_provided_desc || null,
-              service_captured: row.service_captured || null,
-              other_party: row.other_party || null,
-              fares_retained_by: row.fares_retained_by || null,
-              voms_under_contract: row.voms_under_contract ? parseInt(row.voms_under_contract) : null,
-              months_seller_operated_in_fy: row.months_seller_operated_in_fy ? parseInt(row.months_seller_operated_in_fy) : null,
-              pt_fare_revenues_passenger_fees: row.pt_fare_revenues_passenger_fees ? parseFloat(row.pt_fare_revenues_passenger_fees) : null,
-              passenger_out_of_pocket_expenses: row.passenger_out_of_pocket_expenses ? parseFloat(row.passenger_out_of_pocket_expenses) : null,
-              direct_payment_agency_subsidy: row.direct_payment_agency_subsidy ? parseFloat(row.direct_payment_agency_subsidy) : null,
-              contract_capital_leasing_expenses: row.contract_capital_leasing_expenses ? parseFloat(row.contract_capital_leasing_expenses) : null,
-              other_operating_expenses_incurred_by_the_buyer: row.other_operating_expenses_incurred_by_the_buyer ? parseFloat(row.other_operating_expenses_incurred_by_the_buyer) : null,
-              total_modal_expenses: row.total_modal_expenses ? parseFloat(row.total_modal_expenses) : null,
-              other_reconciling_item_expenses_incurred_by_the_buyer: row.other_reconciling_item_expenses_incurred_by_the_buyer ? parseFloat(row.other_reconciling_item_expenses_incurred_by_the_buyer) : null,
-              contractee_agency_id: row.contractee_agency_id || null,
-            };
-
-            contractorRecords.push(contractorRecord);
-          }
         }
 
-        // Insert metrics
+        // Insert metrics batch
         if (metricsRecords.length > 0) {
           const { error: metricsError } = await supabase
             .from('agency_performance_metrics')
@@ -147,17 +149,6 @@ export default function MetricsImport() {
           
           if (metricsError) {
             console.error('Metrics insert error:', metricsError);
-          }
-        }
-
-        // Insert contractors
-        if (contractorRecords.length > 0) {
-          const { error: contractorError } = await supabase
-            .from('agency_contractors')
-            .insert(contractorRecords);
-          
-          if (contractorError) {
-            console.error('Contractor insert error:', contractorError);
           }
         }
 
@@ -188,8 +179,8 @@ export default function MetricsImport() {
           <div>
             <h2 className="text-2xl font-bold mb-2">Import Metrics & Contracts Data</h2>
             <p className="text-muted-foreground">
-              Upload a CSV file containing agency performance metrics and contractor relationships.
-              The file should match the NTD metrics format with contract data.
+              Upload CSV file with all 68 columns including agency metrics and contract data.
+              Transportation providers are in the contractee_operator_name column.
             </p>
           </div>
 
@@ -234,8 +225,10 @@ export default function MetricsImport() {
               Expected CSV Format
             </h3>
             <p className="text-sm text-muted-foreground">
-              The CSV should contain columns for agency information, performance metrics, and contract details.
-              Required fields include agency_id, mode, and various performance indicators.
+              All 68 CSV columns will be imported: agency_id, agency, city, state, ntd_id, organization_type, 
+              reporter_type, report_year, uace_code, uza_name, primary_uza_population, agency_voms, mode, mode_name, 
+              type_of_service, mode_voms, all fare/cost/passenger metrics (with _1 variants), contract fields 
+              (ntd_id_contract through contractee_agency_id), and transportation provider in contractee_operator_name.
             </p>
           </div>
         </div>
