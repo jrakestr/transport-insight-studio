@@ -458,64 +458,63 @@ const AgencyDetail = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <DollarSign className="h-5 w-5" />
-                      Service Contracts & Performance ({contractors.length})
+                      Service Contracts ({contractors.length})
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-6">
-                      {contractors.map((contract: any) => (
-                        <div key={contract.id} className="p-4 rounded-lg border bg-card">
-                          <div className="flex justify-between items-start mb-3">
-                            <div>
-                              <h3 className="font-semibold text-lg">{contract.contractee_operator_name || "Unknown Contractor"}</h3>
-                              <div className="flex flex-wrap gap-2 mt-2">
-                                {contract.mode && <Badge variant="outline">{contract.mode}</Badge>}
-                                {contract.tos && <Badge variant="secondary">{contract.tos}</Badge>}
-                                {contract.type_of_contract && <Badge>{contract.type_of_contract}</Badge>}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="grid md:grid-cols-3 gap-4 mt-4">
-                            {contract.voms_under_contract && (
-                              <div>
-                                <p className="text-sm text-muted-foreground">Vehicles Under Contract</p>
-                                <p className="text-xl font-bold">{contract.voms_under_contract}</p>
-                              </div>
-                            )}
-                            {contract.months_seller_operated_in_fy && (
-                              <div>
-                                <p className="text-sm text-muted-foreground">Months Operated</p>
-                                <p className="text-xl font-bold">{contract.months_seller_operated_in_fy} months</p>
-                              </div>
-                            )}
-                            {contract.total_modal_expenses && (
-                              <div>
-                                <p className="text-sm text-muted-foreground">Contract Expenses</p>
-                                <p className="text-xl font-bold">${(contract.total_modal_expenses / 1000000).toFixed(2)}M</p>
-                              </div>
-                            )}
-                            {contract.direct_payment_agency_subsidy && (
-                              <div>
-                                <p className="text-sm text-muted-foreground">Agency Subsidy</p>
-                                <p className="text-xl font-bold">${(contract.direct_payment_agency_subsidy / 1000000).toFixed(2)}M</p>
-                              </div>
-                            )}
-                            {contract.contract_capital_leasing_expenses && (
-                              <div>
-                                <p className="text-sm text-muted-foreground">Capital/Leasing</p>
-                                <p className="text-xl font-bold">${(contract.contract_capital_leasing_expenses / 1000000).toFixed(2)}M</p>
-                              </div>
-                            )}
-                            {contract.fares_retained_by && (
-                              <div>
-                                <p className="text-sm text-muted-foreground">Fares Retained By</p>
-                                <p className="text-xl font-bold">{contract.fares_retained_by}</p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left py-3 px-4 text-sm font-semibold">Contractor</th>
+                            <th className="text-left py-3 px-4 text-sm font-semibold">Mode/Service</th>
+                            <th className="text-right py-3 px-4 text-sm font-semibold">Vehicles</th>
+                            <th className="text-right py-3 px-4 text-sm font-semibold">Months</th>
+                            <th className="text-right py-3 px-4 text-sm font-semibold">Contract Expenses</th>
+                            <th className="text-right py-3 px-4 text-sm font-semibold">Agency Subsidy</th>
+                            <th className="text-left py-3 px-4 text-sm font-semibold">Fares Retained</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y">
+                          {contractors.map((contract: any) => (
+                            <tr key={contract.id} className="hover:bg-accent/50 transition-colors">
+                              <td className="py-3 px-4">
+                                <div className="font-medium">{contract.contractee_operator_name || "Unknown Contractor"}</div>
+                                {contract.type_of_contract && (
+                                  <div className="text-xs text-muted-foreground mt-1">{contract.type_of_contract}</div>
+                                )}
+                              </td>
+                              <td className="py-3 px-4">
+                                <div className="flex gap-1">
+                                  {contract.mode && <Badge variant="outline" className="text-xs">{contract.mode}</Badge>}
+                                  {contract.tos && <Badge variant="secondary" className="text-xs">{contract.tos}</Badge>}
+                                </div>
+                              </td>
+                              <td className="py-3 px-4 text-right font-medium">
+                                {contract.voms_under_contract || '-'}
+                              </td>
+                              <td className="py-3 px-4 text-right">
+                                {contract.months_seller_operated_in_fy || '-'}
+                              </td>
+                              <td className="py-3 px-4 text-right font-medium">
+                                {contract.total_modal_expenses 
+                                  ? `$${(contract.total_modal_expenses / 1000000).toFixed(2)}M`
+                                  : '-'}
+                              </td>
+                              <td className="py-3 px-4 text-right">
+                                {contract.direct_payment_agency_subsidy
+                                  ? `$${(contract.direct_payment_agency_subsidy / 1000000).toFixed(2)}M`
+                                  : '-'}
+                              </td>
+                              <td className="py-3 px-4">
+                                <Badge variant="outline" className="text-xs">
+                                  {contract.fares_retained_by || 'N/A'}
+                                </Badge>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </CardContent>
                 </Card>
