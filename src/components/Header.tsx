@@ -73,7 +73,7 @@ export const Header = () => {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/providers" className="cursor-pointer">
-                  Service Providers
+                  Service Providers & Vendors
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -161,7 +161,7 @@ export const Header = () => {
                 className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Service Providers
+                Service Providers & Vendors
               </Link>
               <Link
                 to="/playbook"
