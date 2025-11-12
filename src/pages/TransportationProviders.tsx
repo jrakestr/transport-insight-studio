@@ -17,6 +17,7 @@ const TransportationProviders = () => {
   const [modeFilter, setModeFilter] = useState<string>("all");
   const [tosFilter, setTosFilter] = useState<string>("all");
   const [stateFilter, setStateFilter] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<string>("name-asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
 
@@ -115,7 +116,7 @@ const TransportationProviders = () => {
   const filteredContractors = useMemo(() => {
     if (!contractors) return [];
     
-    return contractors.filter((provider: any) => {
+    let filtered = contractors.filter((provider: any) => {
       const matchesSearch = provider.name.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesContractType = contractTypeFilter === "all" || 
         provider.contractTypes.some((type: string) => type === contractTypeFilter);
@@ -128,7 +129,29 @@ const TransportationProviders = () => {
       
       return matchesSearch && matchesContractType && matchesMode && matchesTos && matchesState;
     });
-  }, [contractors, searchQuery, contractTypeFilter, modeFilter, tosFilter, stateFilter]);
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case "name-asc":
+          return a.name.localeCompare(b.name);
+        case "name-desc":
+          return b.name.localeCompare(a.name);
+        case "contracts-desc":
+          return b.contracts.length - a.contracts.length;
+        case "contracts-asc":
+          return a.contracts.length - b.contracts.length;
+        case "vehicles-desc":
+          return b.totalVoms - a.totalVoms;
+        case "vehicles-asc":
+          return a.totalVoms - b.totalVoms;
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }, [contractors, searchQuery, contractTypeFilter, modeFilter, tosFilter, stateFilter, sortBy]);
 
   const paginatedContractors = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;
@@ -160,6 +183,11 @@ const TransportationProviders = () => {
 
   const handleStateFilterChange = (value: string) => {
     setStateFilter(value);
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (value: string) => {
+    setSortBy(value);
     setCurrentPage(1);
   };
 
@@ -208,6 +236,19 @@ const TransportationProviders = () => {
                       className="pl-10"
                     />
                   </div>
+                  <Select value={sortBy} onValueChange={handleSortChange}>
+                    <SelectTrigger className="w-full md:w-[200px]">
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="name-asc">Name (A-Z)</SelectItem>
+                      <SelectItem value="name-desc">Name (Z-A)</SelectItem>
+                      <SelectItem value="contracts-desc">Most Contracts</SelectItem>
+                      <SelectItem value="contracts-asc">Least Contracts</SelectItem>
+                      <SelectItem value="vehicles-desc">Most Vehicles</SelectItem>
+                      <SelectItem value="vehicles-asc">Least Vehicles</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <Select value={modeFilter} onValueChange={handleModeFilterChange}>
                     <SelectTrigger className="w-full md:w-[180px]">
                       <SelectValue placeholder="Mode" />
