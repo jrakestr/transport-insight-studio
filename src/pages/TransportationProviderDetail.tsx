@@ -53,7 +53,7 @@ export default function TransportationProviderDetail() {
       <div className="min-h-screen flex flex-col">
         <Header />
         <div className="flex-1 container mx-auto px-4 py-12">
-          <Link to="/transportation-providers">
+          <Link to="/transportation-providers" state={{ fromDetail: true }}>
             <Button variant="ghost" className="mb-6">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Providers
@@ -77,7 +77,7 @@ export default function TransportationProviderDetail() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 container mx-auto px-4 py-12">
-        <Link to="/transportation-providers">
+        <Link to="/transportation-providers" state={{ fromDetail: true }}>
           <Button variant="ghost" className="mb-6">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Providers

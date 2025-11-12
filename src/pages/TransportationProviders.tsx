@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -8,18 +8,46 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Building2, MapPin, Users, DollarSign, Search } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 const TransportationProviders = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [contractTypeFilter, setContractTypeFilter] = useState<string>("all");
-  const [modeFilter, setModeFilter] = useState<string>("all");
-  const [tosFilter, setTosFilter] = useState<string>("all");
-  const [stateFilter, setStateFilter] = useState<string>("all");
-  const [sortBy, setSortBy] = useState<string>("name-asc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(12);
+  const location = useLocation();
+  const contentRef = useRef<HTMLDivElement>(null);
+  
+  // Initialize state from sessionStorage if returning from detail page
+  const [searchQuery, setSearchQuery] = useState(() => {
+    const saved = sessionStorage.getItem('providers-search');
+    return saved || "";
+  });
+  const [contractTypeFilter, setContractTypeFilter] = useState<string>(() => {
+    const saved = sessionStorage.getItem('providers-contract-filter');
+    return saved || "all";
+  });
+  const [modeFilter, setModeFilter] = useState<string>(() => {
+    const saved = sessionStorage.getItem('providers-mode-filter');
+    return saved || "all";
+  });
+  const [tosFilter, setTosFilter] = useState<string>(() => {
+    const saved = sessionStorage.getItem('providers-tos-filter');
+    return saved || "all";
+  });
+  const [stateFilter, setStateFilter] = useState<string>(() => {
+    const saved = sessionStorage.getItem('providers-state-filter');
+    return saved || "all";
+  });
+  const [sortBy, setSortBy] = useState<string>(() => {
+    const saved = sessionStorage.getItem('providers-sort');
+    return saved || "name-asc";
+  });
+  const [currentPage, setCurrentPage] = useState(() => {
+    const saved = sessionStorage.getItem('providers-page');
+    return saved ? parseInt(saved) : 1;
+  });
+  const [pageSize, setPageSize] = useState(() => {
+    const saved = sessionStorage.getItem('providers-page-size');
+    return saved ? parseInt(saved) : 12;
+  });
 
   const { data: contractors, isLoading } = useQuery({
     queryKey: ["transportation-providers"],
@@ -74,6 +102,32 @@ const TransportationProviders = () => {
       }));
     },
   });
+
+  // Restore scroll position when returning from detail page
+  useEffect(() => {
+    const savedScrollPosition = sessionStorage.getItem('providers-scroll');
+    if (savedScrollPosition && location.state?.fromDetail) {
+      setTimeout(() => {
+        window.scrollTo(0, parseInt(savedScrollPosition));
+      }, 100);
+    }
+  }, [location]);
+
+  // Save state to sessionStorage whenever it changes
+  useEffect(() => {
+    sessionStorage.setItem('providers-search', searchQuery);
+    sessionStorage.setItem('providers-contract-filter', contractTypeFilter);
+    sessionStorage.setItem('providers-mode-filter', modeFilter);
+    sessionStorage.setItem('providers-tos-filter', tosFilter);
+    sessionStorage.setItem('providers-state-filter', stateFilter);
+    sessionStorage.setItem('providers-sort', sortBy);
+    sessionStorage.setItem('providers-page', currentPage.toString());
+    sessionStorage.setItem('providers-page-size', pageSize.toString());
+  }, [searchQuery, contractTypeFilter, modeFilter, tosFilter, stateFilter, sortBy, currentPage, pageSize]);
+
+  const handleProviderClick = () => {
+    sessionStorage.setItem('providers-scroll', window.scrollY.toString());
+  };
 
   // Extract unique filter options
   const contractTypes = useMemo(() => {
@@ -320,7 +374,11 @@ const TransportationProviders = () => {
                   </div>
                 ) : paginatedContractors && paginatedContractors.length > 0 ? (
                   paginatedContractors.map((provider: any) => (
-                    <Link key={provider.name} to={`/transportation-providers/${encodeURIComponent(provider.name)}`}>
+                    <Link 
+                      key={provider.name} 
+                      to={`/transportation-providers/${encodeURIComponent(provider.name)}`}
+                      onClick={handleProviderClick}
+                    >
                       <Card className="border border-border hover:border-primary transition-colors h-full">
                         <CardContent className="p-6">
                           <div className="flex items-start gap-3 mb-4">
