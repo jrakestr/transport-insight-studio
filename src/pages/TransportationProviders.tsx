@@ -61,6 +61,8 @@ const TransportationProviders = () => {
       
       if (error) throw error;
       
+      console.log(`Fetched ${data?.length || 0} transportation provider records`);
+      
       // Group by contractor name
       const grouped = data.reduce((acc: any, contractor: any) => {
         const name = contractor.contractee_operator_name;
@@ -93,7 +95,7 @@ const TransportationProviders = () => {
         return acc;
       }, {});
       
-      return Object.values(grouped).map((provider: any) => ({
+      const uniqueProviders = Object.values(grouped).map((provider: any) => ({
         ...provider,
         agencies: Array.from(provider.agencies),
         contractTypes: Array.from(provider.contractTypes),
@@ -101,6 +103,11 @@ const TransportationProviders = () => {
         typeOfServices: Array.from(provider.typeOfServices),
         states: Array.from(provider.states),
       }));
+      
+      console.log(`Grouped into ${uniqueProviders.length} unique providers`);
+      console.log(`First provider: ${uniqueProviders[0]?.name}, Last provider: ${uniqueProviders[uniqueProviders.length - 1]?.name}`);
+      
+      return uniqueProviders;
     },
   });
 
