@@ -96,8 +96,8 @@ Deno.serve(async (req) => {
 
     console.log('Starting transportation providers import...');
 
-    // Fetch the CSV file from the public directory
-    const csvUrl = `${Deno.env.get('SUPABASE_URL')}/storage/v1/object/public/data/2024_Metrics_With_Contracts_JOINED.csv`;
+    // Fetch the CSV file from storage
+    const csvUrl = `${Deno.env.get('SUPABASE_URL')}/storage/v1/object/public/data-files/2024_Metrics_With_Contracts_JOINED.csv`;
     
     console.log('Fetching CSV from:', csvUrl);
     const csvResponse = await fetch(csvUrl);
@@ -202,7 +202,8 @@ Deno.serve(async (req) => {
           processedCount++;
         } catch (err) {
           console.error('Error processing row:', err);
-          errors.push(`Row ${i}: ${err.message}`);
+          const errorMsg = err instanceof Error ? err.message : String(err);
+          errors.push(`Row ${i}: ${errorMsg}`);
         }
       }
 
@@ -241,8 +242,9 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     console.error('Import error:', error);
+    const errorMsg = error instanceof Error ? error.message : String(error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMsg }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
