@@ -56,7 +56,7 @@ export default function AdminLayout() {
                 <Button variant="ghost" size="sm" asChild>
                   <Link to="/admin/metrics-import">
                     <FileText className="h-4 w-4 mr-2" />
-                    Import Metrics
+                    Import Transportation Providers
                   </Link>
                 </Button>
                 <Button variant="ghost" size="sm" asChild>
