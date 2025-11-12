@@ -8,11 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Upload, ExternalLink, FileText, X } from "lucide-react";
+import { Loader2, ExternalLink, FileText, X, Check, ChevronsUpDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 export default function OpportunityForm() {
   const { id } = useParams();
@@ -38,6 +40,9 @@ export default function OpportunityForm() {
   
   const [uploadingFile, setUploadingFile] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [agencyOpen, setAgencyOpen] = useState(false);
+  const [providerOpen, setProviderOpen] = useState(false);
+  const [articleOpen, setArticleOpen] = useState(false);
 
   useEffect(() => {
     if (opportunity) {
@@ -151,62 +156,188 @@ export default function OpportunityForm() {
 
             <div>
               <Label htmlFor="agency_id">Transit Agency</Label>
-              <Select
-                value={formData.agency_id || "none"}
-                onValueChange={(value) => setFormData({ ...formData, agency_id: value === "none" ? "" : value })}
-              >
-                <SelectTrigger id="agency_id">
-                  <SelectValue placeholder="Select agency (optional)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">None</SelectItem>
-                  {agencies?.map((agency) => (
-                    <SelectItem key={agency.id} value={agency.id}>
-                      {agency.agency_name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover open={agencyOpen} onOpenChange={setAgencyOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={agencyOpen}
+                    className="w-full justify-between"
+                  >
+                    {formData.agency_id
+                      ? agencies?.find((agency) => agency.id === formData.agency_id)?.agency_name
+                      : "Select agency (optional)"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder="Search agencies..." />
+                    <CommandList>
+                      <CommandEmpty>No agency found.</CommandEmpty>
+                      <CommandGroup>
+                        <CommandItem
+                          value="none"
+                          onSelect={() => {
+                            setFormData({ ...formData, agency_id: "" });
+                            setAgencyOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              !formData.agency_id ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          None
+                        </CommandItem>
+                        {agencies?.map((agency) => (
+                          <CommandItem
+                            key={agency.id}
+                            value={agency.agency_name}
+                            onSelect={() => {
+                              setFormData({ ...formData, agency_id: agency.id });
+                              setAgencyOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                formData.agency_id === agency.id ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            {agency.agency_name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div>
-              <Label htmlFor="provider_id">Transportation Provider</Label>
-              <Select
-                value={formData.provider_id || "none"}
-                onValueChange={(value) => setFormData({ ...formData, provider_id: value === "none" ? "" : value })}
-              >
-                <SelectTrigger id="provider_id">
-                  <SelectValue placeholder="Select provider (optional)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">None</SelectItem>
-                  {providers?.map((provider) => (
-                    <SelectItem key={provider.id} value={provider.id}>
-                      {provider.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label htmlFor="provider_id">Service Provider</Label>
+              <Popover open={providerOpen} onOpenChange={setProviderOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={providerOpen}
+                    className="w-full justify-between"
+                  >
+                    {formData.provider_id
+                      ? providers?.find((provider) => provider.id === formData.provider_id)?.name
+                      : "Select provider (optional)"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder="Search providers..." />
+                    <CommandList>
+                      <CommandEmpty>No provider found.</CommandEmpty>
+                      <CommandGroup>
+                        <CommandItem
+                          value="none"
+                          onSelect={() => {
+                            setFormData({ ...formData, provider_id: "" });
+                            setProviderOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              !formData.provider_id ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          None
+                        </CommandItem>
+                        {providers?.map((provider) => (
+                          <CommandItem
+                            key={provider.id}
+                            value={provider.name}
+                            onSelect={() => {
+                              setFormData({ ...formData, provider_id: provider.id });
+                              setProviderOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                formData.provider_id === provider.id ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            {provider.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div>
               <Label htmlFor="article_id">Related Article</Label>
-              <Select
-                value={formData.article_id || "none"}
-                onValueChange={(value) => setFormData({ ...formData, article_id: value === "none" ? "" : value })}
-              >
-                <SelectTrigger id="article_id">
-                  <SelectValue placeholder="Select article (optional)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">None</SelectItem>
-                  {articles?.map((article) => (
-                    <SelectItem key={article.id} value={article.id}>
-                      {article.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover open={articleOpen} onOpenChange={setArticleOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={articleOpen}
+                    className="w-full justify-between"
+                  >
+                    {formData.article_id
+                      ? articles?.find((article) => article.id === formData.article_id)?.title
+                      : "Select article (optional)"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder="Search articles..." />
+                    <CommandList>
+                      <CommandEmpty>No article found.</CommandEmpty>
+                      <CommandGroup>
+                        <CommandItem
+                          value="none"
+                          onSelect={() => {
+                            setFormData({ ...formData, article_id: "" });
+                            setArticleOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              !formData.article_id ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          None
+                        </CommandItem>
+                        {articles?.map((article) => (
+                          <CommandItem
+                            key={article.id}
+                            value={article.title}
+                            onSelect={() => {
+                              setFormData({ ...formData, article_id: article.id });
+                              setArticleOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                formData.article_id === article.id ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            {article.title}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div>
