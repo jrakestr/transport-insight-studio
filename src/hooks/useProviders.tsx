@@ -9,7 +9,7 @@ export function useProviders(params?: { search?: string; limit?: number }) {
     queryKey: ["providers", search, limit],
     queryFn: async () => {
       let query = supabase
-        .from("transportation_providers")
+        .from("service_providers")
         .select("*")
         .order("name", { ascending: true });
 
@@ -35,7 +35,7 @@ export function useProvider(id: string | undefined) {
       if (!id) return null;
       
       const { data, error } = await supabase
-        .from("transportation_providers")
+        .from("service_providers")
         .select("*")
         .eq("id", id)
         .single();
@@ -53,7 +53,7 @@ export function useProviderMutation() {
   const createProvider = useMutation({
     mutationFn: async (provider: any) => {
       const { data, error } = await supabase
-        .from("transportation_providers")
+        .from("service_providers")
         .insert(provider)
         .select()
         .single();
@@ -73,7 +73,7 @@ export function useProviderMutation() {
   const updateProvider = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: any }) => {
       const { data, error } = await supabase
-        .from("transportation_providers")
+        .from("service_providers")
         .update(updates)
         .eq("id", id)
         .select()
@@ -93,7 +93,7 @@ export function useProviderMutation() {
 
   const deleteProvider = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("transportation_providers").delete().eq("id", id);
+      const { error } = await supabase.from("service_providers").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

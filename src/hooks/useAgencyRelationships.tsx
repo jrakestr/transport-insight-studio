@@ -38,7 +38,7 @@ export function useAgencyRelationships(agencyId: string | undefined) {
             title,
             slug
           ),
-          transportation_providers (
+          service_providers (
             id,
             name
           )
@@ -52,7 +52,7 @@ export function useAgencyRelationships(agencyId: string | undefined) {
       const { data: providerRelations, error: providersError } = await supabase
         .from("opportunities")
         .select(`
-          transportation_providers (
+          service_providers (
             id,
             name,
             provider_type,
@@ -68,8 +68,8 @@ export function useAgencyRelationships(agencyId: string | undefined) {
       // Deduplicate providers
       const providersMap = new Map();
       providerRelations?.forEach((rel: any) => {
-        if (rel.transportation_providers) {
-          providersMap.set(rel.transportation_providers.id, rel.transportation_providers);
+        if (rel.service_providers) {
+          providersMap.set(rel.service_providers.id, rel.service_providers);
         }
       });
 

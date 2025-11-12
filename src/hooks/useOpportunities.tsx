@@ -11,7 +11,7 @@ export function useOpportunities() {
         .select(`
           *,
           transit_agencies(agency_name, city, state, total_voms),
-          transportation_providers(name, location),
+          service_providers(name, location),
           articles(title, slug, description)
         `)
         .order("created_at", { ascending: false });
@@ -33,7 +33,7 @@ export function useOpportunity(id: string | undefined) {
         .select(`
           *,
           transit_agencies(agency_name, city, state, total_voms),
-          transportation_providers(name, location),
+          service_providers(name, location),
           articles(title, slug, description)
         `)
         .eq("id", id)
