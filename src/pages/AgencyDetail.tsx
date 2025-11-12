@@ -399,10 +399,10 @@ const AgencyDetail = () => {
                         <div key={contract.id} className="p-4 rounded-lg border bg-card">
                           <div className="flex justify-between items-start mb-3">
                             <div>
-                              <h3 className="font-semibold text-lg">{contract.provider_name || "Unknown Provider"}</h3>
+                              <h3 className="font-semibold text-lg">{contract.contractee_operator_name || "Unknown Contractor"}</h3>
                               <div className="flex flex-wrap gap-2 mt-2">
                                 {contract.mode && <Badge variant="outline">{contract.mode}</Badge>}
-                                {contract.type_of_service && <Badge variant="secondary">{contract.type_of_service}</Badge>}
+                                {contract.tos && <Badge variant="secondary">{contract.tos}</Badge>}
                                 {contract.type_of_contract && <Badge>{contract.type_of_contract}</Badge>}
                               </div>
                             </div>
@@ -411,38 +411,38 @@ const AgencyDetail = () => {
                           <div className="grid md:grid-cols-3 gap-4 mt-4">
                             {contract.voms_under_contract && (
                               <div>
-                                <p className="text-sm text-muted-foreground">Vehicles</p>
+                                <p className="text-sm text-muted-foreground">Vehicles Under Contract</p>
                                 <p className="text-xl font-bold">{contract.voms_under_contract}</p>
                               </div>
                             )}
-                            {contract.unlinked_passenger_trips && (
+                            {contract.months_seller_operated_in_fy && (
                               <div>
-                                <p className="text-sm text-muted-foreground">Passenger Trips</p>
-                                <p className="text-xl font-bold">{contract.unlinked_passenger_trips.toLocaleString()}</p>
+                                <p className="text-sm text-muted-foreground">Months Operated</p>
+                                <p className="text-xl font-bold">{contract.months_seller_operated_in_fy} months</p>
                               </div>
                             )}
                             {contract.total_modal_expenses && (
                               <div>
-                                <p className="text-sm text-muted-foreground">Total Expenses</p>
+                                <p className="text-sm text-muted-foreground">Contract Expenses</p>
                                 <p className="text-xl font-bold">${(contract.total_modal_expenses / 1000000).toFixed(2)}M</p>
                               </div>
                             )}
-                            {contract.cost_per_passenger && (
+                            {contract.direct_payment_agency_subsidy && (
                               <div>
-                                <p className="text-sm text-muted-foreground">Cost Per Passenger</p>
-                                <p className="text-xl font-bold">${contract.cost_per_passenger.toFixed(2)}</p>
+                                <p className="text-sm text-muted-foreground">Agency Subsidy</p>
+                                <p className="text-xl font-bold">${(contract.direct_payment_agency_subsidy / 1000000).toFixed(2)}M</p>
                               </div>
                             )}
-                            {contract.passengers_per_hour && (
+                            {contract.contract_capital_leasing_expenses && (
                               <div>
-                                <p className="text-sm text-muted-foreground">Passengers/Hour</p>
-                                <p className="text-xl font-bold">{contract.passengers_per_hour.toFixed(1)}</p>
+                                <p className="text-sm text-muted-foreground">Capital/Leasing</p>
+                                <p className="text-xl font-bold">${(contract.contract_capital_leasing_expenses / 1000000).toFixed(2)}M</p>
                               </div>
                             )}
-                            {contract.fare_revenues_earned && (
+                            {contract.fares_retained_by && (
                               <div>
-                                <p className="text-sm text-muted-foreground">Fare Revenue</p>
-                                <p className="text-xl font-bold">${(contract.fare_revenues_earned / 1000000).toFixed(2)}M</p>
+                                <p className="text-sm text-muted-foreground">Fares Retained By</p>
+                                <p className="text-xl font-bold">{contract.fares_retained_by}</p>
                               </div>
                             )}
                           </div>
