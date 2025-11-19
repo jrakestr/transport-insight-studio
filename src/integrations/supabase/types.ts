@@ -275,6 +275,114 @@ export type Database = {
         }
         Relationships: []
       }
+      implementation_tasks: {
+        Row: {
+          acceptance_criteria: string[] | null
+          actual_hours: number | null
+          assigned_to: string | null
+          blocks: string[] | null
+          category: string
+          commit_hash: string | null
+          completed_at: string | null
+          completed_by: string | null
+          completion_percentage: number | null
+          created_at: string | null
+          created_by: string | null
+          depends_on: string[] | null
+          description: string | null
+          due_date: string | null
+          edge_function_name: string | null
+          estimated_hours: number | null
+          file_paths: string[] | null
+          id: string
+          migration_required: boolean | null
+          notes: string | null
+          phase: string
+          phase_order: number
+          priority: string
+          project_name: string
+          pull_request_url: string | null
+          related_entity_id: string | null
+          related_table: string | null
+          started_at: string | null
+          status: string
+          task_number: string
+          test_status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          acceptance_criteria?: string[] | null
+          actual_hours?: number | null
+          assigned_to?: string | null
+          blocks?: string[] | null
+          category: string
+          commit_hash?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          completion_percentage?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          depends_on?: string[] | null
+          description?: string | null
+          due_date?: string | null
+          edge_function_name?: string | null
+          estimated_hours?: number | null
+          file_paths?: string[] | null
+          id?: string
+          migration_required?: boolean | null
+          notes?: string | null
+          phase: string
+          phase_order: number
+          priority?: string
+          project_name?: string
+          pull_request_url?: string | null
+          related_entity_id?: string | null
+          related_table?: string | null
+          started_at?: string | null
+          status?: string
+          task_number: string
+          test_status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          acceptance_criteria?: string[] | null
+          actual_hours?: number | null
+          assigned_to?: string | null
+          blocks?: string[] | null
+          category?: string
+          commit_hash?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          completion_percentage?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          depends_on?: string[] | null
+          description?: string | null
+          due_date?: string | null
+          edge_function_name?: string | null
+          estimated_hours?: number | null
+          file_paths?: string[] | null
+          id?: string
+          migration_required?: boolean | null
+          notes?: string | null
+          phase?: string
+          phase_order?: number
+          priority?: string
+          project_name?: string
+          pull_request_url?: string | null
+          related_entity_id?: string | null
+          related_table?: string | null
+          started_at?: string | null
+          status?: string
+          task_number?: string
+          test_status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       opportunities: {
         Row: {
           agency_id: string | null
