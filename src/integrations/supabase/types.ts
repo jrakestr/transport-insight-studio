@@ -704,6 +704,103 @@ export type Database = {
         }
         Relationships: []
       }
+      search_results: {
+        Row: {
+          added_to_pending: boolean | null
+          author: string | null
+          automated_search_id: string
+          created_at: string | null
+          description: string | null
+          discovered_at: string | null
+          duplicate_of: string | null
+          exa_id: string | null
+          exa_metadata: Json | null
+          exa_score: number | null
+          excerpt: string | null
+          id: string
+          image_url: string | null
+          pending_article_id: string | null
+          processed: boolean | null
+          processed_at: string | null
+          published_date: string | null
+          relevance_score: number | null
+          skip_reason: string | null
+          source_url: string
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          added_to_pending?: boolean | null
+          author?: string | null
+          automated_search_id: string
+          created_at?: string | null
+          description?: string | null
+          discovered_at?: string | null
+          duplicate_of?: string | null
+          exa_id?: string | null
+          exa_metadata?: Json | null
+          exa_score?: number | null
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          pending_article_id?: string | null
+          processed?: boolean | null
+          processed_at?: string | null
+          published_date?: string | null
+          relevance_score?: number | null
+          skip_reason?: string | null
+          source_url: string
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          added_to_pending?: boolean | null
+          author?: string | null
+          automated_search_id?: string
+          created_at?: string | null
+          description?: string | null
+          discovered_at?: string | null
+          duplicate_of?: string | null
+          exa_id?: string | null
+          exa_metadata?: Json | null
+          exa_score?: number | null
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          pending_article_id?: string | null
+          processed?: boolean | null
+          processed_at?: string | null
+          published_date?: string | null
+          relevance_score?: number | null
+          skip_reason?: string | null
+          source_url?: string
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "search_results_automated_search_id_fkey"
+            columns: ["automated_search_id"]
+            isOneToOne: false
+            referencedRelation: "automated_searches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "search_results_duplicate_of_fkey"
+            columns: ["duplicate_of"]
+            isOneToOne: false
+            referencedRelation: "search_results"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "search_results_pending_article_id_fkey"
+            columns: ["pending_article_id"]
+            isOneToOne: false
+            referencedRelation: "pending_articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_providers: {
         Row: {
           agency: string | null
@@ -1273,12 +1370,41 @@ export type Database = {
         Args: { base_time: string; freq: string }
         Returns: string
       }
+      check_duplicate_url: {
+        Args: { url_to_check: string }
+        Returns: {
+          discovered: string
+          is_processed: boolean
+          pending_id: string
+          result_id: string
+          search_id: string
+        }[]
+      }
+      get_search_processing_stats: {
+        Args: { search_id: string }
+        Returns: {
+          added_to_pending_count: number
+          avg_relevance_score: number
+          duplicate_count: number
+          processed_count: number
+          skipped_count: number
+          total_results: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      mark_result_processed: {
+        Args: {
+          pending_id?: string
+          result_id: string
+          skip_reason_text?: string
+        }
+        Returns: undefined
       }
       update_search_after_run: {
         Args: {
