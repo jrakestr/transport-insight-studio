@@ -239,6 +239,93 @@ export type Database = {
         }
         Relationships: []
       }
+      automated_searches: {
+        Row: {
+          agency_id: string | null
+          created_at: string | null
+          created_by: string | null
+          failed_runs: number | null
+          frequency: string
+          id: string
+          is_active: boolean | null
+          last_error: string | null
+          last_run_at: string | null
+          next_run_at: string | null
+          notes: string | null
+          priority: string
+          provider_id: string | null
+          results_count: number | null
+          search_parameters: Json | null
+          search_query: string
+          search_type: string
+          successful_runs: number | null
+          tags: string[] | null
+          total_runs: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          agency_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          failed_runs?: number | null
+          frequency?: string
+          id?: string
+          is_active?: boolean | null
+          last_error?: string | null
+          last_run_at?: string | null
+          next_run_at?: string | null
+          notes?: string | null
+          priority?: string
+          provider_id?: string | null
+          results_count?: number | null
+          search_parameters?: Json | null
+          search_query: string
+          search_type: string
+          successful_runs?: number | null
+          tags?: string[] | null
+          total_runs?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          agency_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          failed_runs?: number | null
+          frequency?: string
+          id?: string
+          is_active?: boolean | null
+          last_error?: string | null
+          last_run_at?: string | null
+          next_run_at?: string | null
+          notes?: string | null
+          priority?: string
+          provider_id?: string | null
+          results_count?: number | null
+          search_parameters?: Json | null
+          search_query?: string
+          search_type?: string
+          successful_runs?: number | null
+          tags?: string[] | null
+          total_runs?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automated_searches_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automated_searches_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "service_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       discovery_runs: {
         Row: {
           articles_added: number | null
@@ -1182,12 +1269,25 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_next_run: {
+        Args: { base_time: string; freq: string }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      update_search_after_run: {
+        Args: {
+          error_message?: string
+          result_count?: number
+          search_id: string
+          success: boolean
+        }
+        Returns: undefined
       }
     }
     Enums: {
