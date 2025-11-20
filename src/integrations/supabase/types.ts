@@ -665,6 +665,101 @@ export type Database = {
         }
         Relationships: []
       }
+      query_execution_log: {
+        Row: {
+          actual_reward: number | null
+          articles_found: number | null
+          duplicate_count: number | null
+          executed_at: string
+          id: string
+          learning_state_id: string | null
+          novelty_score: number | null
+          predicted_reward: number | null
+          query_features: Json
+          query_text: string
+          ucb_score: number | null
+          uncertainty: number | null
+        }
+        Insert: {
+          actual_reward?: number | null
+          articles_found?: number | null
+          duplicate_count?: number | null
+          executed_at?: string
+          id?: string
+          learning_state_id?: string | null
+          novelty_score?: number | null
+          predicted_reward?: number | null
+          query_features: Json
+          query_text: string
+          ucb_score?: number | null
+          uncertainty?: number | null
+        }
+        Update: {
+          actual_reward?: number | null
+          articles_found?: number | null
+          duplicate_count?: number | null
+          executed_at?: string
+          id?: string
+          learning_state_id?: string | null
+          novelty_score?: number | null
+          predicted_reward?: number | null
+          query_features?: Json
+          query_text?: string
+          ucb_score?: number | null
+          uncertainty?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "query_execution_log_learning_state_id_fkey"
+            columns: ["learning_state_id"]
+            isOneToOne: false
+            referencedRelation: "query_learning_state"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      query_learning_state: {
+        Row: {
+          a_matrix: Json
+          avg_reward: number | null
+          context_key: string
+          created_at: string
+          effective_terms: Json
+          exhausted_topics: string[] | null
+          id: string
+          last_updated: string
+          proven_patterns: Json
+          theta: Json
+          total_queries: number | null
+        }
+        Insert: {
+          a_matrix?: Json
+          avg_reward?: number | null
+          context_key: string
+          created_at?: string
+          effective_terms?: Json
+          exhausted_topics?: string[] | null
+          id?: string
+          last_updated?: string
+          proven_patterns?: Json
+          theta?: Json
+          total_queries?: number | null
+        }
+        Update: {
+          a_matrix?: Json
+          avg_reward?: number | null
+          context_key?: string
+          created_at?: string
+          effective_terms?: Json
+          exhausted_topics?: string[] | null
+          id?: string
+          last_updated?: string
+          proven_patterns?: Json
+          theta?: Json
+          total_queries?: number | null
+        }
+        Relationships: []
+      }
       reports: {
         Row: {
           content: string | null
@@ -703,6 +798,47 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      search_result_ratings: {
+        Row: {
+          created_at: string
+          feedback_text: string | null
+          id: string
+          novelty_rating: number | null
+          quality_rating: number | null
+          relevance_rating: number | null
+          search_result_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          feedback_text?: string | null
+          id?: string
+          novelty_rating?: number | null
+          quality_rating?: number | null
+          relevance_rating?: number | null
+          search_result_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          feedback_text?: string | null
+          id?: string
+          novelty_rating?: number | null
+          quality_rating?: number | null
+          relevance_rating?: number | null
+          search_result_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "search_result_ratings_search_result_id_fkey"
+            columns: ["search_result_id"]
+            isOneToOne: false
+            referencedRelation: "search_results"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       search_results: {
         Row: {
