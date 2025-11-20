@@ -1,5 +1,8 @@
 project_id = "nuaqnxskrudgwcnfmnnk"
 
+[functions.generate-adaptive-query]
+verify_jwt = true
+
 [functions.transform-article]
 verify_jwt = true
 
