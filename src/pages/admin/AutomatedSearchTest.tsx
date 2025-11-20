@@ -4,13 +4,47 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Search } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
 export default function AutomatedSearchTest() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState<Record<string, boolean>>({});
   const [results, setResults] = useState<Record<string, any>>({});
+  const [searches, setSearches] = useState<any[]>([]);
+  const [loadingSearches, setLoadingSearches] = useState(false);
+
+  useEffect(() => {
+    fetchGeneratedSearches();
+  }, []);
+
+  const fetchGeneratedSearches = async () => {
+    setLoadingSearches(true);
+    try {
+      const { data, error } = await supabase
+        .from('automated_searches')
+        .select(`
+          *,
+          transit_agencies!automated_searches_agency_id_fkey(agency_name),
+          service_providers!automated_searches_provider_id_fkey(name)
+        `)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setSearches(data || []);
+    } catch (error: any) {
+      console.error('Error fetching searches:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load generated searches',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoadingSearches(false);
+    }
+  };
 
   const executeStep = async (step: string, functionName: string, body: any = {}) => {
     setLoading(prev => ({ ...prev, [step]: true }));
@@ -38,11 +72,18 @@ export default function AutomatedSearchTest() {
     }
   };
 
-  const step1GenerateSearches = () => executeStep(
-    'Generate Searches',
-    'generate-targeted-searches',
-    {}
-  );
+  const step1GenerateSearches = async () => {
+    const result = await executeStep(
+      'Generate Searches',
+      'generate-targeted-searches',
+      {}
+    );
+    // Refresh the searches list after generation
+    if (result && !result.error) {
+      await fetchGeneratedSearches();
+    }
+    return result;
+  };
 
   const step2ExecuteSearches = async () => {
     const data = await executeStep(
@@ -215,6 +256,89 @@ export default function AutomatedSearchTest() {
               )}
             </Button>
           </div>
+        </Card>
+
+        {/* Generated Searches View */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Search className="h-5 w-5" />
+              <h2 className="text-xl font-semibold">Generated Searches ({searches.length})</h2>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={fetchGeneratedSearches}
+              disabled={loadingSearches}
+            >
+              {loadingSearches ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Refresh'}
+            </Button>
+          </div>
+          
+          <p className="text-sm text-muted-foreground mb-4">
+            Stored in: <code className="bg-muted px-2 py-1 rounded">automated_searches</code> table
+          </p>
+
+          {loadingSearches ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            </div>
+          ) : searches.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">
+              No searches generated yet. Run "Generate Searches" to create them.
+            </div>
+          ) : (
+            <div className="border rounded-lg overflow-hidden">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Query</TableHead>
+                      <TableHead>Entity</TableHead>
+                      <TableHead>Priority</TableHead>
+                      <TableHead>Frequency</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Results</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {searches.map((search) => (
+                      <TableRow key={search.id}>
+                        <TableCell>
+                          <Badge variant="outline">{search.search_type}</Badge>
+                        </TableCell>
+                        <TableCell className="max-w-xs truncate" title={search.search_query}>
+                          {search.search_query}
+                        </TableCell>
+                        <TableCell className="text-sm">
+                          {search.transit_agencies?.agency_name || 
+                           search.service_providers?.name || 
+                           (search.tags && search.tags[0]) || 
+                           '-'}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={
+                            search.priority === 'high' ? 'destructive' :
+                            search.priority === 'medium' ? 'default' : 'secondary'
+                          }>
+                            {search.priority}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-sm">{search.frequency}</TableCell>
+                        <TableCell>
+                          <Badge variant={search.is_active ? 'default' : 'secondary'}>
+                            {search.is_active ? 'Active' : 'Inactive'}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">{search.results_count || 0}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+          )}
         </Card>
 
         <Card className="p-6">
