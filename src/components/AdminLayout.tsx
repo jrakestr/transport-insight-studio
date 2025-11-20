@@ -61,8 +61,8 @@ export default function AdminLayout() {
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="fixed inset-0 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
-          <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-indigo-600 p-6">
-            <div className="flex items-center justify-between mb-8">
+          <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-indigo-600 flex flex-col">
+            <div className="flex items-center justify-between p-6 shrink-0">
               <Link to="/admin" className="text-xl font-bold text-white" onClick={() => setSidebarOpen(false)}>
                 Admin Panel
               </Link>
@@ -70,7 +70,7 @@ export default function AdminLayout() {
                 <X className="h-6 w-6" />
               </button>
             </div>
-            <nav className="flex flex-col gap-y-7">
+            <nav className="flex-1 overflow-y-auto px-6 pb-4">
               <ul className="space-y-1">
                 {navItems.map((item) => (
                   <li key={item.url}>
@@ -78,7 +78,7 @@ export default function AdminLayout() {
                       to={item.url}
                       onClick={() => setSidebarOpen(false)}
                       className={cn(
-                        "flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold",
+                        "flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold transition-colors",
                         isActivePath(item.url)
                           ? "bg-indigo-700 text-white"
                           : "text-indigo-200 hover:bg-indigo-700 hover:text-white"
@@ -90,10 +90,10 @@ export default function AdminLayout() {
                   </li>
                 ))}
               </ul>
-              <div className="pt-4 border-t border-indigo-500">
+              <div className="border-t border-indigo-500 pt-4 mt-4">
                 <button
                   onClick={handleSignOut}
-                  className="flex w-full items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white"
+                  className="flex w-full items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors"
                 >
                   <LogOut className="h-6 w-6 shrink-0" />
                   Logout
@@ -106,13 +106,13 @@ export default function AdminLayout() {
 
       {/* Desktop sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6">
           <div className="flex h-16 shrink-0 items-center">
             <Link to="/admin" className="text-xl font-bold text-white">
               Admin Panel
             </Link>
           </div>
-          <nav className="flex flex-1 flex-col">
+          <nav className="flex flex-1 flex-col pb-4">
             <ul className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul className="-mx-2 space-y-1">
@@ -121,7 +121,7 @@ export default function AdminLayout() {
                       <Link
                         to={item.url}
                         className={cn(
-                          "flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold",
+                          "flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold transition-colors",
                           isActivePath(item.url)
                             ? "bg-indigo-700 text-white"
                             : "text-indigo-200 hover:bg-indigo-700 hover:text-white"
@@ -134,18 +134,18 @@ export default function AdminLayout() {
                   ))}
                 </ul>
               </li>
-              <li className="-mx-6 mt-auto">
-                <div className="border-t border-indigo-500 pt-4 px-6">
+              <li className="mt-auto">
+                <div className="border-t border-indigo-500 pt-4 -mx-2">
                   <Link
                     to="/"
-                    className="flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white mb-2"
+                    className="flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors mb-1"
                   >
                     <span className="text-xs">↗</span>
                     View Site
                   </Link>
                   <button
                     onClick={handleSignOut}
-                    className="flex w-full items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white"
+                    className="flex w-full items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors"
                   >
                     <LogOut className="h-6 w-6 shrink-0" />
                     Logout
