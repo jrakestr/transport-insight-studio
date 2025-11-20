@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Get optional parameters from request
-    const { searchId, limit = 10, minRelevanceScore = 60 } = await req.json().catch(() => ({}));
+    const { searchId, limit = 10, minRelevanceScore = 60, useFinalScore = true } = await req.json().catch(() => ({}));
 
     console.log('Starting search results processing...', { searchId, limit, minRelevanceScore });
 
@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
       .select('*')
       .eq('processed', false)
       .is('duplicate_of', null)
-      .order('relevance_score', { ascending: false });
+      .order(useFinalScore ? 'final_score' : 'relevance_score', { ascending: false, nullsFirst: false });
 
     if (searchId) {
       query = query.eq('automated_search_id', searchId);
@@ -67,12 +67,17 @@ Deno.serve(async (req) => {
       try {
         console.log(`Processing result: ${result.id} - ${result.source_url}`);
 
-        // Skip if relevance score is too low
-        if (result.relevance_score && result.relevance_score < minRelevanceScore) {
-          console.log(`Skipping due to low relevance score: ${result.relevance_score}`);
+        // Use final_score if available, otherwise fall back to relevance_score
+        const scoreToCheck = useFinalScore && result.final_score !== null 
+          ? result.final_score 
+          : result.relevance_score;
+
+        // Skip if score is too low (only if score exists)
+        if (scoreToCheck !== null && scoreToCheck < minRelevanceScore) {
+          console.log(`Skipping due to low score: ${scoreToCheck} (using ${useFinalScore ? 'final' : 'relevance'} score)`);
           await supabase.rpc('mark_result_processed', {
             result_id: result.id,
-            skip_reason_text: `Low relevance score: ${result.relevance_score}`,
+            skip_reason_text: `Low ${useFinalScore ? 'final' : 'relevance'} score: ${scoreToCheck}`,
           });
           skippedCount++;
           processingResults.push({
@@ -81,7 +86,7 @@ Deno.serve(async (req) => {
             processed: true,
             added: false,
             skipped: true,
-            skipReason: 'Low relevance score',
+            skipReason: 'Low score',
           });
           continue;
         }
@@ -211,9 +216,22 @@ Provide your response as valid JSON with this exact structure:
 
         const analysis = JSON.parse(jsonMatch[0]);
 
+        // Convert AI relevance (0-1) to 0-100 scale
+        const aiConfidenceScore = Math.round(analysis.relevance * 100);
+
         // Check if article is relevant enough
         if (analysis.relevance < 0.6) {
           console.log(`Skipping due to low AI relevance: ${analysis.relevance}`);
+          
+          // Update search_results with AI score even though we're skipping
+          await supabase
+            .from('search_results')
+            .update({ 
+              ai_confidence_score: aiConfidenceScore,
+              score_source: result.score_source === 'exa_api' ? 'composite' : result.score_source
+            })
+            .eq('id', result.id);
+
           await supabase.rpc('mark_result_processed', {
             result_id: result.id,
             skip_reason_text: `Low AI relevance score: ${analysis.relevance}`,
@@ -230,8 +248,10 @@ Provide your response as valid JSON with this exact structure:
           continue;
         }
 
-        // Add to pending_articles
-        console.log('Adding to pending_articles...');
+        // Add to pending_articles and update search_results in a transaction
+        console.log('Adding to pending_articles and updating search_results...');
+        
+        // First, insert pending article
         const { data: pendingArticle, error: insertError } = await supabase
           .from('pending_articles')
           .insert({
@@ -250,13 +270,30 @@ Provide your response as valid JSON with this exact structure:
             extracted_providers: analysis.providers,
             extracted_opportunities: analysis.opportunities,
             ai_analysis: analysis,
-            ai_confidence_score: analysis.relevance,
+            ai_confidence_score: aiConfidenceScore / 100, // Store as 0-1 scale
           })
           .select()
           .single();
 
         if (insertError) {
           throw new Error(`Failed to insert pending article: ${insertError.message}`);
+        }
+
+        console.log(`Successfully added to pending_articles: ${pendingArticle.id}`);
+
+        // Update search_results with AI confidence score
+        const { error: updateError } = await supabase
+          .from('search_results')
+          .update({ 
+            ai_confidence_score: aiConfidenceScore,
+            score_source: result.score_source === 'exa_api' ? 'composite' : result.score_source
+          })
+          .eq('id', result.id);
+
+        if (updateError) {
+          console.error(`Failed to update search_results with AI score: ${updateError.message}`);
+        } else {
+          console.log(`Updated search_results ${result.id} with AI confidence score: ${aiConfidenceScore}`);
         }
 
         // Mark result as processed

@@ -707,6 +707,7 @@ export type Database = {
       search_results: {
         Row: {
           added_to_pending: boolean | null
+          ai_confidence_score: number | null
           author: string | null
           automated_search_id: string
           created_at: string | null
@@ -717,6 +718,7 @@ export type Database = {
           exa_metadata: Json | null
           exa_score: number | null
           excerpt: string | null
+          final_score: number | null
           id: string
           image_url: string | null
           pending_article_id: string | null
@@ -724,6 +726,7 @@ export type Database = {
           processed_at: string | null
           published_date: string | null
           relevance_score: number | null
+          score_source: string | null
           skip_reason: string | null
           source_url: string
           title: string | null
@@ -731,6 +734,7 @@ export type Database = {
         }
         Insert: {
           added_to_pending?: boolean | null
+          ai_confidence_score?: number | null
           author?: string | null
           automated_search_id: string
           created_at?: string | null
@@ -741,6 +745,7 @@ export type Database = {
           exa_metadata?: Json | null
           exa_score?: number | null
           excerpt?: string | null
+          final_score?: number | null
           id?: string
           image_url?: string | null
           pending_article_id?: string | null
@@ -748,6 +753,7 @@ export type Database = {
           processed_at?: string | null
           published_date?: string | null
           relevance_score?: number | null
+          score_source?: string | null
           skip_reason?: string | null
           source_url: string
           title?: string | null
@@ -755,6 +761,7 @@ export type Database = {
         }
         Update: {
           added_to_pending?: boolean | null
+          ai_confidence_score?: number | null
           author?: string | null
           automated_search_id?: string
           created_at?: string | null
@@ -765,6 +772,7 @@ export type Database = {
           exa_metadata?: Json | null
           exa_score?: number | null
           excerpt?: string | null
+          final_score?: number | null
           id?: string
           image_url?: string | null
           pending_article_id?: string | null
@@ -772,6 +780,7 @@ export type Database = {
           processed_at?: string | null
           published_date?: string | null
           relevance_score?: number | null
+          score_source?: string | null
           skip_reason?: string | null
           source_url?: string
           title?: string | null
@@ -1366,6 +1375,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_final_score: {
+        Args: { ai_confidence: number; relevance: number }
+        Returns: number
+      }
       calculate_next_run: {
         Args: { base_time: string; freq: string }
         Returns: string
