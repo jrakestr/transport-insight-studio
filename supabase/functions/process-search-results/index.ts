@@ -180,7 +180,7 @@ Provide your response as valid JSON with this exact structure:
   "summary": "2-3 sentence summary"
 }`;
 
-        const aiResponse = await fetch('https://api.lovable.app/v1/ai/completions', {
+        const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${lovableApiKey}`,
