@@ -4,6 +4,10 @@ import { corsHeaders } from '../_shared/cors.ts';
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
+// Content filters - exclude rail/train, focus on bus and paratransit
+const EXCLUDE_TERMS = 'NOT (rail OR train OR subway OR metro OR "light rail" OR streetcar OR tram OR locomotive OR railcar OR "commuter rail")';
+const FOCUS_TERMS = '(bus OR paratransit OR NEMT OR "fixed-route" OR "demand response" OR "dial-a-ride" OR microtransit)';
+
 interface GeneratedSearch {
   search_type: 'agency' | 'provider' | 'keyword' | 'rfp' | 'vertical' | 'relationship';
   search_query: string;
@@ -80,7 +84,7 @@ Deno.serve(async (req) => {
         // General news search
         generatedSearches.push({
           search_type: 'agency',
-          search_query: `"${displayName}" transit news OR announcement OR contract`,
+          search_query: `"${displayName}" ${FOCUS_TERMS} (news OR announcement OR contract) ${EXCLUDE_TERMS}`,
           search_parameters: {
             location: agency.city && agency.state ? `${agency.city}, ${agency.state}` : null,
             date_range: 'past_month',
@@ -95,7 +99,7 @@ Deno.serve(async (req) => {
         // RFP/Contract awards search
         generatedSearches.push({
           search_type: 'agency',
-          search_query: `"${displayName}" (RFP OR "request for proposals" OR "contract award" OR procurement)`,
+          search_query: `"${displayName}" ${FOCUS_TERMS} (RFP OR "request for proposals" OR "contract award" OR procurement) ${EXCLUDE_TERMS}`,
           search_parameters: {
             location: agency.city && agency.state ? `${agency.city}, ${agency.state}` : null,
             date_range: 'past_week',
@@ -125,7 +129,7 @@ Deno.serve(async (req) => {
         // Provider contract news
         generatedSearches.push({
           search_type: 'provider',
-          search_query: `"${provider.name}" transit (contract OR partnership OR agreement OR service)`,
+          search_query: `"${provider.name}" ${FOCUS_TERMS} (contract OR partnership OR agreement OR service) ${EXCLUDE_TERMS}`,
           search_parameters: {
             provider_type: provider.provider_type,
             date_range: 'past_month',
@@ -141,13 +145,14 @@ Deno.serve(async (req) => {
 
     // 3. VERTICAL-SPECIFIC SEARCHES
     const verticals = [
-      { name: 'Electric Buses', query: '("electric bus" OR "zero emission" OR "battery electric") transit (procurement OR deployment OR contract)', priority: 'high' },
-      { name: 'Microtransit', query: 'microtransit (launch OR expand OR contract OR RFP)', priority: 'high' },
-      { name: 'Paratransit', query: 'paratransit (service OR contract OR RFP OR accessibility)', priority: 'medium' },
-      { name: 'Rail Modernization', query: '(rail OR metro OR subway) (modernization OR upgrade OR infrastructure OR funding)', priority: 'medium' },
-      { name: 'Autonomous Vehicles', query: '(autonomous OR "self-driving") (transit OR shuttle) (pilot OR deployment OR contract)', priority: 'high' },
-      { name: 'Fare Collection', query: '("fare collection" OR "contactless payment" OR "mobile ticketing") transit (deployment OR upgrade OR RFP)', priority: 'medium' },
-      { name: 'Real-Time Information', query: '("real-time" OR "passenger information") transit (system OR deployment OR contract)', priority: 'low' },
+      { name: 'Electric Buses', query: `("electric bus" OR "zero emission" OR "battery electric") (procurement OR deployment OR contract) ${EXCLUDE_TERMS}`, priority: 'high' },
+      { name: 'Microtransit', query: `microtransit (launch OR expand OR contract OR RFP) ${EXCLUDE_TERMS}`, priority: 'high' },
+      { name: 'Paratransit', query: `paratransit (service OR contract OR RFP OR accessibility) ${EXCLUDE_TERMS}`, priority: 'high' },
+      { name: 'NEMT', query: `(NEMT OR "non-emergency medical transportation") (contract OR RFP OR service) ${EXCLUDE_TERMS}`, priority: 'high' },
+      { name: 'Fixed-Route Bus', query: `"fixed-route" bus (service OR contract OR RFP OR expansion) ${EXCLUDE_TERMS}`, priority: 'high' },
+      { name: 'Autonomous Buses', query: `(autonomous OR "self-driving") (bus OR shuttle) (pilot OR deployment OR contract) ${EXCLUDE_TERMS}`, priority: 'medium' },
+      { name: 'Fare Collection', query: `("fare collection" OR "contactless payment" OR "mobile ticketing") bus (deployment OR upgrade OR RFP) ${EXCLUDE_TERMS}`, priority: 'medium' },
+      { name: 'Real-Time Information', query: `("real-time" OR "passenger information") bus (system OR deployment OR contract) ${EXCLUDE_TERMS}`, priority: 'low' },
     ];
 
     console.log(`Generating ${verticals.length} vertical-specific searches`);
@@ -169,10 +174,10 @@ Deno.serve(async (req) => {
 
     // 4. RFP-FOCUSED SEARCHES
     const rfpSearches = [
-      { query: 'transit (RFP OR "request for proposals") bus', tags: ['rfp', 'bus-service'] },
-      { query: 'transit (RFP OR "request for proposals") ("maintenance services" OR "vehicle maintenance")', tags: ['rfp', 'maintenance'] },
-      { query: 'transit (RFP OR "request for proposals") ("software" OR "technology" OR "IT")', tags: ['rfp', 'technology'] },
-      { query: 'transit (RFP OR "request for proposals") consulting', tags: ['rfp', 'consulting'] },
+      { query: `(RFP OR "request for proposals") ${FOCUS_TERMS} ${EXCLUDE_TERMS}`, tags: ['rfp', 'bus-service'] },
+      { query: `(RFP OR "request for proposals") ${FOCUS_TERMS} ("maintenance services" OR "vehicle maintenance") ${EXCLUDE_TERMS}`, tags: ['rfp', 'maintenance'] },
+      { query: `(RFP OR "request for proposals") paratransit ${EXCLUDE_TERMS}`, tags: ['rfp', 'paratransit'] },
+      { query: `(RFP OR "request for proposals") NEMT ${EXCLUDE_TERMS}`, tags: ['rfp', 'nemt'] },
     ];
 
     console.log(`Generating ${rfpSearches.length} RFP-focused searches`);
@@ -195,7 +200,7 @@ Deno.serve(async (req) => {
     // 5. RELATIONSHIP/PARTNERSHIP SEARCHES
     generatedSearches.push({
       search_type: 'relationship',
-      search_query: 'transit (partnership OR collaboration OR joint venture OR MOU) announcement',
+      search_query: `${FOCUS_TERMS} (partnership OR collaboration OR joint venture OR MOU) announcement ${EXCLUDE_TERMS}`,
       search_parameters: {
         date_range: 'past_week',
       },
