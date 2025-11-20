@@ -37,6 +37,7 @@ import PlaybooksAdmin from "./pages/admin/Playbooks";
 import PlaybookForm from "./pages/admin/PlaybookForm";
 import PendingArticles from "./pages/admin/PendingArticles";
 import AgenticReview from "./pages/admin/AgenticReview";
+import AutomatedSearchTest from "./pages/admin/AutomatedSearchTest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -98,6 +99,7 @@ const App = () => (
             <Route path="playbooks/:id/edit" element={<PlaybookForm />} />
             <Route path="pending-articles" element={<PendingArticles />} />
             <Route path="agentic-review" element={<AgenticReview />} />
+            <Route path="automated-search-test" element={<AutomatedSearchTest />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

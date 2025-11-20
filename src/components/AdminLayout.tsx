@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen, Sparkles, Inbox } from "lucide-react";
+import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen, Sparkles, Inbox, Zap } from "lucide-react";
 
 export default function AdminLayout() {
   const { user, isAdmin, loading, signOut } = useAuth();
@@ -93,6 +93,12 @@ export default function AdminLayout() {
                   <Link to="/admin/agentic-review">
                     <Sparkles className="h-4 w-4 mr-2" />
                     AI Assistant
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/admin/automated-search-test">
+                    <Zap className="h-4 w-4 mr-2" />
+                    Test Searches
                   </Link>
                 </Button>
               </div>
