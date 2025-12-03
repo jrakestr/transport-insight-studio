@@ -1191,6 +1191,56 @@ export type Database = {
           },
         ]
       }
+      software_providers: {
+        Row: {
+          agency_id: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          notes: string | null
+          provider_type: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          agency_id?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          provider_type?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          agency_id?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          provider_type?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "software_providers_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       transit_agencies: {
         Row: {
           address_line_1: string | null
