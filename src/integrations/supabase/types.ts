@@ -135,6 +135,60 @@ export type Database = {
           },
         ]
       }
+      agency_software: {
+        Row: {
+          agency_id: string
+          annual_cost: number | null
+          contract_end_date: string | null
+          contract_start_date: string | null
+          created_at: string
+          id: string
+          implementation_status: string | null
+          notes: string | null
+          software_id: string
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          annual_cost?: number | null
+          contract_end_date?: string | null
+          contract_start_date?: string | null
+          created_at?: string
+          id?: string
+          implementation_status?: string | null
+          notes?: string | null
+          software_id: string
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          annual_cost?: number | null
+          contract_end_date?: string | null
+          contract_start_date?: string | null
+          created_at?: string
+          id?: string
+          implementation_status?: string | null
+          notes?: string | null
+          software_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_software_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_software_software_id_fkey"
+            columns: ["software_id"]
+            isOneToOne: false
+            referencedRelation: "software_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       article_agencies: {
         Row: {
           agency_id: string
@@ -1314,53 +1368,69 @@ export type Database = {
       }
       software_providers: {
         Row: {
-          agency_id: string | null
+          category: string
+          certifications: Json | null
           contact_email: string | null
           contact_phone: string | null
           created_at: string
+          deployment_type: string | null
           description: string | null
+          headquarters: string | null
           id: string
+          integrations: Json | null
+          logo_url: string | null
           name: string
           notes: string | null
-          provider_type: string | null
+          pricing_model: string | null
+          product_name: string | null
+          subcategory: string | null
           updated_at: string
           website: string | null
+          year_founded: number | null
         }
         Insert: {
-          agency_id?: string | null
+          category: string
+          certifications?: Json | null
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string
+          deployment_type?: string | null
           description?: string | null
+          headquarters?: string | null
           id?: string
+          integrations?: Json | null
+          logo_url?: string | null
           name: string
           notes?: string | null
-          provider_type?: string | null
+          pricing_model?: string | null
+          product_name?: string | null
+          subcategory?: string | null
           updated_at?: string
           website?: string | null
+          year_founded?: number | null
         }
         Update: {
-          agency_id?: string | null
+          category?: string
+          certifications?: Json | null
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string
+          deployment_type?: string | null
           description?: string | null
+          headquarters?: string | null
           id?: string
+          integrations?: Json | null
+          logo_url?: string | null
           name?: string
           notes?: string | null
-          provider_type?: string | null
+          pricing_model?: string | null
+          product_name?: string | null
+          subcategory?: string | null
           updated_at?: string
           website?: string | null
+          year_founded?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "software_providers_agency_id_fkey"
-            columns: ["agency_id"]
-            isOneToOne: false
-            referencedRelation: "transit_agencies"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       transit_agencies: {
         Row: {
