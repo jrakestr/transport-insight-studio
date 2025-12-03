@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAgency } from "@/hooks/useAgencies";
 import { useAgencyRelationships } from "@/hooks/useAgencyRelationships";
 import { useAgencyContractors } from "@/hooks/useAgencyContractors";
+import { AgencyContacts } from "@/components/AgencyContacts";
 import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, FileText, Calendar, Newspaper, Briefcase, Truck, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -147,6 +148,9 @@ const AgencyDetail = () => {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* CRM Contacts */}
+              <AgencyContacts agencyId={agency.id} />
 
               {/* Fleet & Operations */}
               <Card>

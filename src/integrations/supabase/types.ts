@@ -14,6 +14,68 @@ export type Database = {
   }
   public: {
     Tables: {
+      agency_contacts: {
+        Row: {
+          agency_id: string
+          created_at: string
+          department: string | null
+          email: string | null
+          first_name: string
+          id: string
+          is_primary: boolean | null
+          job_title: string | null
+          last_contacted_at: string | null
+          last_name: string
+          linkedin_url: string | null
+          notes: string | null
+          phone: string | null
+          salesforce_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          first_name: string
+          id?: string
+          is_primary?: boolean | null
+          job_title?: string | null
+          last_contacted_at?: string | null
+          last_name: string
+          linkedin_url?: string | null
+          notes?: string | null
+          phone?: string | null
+          salesforce_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          first_name?: string
+          id?: string
+          is_primary?: boolean | null
+          job_title?: string | null
+          last_contacted_at?: string | null
+          last_name?: string
+          linkedin_url?: string | null
+          notes?: string | null
+          phone?: string | null
+          salesforce_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_contacts_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       article_agencies: {
         Row: {
           agency_id: string
