@@ -88,12 +88,39 @@ const Agencies = () => {
                     updateParams({ state: val === "all" ? "" : val, page: "1" });
                   }}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Filter by State" />
+                      <SelectValue placeholder="Filter by Territory" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All States</SelectItem>
-                      {["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map(s => (
-                        <SelectItem key={s} value={s}>{s}</SelectItem>
+                    <SelectContent className="max-h-[400px]">
+                      <SelectItem value="all">All Territories</SelectItem>
+                      
+                      {/* Northeast */}
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0">Northeast</div>
+                      {["CT", "ME", "MA", "NH", "NJ", "NY", "PA", "RI", "VT"].map(s => (
+                        <SelectItem key={s} value={s} className="pl-4">{s}</SelectItem>
+                      ))}
+                      
+                      {/* Southeast */}
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0">Southeast</div>
+                      {["AL", "AR", "DE", "FL", "GA", "KY", "LA", "MD", "MS", "NC", "SC", "TN", "VA", "WV"].map(s => (
+                        <SelectItem key={s} value={s} className="pl-4">{s}</SelectItem>
+                      ))}
+                      
+                      {/* Midwest */}
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0">Midwest</div>
+                      {["IL", "IN", "IA", "KS", "MI", "MN", "MO", "NE", "ND", "OH", "SD", "WI"].map(s => (
+                        <SelectItem key={s} value={s} className="pl-4">{s}</SelectItem>
+                      ))}
+                      
+                      {/* Southwest */}
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0">Southwest</div>
+                      {["AZ", "NM", "OK", "TX"].map(s => (
+                        <SelectItem key={s} value={s} className="pl-4">{s}</SelectItem>
+                      ))}
+                      
+                      {/* West */}
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 sticky top-0">West</div>
+                      {["AK", "CA", "CO", "HI", "ID", "MT", "NV", "OR", "UT", "WA", "WY"].map(s => (
+                        <SelectItem key={s} value={s} className="pl-4">{s}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
