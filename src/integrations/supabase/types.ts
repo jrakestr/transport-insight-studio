@@ -76,6 +76,65 @@ export type Database = {
           },
         ]
       }
+      agency_intelligence: {
+        Row: {
+          agency_id: string
+          confidence_score: number | null
+          content: string | null
+          created_at: string
+          extracted_data: Json | null
+          id: string
+          intelligence_type: string
+          is_verified: boolean | null
+          scraped_at: string
+          source_url: string
+          title: string | null
+          updated_at: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          agency_id: string
+          confidence_score?: number | null
+          content?: string | null
+          created_at?: string
+          extracted_data?: Json | null
+          id?: string
+          intelligence_type: string
+          is_verified?: boolean | null
+          scraped_at?: string
+          source_url: string
+          title?: string | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          agency_id?: string
+          confidence_score?: number | null
+          content?: string | null
+          created_at?: string
+          extracted_data?: Json | null
+          id?: string
+          intelligence_type?: string
+          is_verified?: boolean | null
+          scraped_at?: string
+          source_url?: string
+          title?: string | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_intelligence_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       article_agencies: {
         Row: {
           agency_id: string
