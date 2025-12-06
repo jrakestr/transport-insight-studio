@@ -11,8 +11,9 @@ import { AgencyIntelligence } from "@/components/AgencyIntelligence";
 import { AgencySoftware } from "@/components/AgencySoftware";
 import { ServiceContractsTable } from "@/components/ServiceContractsTable";
 import { AgencyPerformanceMetrics } from "@/components/AgencyPerformanceMetrics";
-import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, FileText, Calendar, Newspaper, Briefcase, Truck, DollarSign } from "lucide-react";
+import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, Newspaper, Briefcase, Truck, Bus, Map, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const AgencyDetail = () => {
   const { id } = useParams();
@@ -49,6 +50,25 @@ const AgencyDetail = () => {
     );
   }
 
+  // Generate one-line descriptor
+  const getDescriptor = () => {
+    const parts: string[] = [];
+    if (agency.organization_type) parts.push(agency.organization_type);
+    if (agency.uza_name) parts.push(`serving ${agency.uza_name}`);
+    return parts.join(' ') || 'Transit Agency';
+  };
+
+  // Build Google Maps URL from address
+  const getMapUrl = () => {
+    const addressParts = [
+      agency.address_line_1,
+      agency.city,
+      agency.state,
+      agency.zip_code
+    ].filter(Boolean).join(', ');
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressParts)}`;
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -60,194 +80,280 @@ const AgencyDetail = () => {
           <div className="section-container relative py-12 lg:py-16">
             <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to All Agencies
+              Back
             </Button>
             
-            <div className="flex items-start gap-4 mb-6">
+            <div className="flex items-start gap-4 mb-4">
               <div className="p-3 rounded-xl bg-primary/10">
                 <Building2 className="h-8 w-8 text-primary" />
               </div>
               <div className="flex-1">
-                <h1 className="text-4xl lg:text-5xl font-bold mb-3 leading-tight">
+                <h1 className="text-3xl lg:text-4xl font-bold mb-2 leading-tight">
                   {agency.agency_name}
                 </h1>
-                {agency.doing_business_as && (
-                  <p className="text-xl text-muted-foreground">
-                    Also known as: {agency.doing_business_as}
-                  </p>
-                )}
+                <p className="text-lg text-muted-foreground">
+                  {getDescriptor()}
+                </p>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {agency.reporter_type && (
-                <Badge variant="secondary">{agency.reporter_type}</Badge>
+            {/* Quick Stats Cards */}
+            <TooltipProvider>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+                {agency.service_area_pop && (
+                  <div className="bg-card border rounded-lg p-4">
+                    <p className="text-xs text-muted-foreground mb-1">Population Served</p>
+                    <p className="text-xl font-bold">{agency.service_area_pop.toLocaleString()}</p>
+                  </div>
+                )}
+                {agency.service_area_sq_miles && (
+                  <div className="bg-card border rounded-lg p-4">
+                    <p className="text-xs text-muted-foreground mb-1">Service Area</p>
+                    <p className="text-xl font-bold">{agency.service_area_sq_miles.toLocaleString()} sq mi</p>
+                  </div>
+                )}
+                {agency.total_voms && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="bg-card border rounded-lg p-4 cursor-help">
+                        <p className="text-xs text-muted-foreground mb-1">Total Fleet</p>
+                        <p className="text-xl font-bold">{agency.total_voms.toLocaleString()}</p>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>Vehicles Operated in Maximum Service</TooltipContent>
+                  </Tooltip>
+                )}
+                {agency.density && (
+                  <div className="bg-card border rounded-lg p-4">
+                    <p className="text-xs text-muted-foreground mb-1">Density</p>
+                    <p className="text-xl font-bold">{agency.density.toLocaleString()}/mi²</p>
+                  </div>
+                )}
+              </div>
+            </TooltipProvider>
+
+            {/* Primary Actions */}
+            <div className="flex flex-wrap gap-3">
+              {agency.url && (
+                <Button asChild>
+                  <a href={agency.url} target="_blank" rel="noopener noreferrer">
+                    <Globe className="h-4 w-4 mr-2" />
+                    Website
+                  </a>
+                </Button>
               )}
-              {agency.organization_type && (
-                <Badge variant="outline">{agency.organization_type}</Badge>
-              )}
-              {agency.tam_tier && (
-                <Badge variant="outline">TAM {agency.tam_tier}</Badge>
+              {agency.address_line_1 && (
+                <Button variant="outline" asChild>
+                  <a href={getMapUrl()} target="_blank" rel="noopener noreferrer">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    Directions
+                  </a>
+                </Button>
               )}
             </div>
           </div>
         </section>
 
         {/* Details Section */}
-        <section className="py-12 lg:py-16">
+        <section className="py-8 lg:py-12">
           <div className="section-container">
             <div className="max-w-5xl mx-auto space-y-6">
-              {/* Contact & Location */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MapPin className="h-5 w-5" />
-                    Contact & Location
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    {agency.address_line_1 && (
+              
+              {/* Overview */}
+              <TooltipProvider>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Building2 className="h-5 w-5" />
+                      Overview
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {agency.organization_type && (
                       <div>
-                        <p className="text-sm font-medium mb-1">Address</p>
-                        <p className="text-muted-foreground">{agency.address_line_1}</p>
-                        {agency.address_line_2 && (
-                          <p className="text-muted-foreground">{agency.address_line_2}</p>
-                        )}
-                        {(agency.city || agency.state || agency.zip_code) && (
-                          <p className="text-muted-foreground">
-                            {[agency.city, agency.state, agency.zip_code].filter(Boolean).join(", ")}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                    {agency.url && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Website</p>
-                        <a 
-                          href={agency.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-primary hover:underline"
-                        >
-                          <Globe className="h-4 w-4" />
-                          {agency.url}
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    {agency.region && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">FTA Region</p>
-                        <p className="text-muted-foreground">Region {agency.region}</p>
-                      </div>
-                    )}
-                    {agency.uza_name && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Urbanized Area</p>
-                        <p className="text-muted-foreground">{agency.uza_name}</p>
-                      </div>
-                    )}
-                    {agency.ntd_id && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">NTD ID</p>
-                        <p className="text-muted-foreground font-mono">{agency.ntd_id}</p>
+                        <p className="text-sm text-muted-foreground">Agency Type</p>
+                        <p className="font-medium">{agency.organization_type}</p>
                       </div>
                     )}
                     {agency.reporting_module && (
                       <div>
-                        <p className="text-sm font-medium mb-1">Reporting Module</p>
-                        <p className="text-muted-foreground">{agency.reporting_module}</p>
+                        <p className="text-sm text-muted-foreground">Reporting Module</p>
+                        <p className="font-medium">{agency.reporting_module}</p>
                       </div>
                     )}
-                  </div>
-                </CardContent>
-              </Card>
+                    {agency.region && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help">
+                            <p className="text-sm text-muted-foreground">FTA Region</p>
+                            <p className="font-medium">Region {agency.region}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Federal Transit Administration Region</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.uza_name && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help">
+                            <p className="text-sm text-muted-foreground">Urbanized Area</p>
+                            <p className="font-medium">{agency.uza_name}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Census-designated urbanized area</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.ntd_id && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help">
+                            <p className="text-sm text-muted-foreground">NTD ID</p>
+                            <p className="font-medium font-mono">{agency.ntd_id}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>National Transit Database Identifier</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.reporter_type && (
+                      <div>
+                        <p className="text-sm text-muted-foreground">Reporter Type</p>
+                        <p className="font-medium">{agency.reporter_type}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TooltipProvider>
 
-              {/* Fleet & Operations */}
-
-              {/* Fleet & Operations */}
+              {/* Contact */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Users className="h-5 w-5" />
-                    Fleet & Operations
+                    <MapPin className="h-5 w-5" />
+                    Contact
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="grid md:grid-cols-3 gap-6">
-                  {agency.total_voms && (
+                <CardContent className="grid md:grid-cols-2 gap-6">
+                  {agency.address_line_1 && (
                     <div>
-                      <p className="text-sm font-medium mb-1">Total Fleet</p>
-                      <p className="text-2xl font-bold text-primary">{agency.total_voms}</p>
-                      <p className="text-xs text-muted-foreground">Vehicles</p>
+                      <p className="text-sm text-muted-foreground mb-1">Address</p>
+                      <a 
+                        href={getMapUrl()} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        <p>{agency.address_line_1}</p>
+                        {agency.address_line_2 && <p>{agency.address_line_2}</p>}
+                        <p>{[agency.city, agency.state, agency.zip_code].filter(Boolean).join(", ")}</p>
+                      </a>
                     </div>
                   )}
-                  {agency.voms_do && (
+                  {agency.url && (
                     <div>
-                      <p className="text-sm font-medium mb-1">Directly Operated</p>
-                      <p className="text-2xl font-bold">{agency.voms_do}</p>
-                      <p className="text-xs text-muted-foreground">Vehicles</p>
-                    </div>
-                  )}
-                  {agency.voms_pt && (
-                    <div>
-                      <p className="text-sm font-medium mb-1">Purchased Transport</p>
-                      <p className="text-2xl font-bold">{agency.voms_pt}</p>
-                      <p className="text-xs text-muted-foreground">Vehicles</p>
-                    </div>
-                  )}
-                  {agency.volunteer_drivers !== null && agency.volunteer_drivers !== undefined && (
-                    <div>
-                      <p className="text-sm font-medium mb-1">Volunteer Drivers</p>
-                      <p className="text-2xl font-bold">{agency.volunteer_drivers}</p>
-                    </div>
-                  )}
-                  {agency.personal_vehicles !== null && agency.personal_vehicles !== undefined && (
-                    <div>
-                      <p className="text-sm font-medium mb-1">Personal Vehicles</p>
-                      <p className="text-2xl font-bold">{agency.personal_vehicles}</p>
+                      <p className="text-sm text-muted-foreground mb-1">Website</p>
+                      <a 
+                        href={agency.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-primary hover:underline"
+                      >
+                        <Globe className="h-4 w-4" />
+                        {agency.url}
+                      </a>
                     </div>
                   )}
                 </CardContent>
               </Card>
 
-              {/* Service Area */}
-              {(agency.service_area_pop || agency.service_area_sq_miles || agency.population || agency.density) && (
+              {/* Fleet & Operations */}
+              <TooltipProvider>
                 <Card>
                   <CardHeader>
-                    <CardTitle>Service Area</CardTitle>
+                    <CardTitle className="flex items-center gap-2">
+                      <Bus className="h-5 w-5" />
+                      Fleet & Operations
+                    </CardTitle>
                   </CardHeader>
-                  <CardContent className="grid md:grid-cols-2 gap-6">
+                  <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {agency.total_voms && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help">
+                            <p className="text-sm text-muted-foreground mb-1">Total Fleet</p>
+                            <p className="text-2xl font-bold text-primary">{agency.total_voms.toLocaleString()}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Vehicles Operated in Maximum Service (VOMS)</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.voms_do !== null && agency.voms_do !== undefined && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help">
+                            <p className="text-sm text-muted-foreground mb-1">Directly Operated</p>
+                            <p className="text-2xl font-bold">{agency.voms_do.toLocaleString()}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>DO - Vehicles operated directly by the agency</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.voms_pt !== null && agency.voms_pt !== undefined && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help">
+                            <p className="text-sm text-muted-foreground mb-1">Purchased Transport</p>
+                            <p className="text-2xl font-bold">{agency.voms_pt.toLocaleString()}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>PT - Vehicles operated by contractors</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.volunteer_drivers !== null && agency.volunteer_drivers !== undefined && agency.volunteer_drivers > 0 && (
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Volunteer Drivers</p>
+                        <p className="text-2xl font-bold">{agency.volunteer_drivers.toLocaleString()}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TooltipProvider>
+
+              {/* Service Area */}
+              {(agency.service_area_pop || agency.service_area_sq_miles || agency.density) && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Map className="h-5 w-5" />
+                      Service Area
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-6">
                     {agency.service_area_pop && (
                       <div>
-                        <p className="text-sm font-medium mb-1">Population Served</p>
+                        <p className="text-sm text-muted-foreground mb-1">Population Served</p>
                         <p className="text-2xl font-bold">{agency.service_area_pop.toLocaleString()}</p>
                       </div>
                     )}
                     {agency.service_area_sq_miles && (
                       <div>
-                        <p className="text-sm font-medium mb-1">Service Area</p>
-                        <p className="text-2xl font-bold">{agency.service_area_sq_miles.toLocaleString()}</p>
-                        <p className="text-xs text-muted-foreground">Square Miles</p>
+                        <p className="text-sm text-muted-foreground mb-1">Geographic Area</p>
+                        <p className="text-2xl font-bold">{agency.service_area_sq_miles.toLocaleString()} <span className="text-sm font-normal text-muted-foreground">sq mi</span></p>
                       </div>
                     )}
                     {agency.density && (
                       <div>
-                        <p className="text-sm font-medium mb-1">Population Density</p>
-                        <p className="text-2xl font-bold">{agency.density.toLocaleString()}</p>
-                        <p className="text-xs text-muted-foreground">per sq mile</p>
+                        <p className="text-sm text-muted-foreground mb-1">Population Density</p>
+                        <p className="text-2xl font-bold">{agency.density.toLocaleString()} <span className="text-sm font-normal text-muted-foreground">per sq mi</span></p>
                       </div>
                     )}
                   </CardContent>
                 </Card>
               )}
 
-              {/* Agency Performance Metrics */}
+              {/* Performance Metrics */}
               {!isLoadingContractors && contractors && contractors.length > 0 && (
                 <AgencyPerformanceMetrics contractors={contractors} />
               )}
-
 
               {/* Service Contracts */}
               {!isLoadingContractors && contractors && contractors.length > 0 && (
@@ -353,7 +459,6 @@ const AgencyDetail = () => {
                   </CardContent>
                 </Card>
               )}
-
 
               {/* Related Providers */}
               {!isLoadingRelationships && relationships?.providers && relationships.providers.length > 0 && (
