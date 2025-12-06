@@ -26,3 +26,12 @@ verify_jwt = false
 
 [functions.process-search-results]
 verify_jwt = false
+
+[functions.find-agency-procurement]
+verify_jwt = false
+
+[functions.transform-report]
+verify_jwt = true
+
+[functions.import-transportation-providers]
+verify_jwt = true
