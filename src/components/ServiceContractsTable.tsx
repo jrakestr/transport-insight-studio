@@ -21,7 +21,7 @@ interface ServiceContractsTableProps {
   contractors: Contract[];
 }
 
-type SortField = 'contractor' | 'contractType' | 'mode' | 'vehicles' | 'expenses' | 'subsidy';
+type SortField = 'contractor' | 'contractType' | 'mode' | 'service' | 'vehicles' | 'expenses' | 'subsidy';
 type SortDirection = 'asc' | 'desc' | null;
 
 export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProps) => {
@@ -63,6 +63,10 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
         case 'mode':
           aVal = a.mode || '';
           bVal = b.mode || '';
+          break;
+        case 'service':
+          aVal = a.tos || '';
+          bVal = b.tos || '';
           break;
         case 'vehicles':
           aVal = a.voms_under_contract || 0;
@@ -137,8 +141,17 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                   onClick={() => handleSort('mode')}
                 >
                   <span className="inline-flex items-center">
-                    Mode/Service
+                    Mode
                     <SortIcon field="mode" />
+                  </span>
+                </th>
+                <th 
+                  className={`text-left ${headerClass}`}
+                  onClick={() => handleSort('service')}
+                >
+                  <span className="inline-flex items-center">
+                    Service
+                    <SortIcon field="service" />
                   </span>
                 </th>
                 <th 
@@ -193,10 +206,10 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                     )}
                   </td>
                   <td className="py-3 px-4">
-                    <div className="flex gap-1">
-                      {contract.mode && <Badge variant="outline" className="text-xs">{contract.mode}</Badge>}
-                      {contract.tos && <Badge variant="secondary" className="text-xs">{contract.tos}</Badge>}
-                    </div>
+                    {contract.mode && <Badge variant="outline" className="text-xs">{contract.mode}</Badge>}
+                  </td>
+                  <td className="py-3 px-4">
+                    {contract.tos && <Badge variant="secondary" className="text-xs">{contract.tos}</Badge>}
                   </td>
                   <td className="py-3 px-4 text-right font-medium">
                     {contract.voms_under_contract || '-'}
