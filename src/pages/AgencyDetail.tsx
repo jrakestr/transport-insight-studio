@@ -149,6 +149,18 @@ const AgencyDetail = () => {
                         <p className="text-muted-foreground">{agency.uza_name}</p>
                       </div>
                     )}
+                    {agency.ntd_id && (
+                      <div>
+                        <p className="text-sm font-medium mb-1">NTD ID</p>
+                        <p className="text-muted-foreground font-mono">{agency.ntd_id}</p>
+                      </div>
+                    )}
+                    {agency.reporting_module && (
+                      <div>
+                        <p className="text-sm font-medium mb-1">Reporting Module</p>
+                        <p className="text-muted-foreground">{agency.reporting_module}</p>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -236,66 +248,6 @@ const AgencyDetail = () => {
                 <AgencyPerformanceMetrics contractors={contractors} />
               )}
 
-              {/* NTD Information */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5" />
-                    NTD Reporting Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    {agency.ntd_id && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">NTD ID</p>
-                        <p className="text-muted-foreground font-mono">{agency.ntd_id}</p>
-                      </div>
-                    )}
-                    {agency.fta_recipient_id && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">FTA Recipient ID</p>
-                        <p className="text-muted-foreground font-mono">{agency.fta_recipient_id}</p>
-                      </div>
-                    )}
-                    {agency.ueid && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">UEID</p>
-                        <p className="text-muted-foreground font-mono">{agency.ueid}</p>
-                      </div>
-                    )}
-                    {agency.reporting_module && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Reporting Module</p>
-                        <p className="text-muted-foreground">{agency.reporting_module}</p>
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    {agency.fy_end_date && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Fiscal Year End</p>
-                        <p className="text-muted-foreground">{new Date(agency.fy_end_date).toLocaleDateString()}</p>
-                      </div>
-                    )}
-                    {agency.original_due_date && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Original Due Date</p>
-                        <p className="text-muted-foreground">{new Date(agency.original_due_date).toLocaleDateString()}</p>
-                      </div>
-                    )}
-                    {agency.reported_by_name && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Reported By</p>
-                        <p className="text-muted-foreground">{agency.reported_by_name}</p>
-                        {agency.reported_by_ntd_id && (
-                          <p className="text-xs text-muted-foreground font-mono">{agency.reported_by_ntd_id}</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
 
               {/* Service Contracts */}
               {!isLoadingContractors && contractors && contractors.length > 0 && (
