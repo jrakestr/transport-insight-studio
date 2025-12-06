@@ -71,96 +71,75 @@ interface AggregatedMetrics {
 }
 
 export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetricsProps) {
-  const [selectedMode, setSelectedMode] = useState<string>("all");
-  const [selectedTos, setSelectedTos] = useState<string>("all");
+  const [selectedMode, setSelectedMode] = useState<string>("");
+  const [selectedTos, setSelectedTos] = useState<string>("");
 
-  // Get unique modes and TOS from contractors
-  const { availableModes, availableTos } = useMemo(() => {
-    const modes = new Set<string>();
-    const tos = new Set<string>();
+  // Get unique mode/TOS combinations from contractors
+  const modeTosOptions = useMemo(() => {
+    const options: { mode: string; tos: string; label: string }[] = [];
     
     contractors.forEach(c => {
-      if (c.mode) modes.add(c.mode);
-      if (c.tos) tos.add(c.tos);
+      if (c.mode && c.tos) {
+        const existing = options.find(o => o.mode === c.mode && o.tos === c.tos);
+        if (!existing) {
+          const modeName = MODE_NAMES[c.mode] || c.mode;
+          const tosName = TOS_NAMES[c.tos] || c.tos;
+          options.push({
+            mode: c.mode,
+            tos: c.tos,
+            label: `${modeName} (${c.mode}) - ${tosName} (${c.tos})`
+          });
+        }
+      }
     });
     
-    return {
-      availableModes: Array.from(modes).sort(),
-      availableTos: Array.from(tos).sort(),
-    };
+    return options.sort((a, b) => a.label.localeCompare(b.label));
   }, [contractors]);
 
-  // Calculate aggregated metrics based on selection
+  // Set default selection to first option
+  useMemo(() => {
+    if (modeTosOptions.length > 0 && !selectedMode && !selectedTos) {
+      setSelectedMode(modeTosOptions[0].mode);
+      setSelectedTos(modeTosOptions[0].tos);
+    }
+  }, [modeTosOptions, selectedMode, selectedTos]);
+
+  // Get metrics for selected mode/TOS combination
   const metrics = useMemo((): AggregatedMetrics | null => {
-    const filtered = contractors.filter(c => {
-      const modeMatch = selectedMode === "all" || c.mode === selectedMode;
-      const tosMatch = selectedTos === "all" || c.tos === selectedTos;
-      return modeMatch && tosMatch;
-    });
-
-    if (filtered.length === 0) return null;
-
-    // Sum up the volume metrics
-    const totals = filtered.reduce((acc, c) => ({
-      total_operating_expenses: acc.total_operating_expenses + (c.total_operating_expenses || 0),
-      unlinked_passenger_trips: acc.unlinked_passenger_trips + (c.unlinked_passenger_trips || 0),
-      vehicle_revenue_hours: acc.vehicle_revenue_hours + (c.vehicle_revenue_hours || 0),
-      passenger_miles: acc.passenger_miles + (c.passenger_miles || 0),
-      vehicle_revenue_miles: acc.vehicle_revenue_miles + (c.vehicle_revenue_miles || 0),
-      voms_under_contract: acc.voms_under_contract + (c.voms_under_contract || 0),
-      fare_revenues_earned: acc.fare_revenues_earned + (c.fare_revenues_earned || 0),
-    }), {
-      total_operating_expenses: 0,
-      unlinked_passenger_trips: 0,
-      vehicle_revenue_hours: 0,
-      passenger_miles: 0,
-      vehicle_revenue_miles: 0,
-      voms_under_contract: 0,
-      fare_revenues_earned: 0,
-    });
-
-    // Calculate derived efficiency metrics
-    const cost_per_hour = totals.vehicle_revenue_hours > 0 
-      ? totals.total_operating_expenses / totals.vehicle_revenue_hours 
-      : 0;
-    const cost_per_passenger = totals.unlinked_passenger_trips > 0 
-      ? totals.total_operating_expenses / totals.unlinked_passenger_trips 
-      : 0;
-    const passengers_per_hour = totals.vehicle_revenue_hours > 0 
-      ? totals.unlinked_passenger_trips / totals.vehicle_revenue_hours 
-      : 0;
-    const cost_per_passenger_mile = totals.passenger_miles > 0 
-      ? totals.total_operating_expenses / totals.passenger_miles 
-      : 0;
+    const record = contractors.find(c => c.mode === selectedMode && c.tos === selectedTos);
+    if (!record) return null;
 
     return {
-      total_operating_expenses: totals.total_operating_expenses,
-      unlinked_passenger_trips: totals.unlinked_passenger_trips,
-      vehicle_revenue_hours: totals.vehicle_revenue_hours,
-      passenger_miles: totals.passenger_miles,
-      vehicle_revenue_miles: totals.vehicle_revenue_miles,
-      voms_under_contract: totals.voms_under_contract,
-      fare_revenues_earned: totals.fare_revenues_earned,
-      cost_per_hour,
-      cost_per_passenger,
-      passengers_per_hour,
-      cost_per_passenger_mile,
+      total_operating_expenses: record.total_operating_expenses || 0,
+      unlinked_passenger_trips: record.unlinked_passenger_trips || 0,
+      vehicle_revenue_hours: record.vehicle_revenue_hours || 0,
+      passenger_miles: record.passenger_miles || 0,
+      vehicle_revenue_miles: record.vehicle_revenue_miles || 0,
+      voms_under_contract: record.voms_under_contract || 0,
+      fare_revenues_earned: record.fare_revenues_earned || 0,
+      cost_per_hour: record.cost_per_hour || 0,
+      cost_per_passenger: record.cost_per_passenger || 0,
+      passengers_per_hour: record.passengers_per_hour || 0,
+      cost_per_passenger_mile: record.cost_per_passenger_mile || 0,
     };
   }, [contractors, selectedMode, selectedTos]);
 
   // Generate description of what's being shown
   const selectionLabel = useMemo(() => {
-    const modeName = selectedMode === "all" 
-      ? "All Modes" 
-      : MODE_NAMES[selectedMode] || selectedMode;
-    const tosName = selectedTos === "all" 
-      ? "All Service Types" 
-      : TOS_NAMES[selectedTos] || selectedTos;
-    
-    return `${modeName} • ${tosName}`;
+    const modeName = MODE_NAMES[selectedMode] || selectedMode;
+    const tosName = TOS_NAMES[selectedTos] || selectedTos;
+    return `${modeName} (${selectedMode}) - ${tosName} (${selectedTos})`;
   }, [selectedMode, selectedTos]);
 
-  if (!metrics) return null;
+  const handleSelectionChange = (value: string) => {
+    const option = modeTosOptions.find(o => `${o.mode}-${o.tos}` === value);
+    if (option) {
+      setSelectedMode(option.mode);
+      setSelectedTos(option.tos);
+    }
+  };
+
+  if (!metrics || modeTosOptions.length === 0) return null;
 
   return (
     <Card>
@@ -170,37 +149,25 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
             <Truck className="h-5 w-5" />
             Agency Performance Metrics
           </CardTitle>
-          <div className="flex flex-wrap gap-2">
-            <Select value={selectedMode} onValueChange={setSelectedMode}>
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Select Mode" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Modes</SelectItem>
-                {availableModes.map(mode => (
-                  <SelectItem key={mode} value={mode}>
-                    {MODE_NAMES[mode] || mode} ({mode})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={selectedTos} onValueChange={setSelectedTos}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Select Service Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Service Types</SelectItem>
-                {availableTos.map(tos => (
-                  <SelectItem key={tos} value={tos}>
-                    {TOS_NAMES[tos] || tos} ({tos})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <Select 
+            value={`${selectedMode}-${selectedTos}`} 
+            onValueChange={handleSelectionChange}
+          >
+            <SelectTrigger className="w-[350px]">
+              <SelectValue placeholder="Select Mode & Service Type" />
+            </SelectTrigger>
+            <SelectContent>
+              {modeTosOptions.map(option => (
+                <SelectItem key={`${option.mode}-${option.tos}`} value={`${option.mode}-${option.tos}`}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <p className="text-sm text-muted-foreground mt-2">
-          Showing aggregated metrics for: <span className="font-medium">{selectionLabel}</span>
+          <span className="font-medium">Mode:</span> {MODE_NAMES[selectedMode] || selectedMode} ({selectedMode}) | 
+          <span className="font-medium ml-2">Type of Service:</span> {TOS_NAMES[selectedTos] || selectedTos} ({selectedTos})
         </p>
       </CardHeader>
       <CardContent>
