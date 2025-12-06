@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { TrackerLogo } from "@/components/TrackerLogo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -95,7 +96,8 @@ export const Header = () => {
           </DropdownMenu>
         </div>
 
-        <div className="hidden md:flex md:gap-x-4">
+        <div className="hidden md:flex md:gap-x-3 md:items-center">
+          <ThemeToggle />
           <Button variant="ghost" size="sm" asChild>
             <Link to="/auth">Sign In</Link>
           </Button>
