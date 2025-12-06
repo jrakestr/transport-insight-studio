@@ -9,6 +9,7 @@ import { useAgencyContractors } from "@/hooks/useAgencyContractors";
 import { AgencyContacts } from "@/components/AgencyContacts";
 import { AgencyIntelligence } from "@/components/AgencyIntelligence";
 import { AgencySoftware } from "@/components/AgencySoftware";
+import { ServiceContractsTable } from "@/components/ServiceContractsTable";
 import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, FileText, Calendar, Newspaper, Briefcase, Truck, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -360,79 +361,7 @@ const AgencyDetail = () => {
 
               {/* Service Contracts */}
               {!isLoadingContractors && contractors && contractors.length > 0 && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <DollarSign className="h-5 w-5" />
-                      Service Contracts ({contractors.length})
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b">
-                            <th className="text-left py-3 px-4 text-sm font-semibold">Contractor</th>
-                            <th className="text-left py-3 px-4 text-sm font-semibold">Mode/Service</th>
-                            <th className="text-right py-3 px-4 text-sm font-semibold">Vehicles</th>
-                            <th className="text-right py-3 px-4 text-sm font-semibold">Months</th>
-                            <th className="text-right py-3 px-4 text-sm font-semibold">Contract Expenses</th>
-                            <th className="text-right py-3 px-4 text-sm font-semibold">Agency Subsidy</th>
-                            <th className="text-left py-3 px-4 text-sm font-semibold">Fares Retained</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y">
-                          {contractors.map((contract: any) => (
-                            <tr key={contract.id} className="hover:bg-accent/50 transition-colors">
-                              <td className="py-3 px-4">
-                                {contract.contractee_operator_name ? (
-                                  <Link 
-                                    to={`/transportation-providers/${encodeURIComponent(contract.contractee_operator_name)}`}
-                                    className="font-medium hover:text-primary transition-colors"
-                                  >
-                                    {contract.contractee_operator_name}
-                                  </Link>
-                                ) : (
-                                  <div className="font-medium">Unknown Contractor</div>
-                                )}
-                                {contract.type_of_contract && (
-                                  <div className="text-xs text-muted-foreground mt-1">{contract.type_of_contract}</div>
-                                )}
-                              </td>
-                              <td className="py-3 px-4">
-                                <div className="flex gap-1">
-                                  {contract.mode && <Badge variant="outline" className="text-xs">{contract.mode}</Badge>}
-                                  {contract.tos && <Badge variant="secondary" className="text-xs">{contract.tos}</Badge>}
-                                </div>
-                              </td>
-                              <td className="py-3 px-4 text-right font-medium">
-                                {contract.voms_under_contract || '-'}
-                              </td>
-                              <td className="py-3 px-4 text-right">
-                                {contract.months_seller_operated_in_fy || '-'}
-                              </td>
-                              <td className="py-3 px-4 text-right font-medium">
-                                {contract.total_modal_expenses 
-                                  ? `$${(contract.total_modal_expenses / 1000000).toFixed(2)}M`
-                                  : '-'}
-                              </td>
-                              <td className="py-3 px-4 text-right">
-                                {contract.direct_payment_agency_subsidy
-                                  ? `$${(contract.direct_payment_agency_subsidy / 1000000).toFixed(2)}M`
-                                  : '-'}
-                              </td>
-                              <td className="py-3 px-4">
-                                <Badge variant="outline" className="text-xs">
-                                  {contract.fares_retained_by || 'N/A'}
-                                </Badge>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </CardContent>
-                </Card>
+                <ServiceContractsTable contractors={contractors} />
               )}
 
               {/* CRM Contacts */}
