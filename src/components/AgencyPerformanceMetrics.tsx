@@ -143,21 +143,23 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
   const formatNumber = (val: number) => val.toLocaleString();
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="card-elevated border-border/50">
+      <CardHeader className="border-b border-border/30 bg-muted/20">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <div className="p-1.5 rounded-md bg-primary/10">
+              <BarChart3 className="h-4 w-4 text-primary" />
+            </div>
             Performance
           </CardTitle>
           <Select 
             value={`${selectedMode}-${selectedTos}`} 
             onValueChange={handleSelectionChange}
           >
-            <SelectTrigger className="w-full sm:w-[320px]">
+            <SelectTrigger className="w-full sm:w-[320px] bg-background">
               <SelectValue placeholder="Select Mode & Service" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-background border shadow-lg z-50">
               {modeTosOptions.map(option => (
                 <SelectItem key={`${option.mode}-${option.tos}`} value={`${option.mode}-${option.tos}`}>
                   {option.label}
@@ -167,19 +169,22 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
           </Select>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <TooltipProvider>
           <div className="grid md:grid-cols-2 gap-8">
             {/* Core Metrics - Left Column */}
-            <div>
-              <p className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wide">Core Metrics</p>
-              <div className="space-y-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-3 w-1 rounded-full bg-primary" />
+                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Core Metrics</p>
+              </div>
+              <div className="space-y-0">
                 {metrics.total_operating_expenses > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-2 border-b border-border/50">
+                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
                         <span className="text-sm text-muted-foreground">Total Operating Expenses</span>
-                        <span className="text-lg font-bold">{formatCurrency(metrics.total_operating_expenses)}</span>
+                        <span className="text-lg font-bold text-foreground">{formatCurrency(metrics.total_operating_expenses)}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Total cost to operate this mode and service type</TooltipContent>
@@ -188,9 +193,9 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
                 {metrics.unlinked_passenger_trips > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-2 border-b border-border/50">
+                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
                         <span className="text-sm text-muted-foreground">Unlinked Passenger Trips (UPT)</span>
-                        <span className="text-lg font-bold">{formatNumber(metrics.unlinked_passenger_trips)}</span>
+                        <span className="text-lg font-bold text-foreground">{formatNumber(metrics.unlinked_passenger_trips)}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Number of passenger boardings, each boarding counted separately</TooltipContent>
@@ -199,9 +204,9 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
                 {metrics.passenger_miles > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-2 border-b border-border/50">
+                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
                         <span className="text-sm text-muted-foreground">Passenger Miles</span>
-                        <span className="text-lg font-bold">{formatNumber(metrics.passenger_miles)}</span>
+                        <span className="text-lg font-bold text-foreground">{formatNumber(metrics.passenger_miles)}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Total miles traveled by all passengers</TooltipContent>
@@ -210,9 +215,9 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
                 {metrics.vehicle_revenue_hours > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-2 border-b border-border/50">
+                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
                         <span className="text-sm text-muted-foreground">Vehicle Revenue Hours (VRH)</span>
-                        <span className="text-lg font-bold">{formatNumber(metrics.vehicle_revenue_hours)}</span>
+                        <span className="text-lg font-bold text-foreground">{formatNumber(metrics.vehicle_revenue_hours)}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Hours vehicles spend in revenue-generating service</TooltipContent>
@@ -221,9 +226,9 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
                 {metrics.vehicle_revenue_miles > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-2 border-b border-border/50">
+                      <div className="flex justify-between items-baseline cursor-help py-3 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
                         <span className="text-sm text-muted-foreground">Vehicle Revenue Miles (VRM)</span>
-                        <span className="text-lg font-bold">{formatNumber(metrics.vehicle_revenue_miles)}</span>
+                        <span className="text-lg font-bold text-foreground">{formatNumber(metrics.vehicle_revenue_miles)}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Miles vehicles travel while in revenue-generating service</TooltipContent>
@@ -233,15 +238,18 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
             </div>
 
             {/* Efficiency Metrics - Right Column */}
-            <div>
-              <p className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wide">Efficiency Metrics</p>
-              <div className="space-y-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-3 w-1 rounded-full bg-accent" />
+                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Efficiency Metrics</p>
+              </div>
+              <div className="space-y-0">
                 {metrics.cost_per_hour > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-2 border-b border-border/50">
+                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
                         <span className="text-sm text-muted-foreground">Cost per Hour</span>
-                        <span className="text-lg font-bold">${metrics.cost_per_hour.toFixed(2)}</span>
+                        <span className="text-lg font-bold text-foreground">${metrics.cost_per_hour.toFixed(2)}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Total Operating Expenses ÷ Vehicle Revenue Hours</TooltipContent>
@@ -250,9 +258,9 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
                 {metrics.cost_per_passenger > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-2 border-b border-border/50">
+                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
                         <span className="text-sm text-muted-foreground">Cost per Passenger</span>
-                        <span className="text-lg font-bold">${metrics.cost_per_passenger.toFixed(2)}</span>
+                        <span className="text-lg font-bold text-foreground">${metrics.cost_per_passenger.toFixed(2)}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Total Operating Expenses ÷ Unlinked Passenger Trips</TooltipContent>
@@ -261,9 +269,9 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
                 {metrics.passengers_per_hour > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-2 border-b border-border/50">
+                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
                         <span className="text-sm text-muted-foreground">Passengers per Hour</span>
-                        <span className="text-lg font-bold">{metrics.passengers_per_hour.toFixed(1)}</span>
+                        <span className="text-lg font-bold text-foreground">{metrics.passengers_per_hour.toFixed(1)}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Unlinked Passenger Trips ÷ Vehicle Revenue Hours</TooltipContent>
@@ -272,9 +280,9 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
                 {metrics.cost_per_passenger_mile > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-2 border-b border-border/50">
+                      <div className="flex justify-between items-baseline cursor-help py-3 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
                         <span className="text-sm text-muted-foreground">Cost per Passenger Mile</span>
-                        <span className="text-lg font-bold">${metrics.cost_per_passenger_mile.toFixed(2)}</span>
+                        <span className="text-lg font-bold text-foreground">${metrics.cost_per_passenger_mile.toFixed(2)}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Total Operating Expenses ÷ Passenger Miles</TooltipContent>
