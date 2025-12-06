@@ -10,6 +10,7 @@ import { AgencyContacts } from "@/components/AgencyContacts";
 import { AgencyIntelligence } from "@/components/AgencyIntelligence";
 import { AgencySoftware } from "@/components/AgencySoftware";
 import { ServiceContractsTable } from "@/components/ServiceContractsTable";
+import { AgencyPerformanceMetrics } from "@/components/AgencyPerformanceMetrics";
 import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, FileText, Calendar, Newspaper, Briefcase, Truck, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -231,71 +232,8 @@ const AgencyDetail = () => {
               )}
 
               {/* Agency Performance Metrics */}
-              {!isLoadingContractors && contractors && contractors.length > 0 && contractors[0].total_operating_expenses && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Truck className="h-5 w-5" />
-                      Agency Performance Metrics
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="grid md:grid-cols-3 gap-6">
-                    {contractors[0].total_operating_expenses && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Total Operating Expenses</p>
-                        <p className="text-2xl font-bold">${(contractors[0].total_operating_expenses / 1000000).toFixed(2)}M</p>
-                      </div>
-                    )}
-                    {contractors[0].unlinked_passenger_trips && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Total Passenger Trips</p>
-                        <p className="text-2xl font-bold">{contractors[0].unlinked_passenger_trips.toLocaleString()}</p>
-                      </div>
-                    )}
-                    {contractors[0].vehicle_revenue_hours && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Vehicle Revenue Hours</p>
-                        <p className="text-2xl font-bold">{contractors[0].vehicle_revenue_hours.toLocaleString()}</p>
-                      </div>
-                    )}
-                    {contractors[0].passenger_miles && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Passenger Miles</p>
-                        <p className="text-2xl font-bold">{contractors[0].passenger_miles.toLocaleString()}</p>
-                      </div>
-                    )}
-                    {contractors[0].vehicle_revenue_miles && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Vehicle Revenue Miles</p>
-                        <p className="text-2xl font-bold">{contractors[0].vehicle_revenue_miles.toLocaleString()}</p>
-                      </div>
-                    )}
-                    {contractors[0].cost_per_hour && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Cost Per Hour</p>
-                        <p className="text-2xl font-bold">${contractors[0].cost_per_hour.toFixed(2)}</p>
-                      </div>
-                    )}
-                    {contractors[0].cost_per_passenger && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Cost Per Passenger</p>
-                        <p className="text-2xl font-bold">${contractors[0].cost_per_passenger.toFixed(2)}</p>
-                      </div>
-                    )}
-                    {contractors[0].passengers_per_hour && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Passengers Per Hour</p>
-                        <p className="text-2xl font-bold">{contractors[0].passengers_per_hour.toFixed(1)}</p>
-                      </div>
-                    )}
-                    {contractors[0].cost_per_passenger_mile && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Cost Per Passenger Mile</p>
-                        <p className="text-2xl font-bold">${contractors[0].cost_per_passenger_mile.toFixed(2)}</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+              {!isLoadingContractors && contractors && contractors.length > 0 && (
+                <AgencyPerformanceMetrics contractors={contractors} />
               )}
 
               {/* NTD Information */}
