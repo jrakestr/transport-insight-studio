@@ -21,7 +21,7 @@ interface ServiceContractsTableProps {
   contractors: Contract[];
 }
 
-type SortField = 'contractor' | 'contractType' | 'mode' | 'service' | 'vehicles' | 'expenses' | 'subsidy';
+type SortField = 'contractor' | 'contractType' | 'mode' | 'service' | 'vehicles' | 'expenses' | 'costPerVehicle' | 'subsidy';
 type SortDirection = 'asc' | 'desc' | null;
 
 export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProps) => {
@@ -75,6 +75,10 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
         case 'expenses':
           aVal = a.total_modal_expenses || 0;
           bVal = b.total_modal_expenses || 0;
+          break;
+        case 'costPerVehicle':
+          aVal = (a.total_modal_expenses && a.voms_under_contract) ? a.total_modal_expenses / a.voms_under_contract : 0;
+          bVal = (b.total_modal_expenses && b.voms_under_contract) ? b.total_modal_expenses / b.voms_under_contract : 0;
           break;
         case 'subsidy':
           aVal = a.direct_payment_agency_subsidy || 0;
@@ -174,6 +178,15 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                 </th>
                 <th 
                   className={`text-right ${headerClass}`}
+                  onClick={() => handleSort('costPerVehicle')}
+                >
+                  <span className="inline-flex items-center justify-end w-full">
+                    Cost/Vehicle
+                    <SortIcon field="costPerVehicle" />
+                  </span>
+                </th>
+                <th 
+                  className={`text-right ${headerClass}`}
                   onClick={() => handleSort('subsidy')}
                 >
                   <span className="inline-flex items-center justify-end w-full">
@@ -217,6 +230,11 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                   <td className="py-3 px-4 text-right font-medium">
                     {contract.total_modal_expenses 
                       ? `$${(contract.total_modal_expenses / 1000000).toFixed(2)}M`
+                      : '-'}
+                  </td>
+                  <td className="py-3 px-4 text-right font-medium">
+                    {contract.total_modal_expenses && contract.voms_under_contract
+                      ? `$${(contract.total_modal_expenses / contract.voms_under_contract / 1000).toFixed(0)}K`
                       : '-'}
                   </td>
                   <td className="py-3 px-4 text-right">
