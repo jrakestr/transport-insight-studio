@@ -18,10 +18,31 @@ export interface SoftwareProvider {
   contact_phone: string | null;
   integrations: string[] | null;
   certifications: string[] | null;
+  modes: string[] | null;
   notes: string | null;
   created_at: string;
   updated_at: string;
 }
+
+// Transit modes (from NTD definitions)
+export const TRANSIT_MODES = [
+  { value: 'MB', label: 'Bus' },
+  { value: 'RB', label: 'Bus Rapid Transit' },
+  { value: 'CB', label: 'Commuter Bus' },
+  { value: 'DR', label: 'Demand Response' },
+  { value: 'DT', label: 'Demand Response Taxi' },
+  { value: 'VP', label: 'Vanpool' },
+  { value: 'LR', label: 'Light Rail' },
+  { value: 'HR', label: 'Heavy Rail' },
+  { value: 'CR', label: 'Commuter Rail' },
+  { value: 'SR', label: 'Streetcar Rail' },
+  { value: 'TB', label: 'Trolleybus' },
+  { value: 'FB', label: 'Ferryboat' },
+  { value: 'MG', label: 'Monorail/Automated Guideway' },
+  { value: 'CC', label: 'Cable Car' },
+  { value: 'IP', label: 'Inclined Plane' },
+  { value: 'PB', label: 'Publico' },
+];
 
 export const SOFTWARE_CATEGORIES = [
   { value: 'cad_avl', label: 'CAD/AVL', description: 'Computer-Aided Dispatch / Automatic Vehicle Location' },

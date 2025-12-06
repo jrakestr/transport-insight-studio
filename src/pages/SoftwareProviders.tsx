@@ -17,9 +17,9 @@ import {
   ExternalLink,
   Server,
   Cloud,
-  Users
+  Bus
 } from 'lucide-react';
-import { useSoftwareProvidersList, SOFTWARE_CATEGORIES } from '@/hooks/useSoftwareProviders';
+import { useSoftwareProvidersList, SOFTWARE_CATEGORIES, TRANSIT_MODES } from '@/hooks/useSoftwareProviders';
 
 const SoftwareProviders = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,6 +50,10 @@ const SoftwareProviders = () => {
     if (type === 'cloud') return <Cloud className="h-4 w-4" />;
     if (type === 'on_premise') return <Server className="h-4 w-4" />;
     return <Server className="h-4 w-4" />;
+  };
+
+  const getModeLabel = (code: string) => {
+    return TRANSIT_MODES.find(m => m.value === code)?.label || code;
   };
 
   return (
@@ -141,6 +145,23 @@ const SoftwareProviders = () => {
                             {getCategoryLabel(provider.category)}
                           </Badge>
                         </div>
+                        
+                        {/* Modes */}
+                        {provider.modes && provider.modes.length > 0 && (
+                          <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                            <Bus className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            {provider.modes.slice(0, 3).map((mode) => (
+                              <Badge key={mode} variant="outline" className="text-xs">
+                                {getModeLabel(mode)}
+                              </Badge>
+                            ))}
+                            {provider.modes.length > 3 && (
+                              <span className="text-xs text-muted-foreground">
+                                +{provider.modes.length - 3} more
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </CardHeader>
                       <CardContent className="space-y-4">
                         {/* Description */}

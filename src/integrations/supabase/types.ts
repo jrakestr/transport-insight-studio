@@ -1379,6 +1379,7 @@ export type Database = {
           id: string
           integrations: Json | null
           logo_url: string | null
+          modes: string[] | null
           name: string
           notes: string | null
           pricing_model: string | null
@@ -1400,6 +1401,7 @@ export type Database = {
           id?: string
           integrations?: Json | null
           logo_url?: string | null
+          modes?: string[] | null
           name: string
           notes?: string | null
           pricing_model?: string | null
@@ -1421,6 +1423,7 @@ export type Database = {
           id?: string
           integrations?: Json | null
           logo_url?: string | null
+          modes?: string[] | null
           name?: string
           notes?: string | null
           pricing_model?: string | null
