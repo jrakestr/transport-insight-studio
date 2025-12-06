@@ -21,7 +21,7 @@ interface ServiceContractsTableProps {
   contractors: Contract[];
 }
 
-type SortField = 'contractor' | 'mode' | 'vehicles' | 'months' | 'expenses' | 'subsidy' | 'fares';
+type SortField = 'contractor' | 'mode' | 'vehicles' | 'expenses' | 'subsidy';
 type SortDirection = 'asc' | 'desc' | null;
 
 export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProps) => {
@@ -64,10 +64,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
           aVal = a.voms_under_contract || 0;
           bVal = b.voms_under_contract || 0;
           break;
-        case 'months':
-          aVal = a.months_seller_operated_in_fy || 0;
-          bVal = b.months_seller_operated_in_fy || 0;
-          break;
         case 'expenses':
           aVal = a.total_modal_expenses || 0;
           bVal = b.total_modal_expenses || 0;
@@ -75,10 +71,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
         case 'subsidy':
           aVal = a.direct_payment_agency_subsidy || 0;
           bVal = b.direct_payment_agency_subsidy || 0;
-          break;
-        case 'fares':
-          aVal = a.fares_retained_by || '';
-          bVal = b.fares_retained_by || '';
           break;
         default:
           return 0;
@@ -147,15 +139,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                 </th>
                 <th 
                   className={`text-right ${headerClass}`}
-                  onClick={() => handleSort('months')}
-                >
-                  <span className="inline-flex items-center justify-end w-full">
-                    Months
-                    <SortIcon field="months" />
-                  </span>
-                </th>
-                <th 
-                  className={`text-right ${headerClass}`}
                   onClick={() => handleSort('expenses')}
                 >
                   <span className="inline-flex items-center justify-end w-full">
@@ -170,15 +153,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                   <span className="inline-flex items-center justify-end w-full">
                     Agency Subsidy
                     <SortIcon field="subsidy" />
-                  </span>
-                </th>
-                <th 
-                  className={`text-left ${headerClass}`}
-                  onClick={() => handleSort('fares')}
-                >
-                  <span className="inline-flex items-center">
-                    Fares Retained
-                    <SortIcon field="fares" />
                   </span>
                 </th>
               </tr>
@@ -210,9 +184,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                   <td className="py-3 px-4 text-right font-medium">
                     {contract.voms_under_contract || '-'}
                   </td>
-                  <td className="py-3 px-4 text-right">
-                    {contract.months_seller_operated_in_fy || '-'}
-                  </td>
                   <td className="py-3 px-4 text-right font-medium">
                     {contract.total_modal_expenses 
                       ? `$${(contract.total_modal_expenses / 1000000).toFixed(2)}M`
@@ -222,11 +193,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                     {contract.direct_payment_agency_subsidy
                       ? `$${(contract.direct_payment_agency_subsidy / 1000000).toFixed(2)}M`
                       : '-'}
-                  </td>
-                  <td className="py-3 px-4">
-                    <Badge variant="outline" className="text-xs">
-                      {contract.fares_retained_by || 'N/A'}
-                    </Badge>
                   </td>
                 </tr>
               ))}
