@@ -151,18 +151,7 @@ const AgencyDetail = () => {
                 </CardContent>
               </Card>
 
-              {/* CRM Contacts */}
-              <AgencyContacts agencyId={agency.id} />
-
-              {/* Website Intelligence */}
-              <AgencyIntelligence 
-                agencyId={agency.id} 
-                agencyUrl={agency.url} 
-                agencyName={agency.agency_name}
-              />
-
-              {/* Software Stack */}
-              <AgencySoftware agencyId={agency.id} />
+              {/* Fleet & Operations */}
 
               {/* Fleet & Operations */}
               <Card>
@@ -369,17 +358,18 @@ const AgencyDetail = () => {
                 </CardContent>
               </Card>
 
-              {/* Additional Information */}
-              {agency.notes && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Additional Information</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground whitespace-pre-wrap">{agency.notes}</p>
-                  </CardContent>
-                </Card>
-              )}
+              {/* CRM Contacts */}
+              <AgencyContacts agencyId={agency.id} />
+
+              {/* Website Intelligence */}
+              <AgencyIntelligence 
+                agencyId={agency.id} 
+                agencyUrl={agency.url} 
+                agencyName={agency.agency_name}
+              />
+
+              {/* Software Stack */}
+              <AgencySoftware agencyId={agency.id} />
 
               {/* Related Articles */}
               {!isLoadingRelationships && relationships?.articles && relationships.articles.length > 0 && (
