@@ -159,9 +159,43 @@ export const AgencyIntelligence = ({ agencyId, agencyUrl, agencyName }: AgencyIn
                             </div>
                           )}
 
-                          {type === 'procurement' && item.extracted_data?.items && (
+                          {type === 'procurement' && item.extracted_data && (
                             <div className="space-y-2">
-                              {item.extracted_data.items.map((proc: any, i: number) => (
+                              {/* Open web search results (portals) */}
+                              {item.extracted_data.source === 'open_web_search' && item.extracted_data.portals && (
+                                <div className="space-y-2">
+                                  <p className="text-xs text-muted-foreground mb-2">
+                                    Found via open web search
+                                  </p>
+                                  {item.extracted_data.portals.map((portal: any, i: number) => (
+                                    <div key={i} className="text-sm p-2 bg-muted/50 rounded">
+                                      <div className="flex items-start justify-between gap-2">
+                                        <div className="flex-1">
+                                          <a 
+                                            href={portal.url} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="font-medium text-primary hover:underline"
+                                          >
+                                            {portal.title}
+                                          </a>
+                                          <Badge variant="secondary" className="ml-2 text-xs">
+                                            {portal.sourceType}
+                                          </Badge>
+                                          {portal.snippet && (
+                                            <p className="text-muted-foreground mt-1 text-xs line-clamp-2">
+                                              {portal.snippet}
+                                            </p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              
+                              {/* Agency website procurement items */}
+                              {item.extracted_data.items && item.extracted_data.items.map((proc: any, i: number) => (
                                 <div key={i} className="text-sm p-2 bg-muted/50 rounded">
                                   <p className="font-medium">{proc.title}</p>
                                   {proc.type && <Badge variant="secondary" className="text-xs mr-2">{proc.type}</Badge>}
