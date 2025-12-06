@@ -172,13 +172,13 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                 {/* Financials */}
                 <th className={`text-right ${thBase} border-l`} onClick={() => handleSort('total_modal_expenses')}>
                   <Tooltip>
-                    <TooltipTrigger className="inline-flex items-center justify-end w-full">total_modal_expenses<SortIcon field="total_modal_expenses" /></TooltipTrigger>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">Expenses<SortIcon field="total_modal_expenses" /></TooltipTrigger>
                     <TooltipContent>Total Modal Expenses</TooltipContent>
                   </Tooltip>
                 </th>
                 <th className={`text-right ${thBase}`} onClick={() => handleSort('direct_payment_agency_subsidy')}>
                   <Tooltip>
-                    <TooltipTrigger className="inline-flex items-center justify-end w-full">direct_payment_agency_subsidy<SortIcon field="direct_payment_agency_subsidy" /></TooltipTrigger>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">Subsidy<SortIcon field="direct_payment_agency_subsidy" /></TooltipTrigger>
                     <TooltipContent>Direct Payment Agency Subsidy</TooltipContent>
                   </Tooltip>
                 </th>
