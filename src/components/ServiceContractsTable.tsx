@@ -14,10 +14,6 @@ interface Contract {
   voms_under_contract?: number;
   total_modal_expenses?: number;
   direct_payment_agency_subsidy?: number;
-  cost_per_hour?: number;
-  cost_per_passenger?: number;
-  cost_per_passenger_mile?: number;
-  passengers_per_hour?: number;
 }
 
 interface ServiceContractsTableProps {
@@ -26,8 +22,7 @@ interface ServiceContractsTableProps {
 
 type SortField = 
   | 'contractor' | 'type_of_contract' | 'mode' | 'tos' 
-  | 'voms_under_contract' | 'total_modal_expenses' | 'direct_payment_agency_subsidy'
-  | 'cost_per_hour' | 'cost_per_passenger' | 'cost_per_passenger_mile' | 'passengers_per_hour';
+  | 'voms_under_contract' | 'total_modal_expenses' | 'direct_payment_agency_subsidy';
 
 type SortDirection = 'asc' | 'desc' | null;
 
@@ -140,7 +135,7 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                 <th colSpan={2} className="py-1 px-2 text-xs font-bold text-left sticky left-0 z-20 bg-muted/30">Contractor</th>
                 <th colSpan={3} className="py-1 px-2 text-xs font-bold text-left border-l">Contract Info</th>
                 <th colSpan={3} className="py-1 px-2 text-xs font-bold text-right border-l">Financials</th>
-                <th colSpan={4} className="py-1 px-2 text-xs font-bold text-right border-l">Efficiency Metrics</th>
+                
               </tr>
               {/* Column Headers */}
               <tr className="border-b">
@@ -189,31 +184,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                   </Tooltip>
                 </th>
                 
-                {/* Efficiency Metrics */}
-                <th className={`text-right ${thBase} border-l`} onClick={() => handleSort('cost_per_hour')}>
-                  <Tooltip>
-                    <TooltipTrigger className="inline-flex items-center justify-end w-full">$/Hour<SortIcon field="cost_per_hour" /></TooltipTrigger>
-                    <TooltipContent>Cost per Hour</TooltipContent>
-                  </Tooltip>
-                </th>
-                <th className={`text-right ${thBase}`} onClick={() => handleSort('cost_per_passenger')}>
-                  <Tooltip>
-                    <TooltipTrigger className="inline-flex items-center justify-end w-full">$/Pax<SortIcon field="cost_per_passenger" /></TooltipTrigger>
-                    <TooltipContent>Cost per Passenger</TooltipContent>
-                  </Tooltip>
-                </th>
-                <th className={`text-right ${thBase}`} onClick={() => handleSort('cost_per_passenger_mile')}>
-                  <Tooltip>
-                    <TooltipTrigger className="inline-flex items-center justify-end w-full">$/Pax-Mi<SortIcon field="cost_per_passenger_mile" /></TooltipTrigger>
-                    <TooltipContent>Cost per Passenger Mile</TooltipContent>
-                  </Tooltip>
-                </th>
-                <th className={`text-right ${thBase}`} onClick={() => handleSort('passengers_per_hour')}>
-                  <Tooltip>
-                    <TooltipTrigger className="inline-flex items-center justify-end w-full">Pax/Hr<SortIcon field="passengers_per_hour" /></TooltipTrigger>
-                    <TooltipContent>Passengers per Hour</TooltipContent>
-                  </Tooltip>
-                </th>
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -262,19 +232,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                       : '-'}
                   </td>
                   
-                  {/* Efficiency Metrics */}
-                  <td className={`${tdBase} text-right border-l`}>
-                    {formatCurrency(contract.cost_per_hour)}
-                  </td>
-                  <td className={`${tdBase} text-right`}>
-                    {formatCurrency(contract.cost_per_passenger)}
-                  </td>
-                  <td className={`${tdBase} text-right`}>
-                    {formatCurrency(contract.cost_per_passenger_mile)}
-                  </td>
-                  <td className={`${tdBase} text-right`}>
-                    {formatDecimal(contract.passengers_per_hour)}
-                  </td>
                 </tr>
               ))}
             </tbody>
