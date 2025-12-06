@@ -17,6 +17,7 @@ import TransportationProviders from "./pages/TransportationProviders";
 import TransportationProviderDetail from "./pages/TransportationProviderDetail";
 import Playbook from "./pages/Playbook";
 import PlaybookDetail from "./pages/PlaybookDetail";
+import SoftwareProviders from "./pages/SoftwareProviders";
 import Auth from "./pages/Auth";
 import AdminLayout from "./components/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -73,6 +74,7 @@ const App = () => (
           <Route path="/transportation-providers/:name" element={<TransportationProviderDetail />} />
           <Route path="/playbook" element={<Playbook />} />
           <Route path="/playbook/:slug" element={<PlaybookDetail />} />
+          <Route path="/software-providers" element={<SoftwareProviders />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
