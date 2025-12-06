@@ -166,7 +166,16 @@ Return ONLY a raw JSON object (no markdown code blocks, no explanation) with:
 - category: One of [Technology, Policy, RFP, Contract Award, Partnership, Infrastructure]
 - verticals: Array of relevant verticals [Electric Buses, Autonomous Vehicles, Fare Payment, etc.]
 - agencies: Array of {name: string, confidence: number} for transit agencies mentioned
-- providers: Array of {name: string, type: string, confidence: number} for technology providers
+- providers: Array of {name: string, provider_type: string, confidence: number, transit_modes?: string[]} for providers
+
+PROVIDER TYPES:
+- "operator": Transit service operators (First Transit, MV Transportation, Transdev)
+- "technology": Software/platform providers (Trapeze, Via, Swiftly, Clever Devices)
+- "tnc": Ride-hailing companies (Uber, Lyft)
+- "oem": Vehicle manufacturers (New Flyer, Gillig, BYD, Proterra)
+- "consultant": Planning/advisory firms (WSP, AECOM)
+- "service": Other service providers
+
 - opportunities: Array of {type: string, description: string, confidence: number} for RFPs or contracts
 - summary: Brief 2-sentence summary
 - key_insights: Array of 3-5 bullet points`

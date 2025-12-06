@@ -169,13 +169,23 @@ Deno.serve(async (req) => {
 Article Title: ${result.title || 'Unknown'}
 Content: ${content.substring(0, 4000)}
 
+PROVIDER TYPE CLASSIFICATION (choose exactly one per provider):
+- "operator": Companies that operate transit services under contract (e.g., First Transit, MV Transportation, Transdev)
+- "technology": Software, platforms, or technology solutions (e.g., Trapeze, Via, Swiftly, Clever Devices)
+- "tnc": Transportation Network Companies / ride-hailing (e.g., Uber, Lyft)
+- "oem": Vehicle or equipment manufacturers (e.g., New Flyer, Gillig, BYD, Proterra)
+- "consultant": Planning, engineering, or advisory firms (e.g., WSP, AECOM)
+- "service": Other service providers (brokers, staffing, maintenance contractors)
+
+TRANSIT MODES (for technology providers): MB=Bus, DR=Demand Response, LR=Light Rail, HR=Heavy Rail, CR=Commuter Rail
+
 Provide your response as valid JSON with this exact structure:
 {
   "relevance": 0.0-1.0,
   "category": "one of: infrastructure, technology, policy, operations, innovation",
   "verticals": ["array of relevant verticals: fixed-route, paratransit, microtransit, etc."],
   "agencies": [{"name": "agency name", "mention_type": "featured/mentioned/context"}],
-  "providers": [{"name": "provider name", "mention_type": "featured/mentioned/context"}],
+  "providers": [{"name": "provider name", "provider_type": "operator|technology|tnc|oem|consultant|service", "mention_type": "featured/mentioned/context", "software_category": "optional for tech", "transit_modes": ["MB", "DR"]}],
   "opportunities": [{"title": "opportunity title", "description": "brief description"}],
   "summary": "2-3 sentence summary"
 }`;
