@@ -21,7 +21,7 @@ interface ServiceContractsTableProps {
   contractors: Contract[];
 }
 
-type SortField = 'contractor' | 'mode' | 'vehicles' | 'expenses' | 'subsidy';
+type SortField = 'contractor' | 'contractType' | 'mode' | 'vehicles' | 'expenses' | 'subsidy';
 type SortDirection = 'asc' | 'desc' | null;
 
 export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProps) => {
@@ -55,6 +55,10 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
         case 'contractor':
           aVal = a.contractee_operator_name || '';
           bVal = b.contractee_operator_name || '';
+          break;
+        case 'contractType':
+          aVal = a.type_of_contract || '';
+          bVal = b.type_of_contract || '';
           break;
         case 'mode':
           aVal = a.mode || '';
@@ -121,6 +125,15 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                 </th>
                 <th 
                   className={`text-left ${headerClass}`}
+                  onClick={() => handleSort('contractType')}
+                >
+                  <span className="inline-flex items-center">
+                    Contract Type
+                    <SortIcon field="contractType" />
+                  </span>
+                </th>
+                <th 
+                  className={`text-left ${headerClass}`}
                   onClick={() => handleSort('mode')}
                 >
                   <span className="inline-flex items-center">
@@ -171,8 +184,12 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                     ) : (
                       <div className="font-medium">Unknown Contractor</div>
                     )}
+                  </td>
+                  <td className="py-3 px-4">
                     {contract.type_of_contract && (
-                      <div className="text-xs text-muted-foreground mt-1">{contract.type_of_contract}</div>
+                      <Badge variant="outline" className="text-xs">
+                        {contract.type_of_contract}
+                      </Badge>
                     )}
                   </td>
                   <td className="py-3 px-4">
