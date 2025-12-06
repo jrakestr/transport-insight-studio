@@ -9,6 +9,7 @@ import { useAgencyContractors } from "@/hooks/useAgencyContractors";
 import { AgencyContacts } from "@/components/AgencyContacts";
 import { AgencyIntelligence } from "@/components/AgencyIntelligence";
 import { AgencySoftware } from "@/components/AgencySoftware";
+import { ProcurementFinder } from "@/components/ProcurementFinder";
 import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, FileText, Calendar, Newspaper, Briefcase, Truck, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -158,6 +159,12 @@ const AgencyDetail = () => {
               <AgencyIntelligence 
                 agencyId={agency.id} 
                 agencyUrl={agency.url} 
+                agencyName={agency.agency_name}
+              />
+
+              {/* Procurement Page Finder */}
+              <ProcurementFinder 
+                agencyId={agency.id}
                 agencyName={agency.agency_name}
               />
 
