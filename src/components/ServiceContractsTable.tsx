@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { DollarSign, ArrowUpDown, ArrowUp, ArrowDown, Check, X } from "lucide-react";
+import { DollarSign, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Contract {
@@ -14,8 +14,6 @@ interface Contract {
   voms_under_contract?: number;
   total_modal_expenses?: number;
   direct_payment_agency_subsidy?: number;
-  buyer_supplies_vehicles_to_seller?: boolean;
-  buyer_provides_maintenance_facility_to_seller?: boolean;
   unlinked_passenger_trips?: number;
   passenger_miles?: number;
   vehicle_revenue_hours?: number;
@@ -125,12 +123,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
     return <ArrowDown className="h-3 w-3 ml-1" />;
   };
 
-  const BoolIcon = ({ value }: { value: boolean | undefined | null }) => {
-    if (value === true) return <Check className="h-4 w-4 text-green-600" />;
-    if (value === false) return <X className="h-4 w-4 text-muted-foreground" />;
-    return <span className="text-muted-foreground">-</span>;
-  };
-
   const thBase = "py-2 px-2 text-xs font-semibold cursor-pointer hover:bg-accent/50 transition-colors select-none whitespace-nowrap";
   const thSticky = "sticky left-0 z-20 bg-background";
   const tdBase = "py-2 px-2 text-sm";
@@ -151,8 +143,7 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
               {/* Group Headers */}
               <tr className="border-b bg-muted/30">
                 <th colSpan={2} className="py-1 px-2 text-xs font-bold text-left sticky left-0 z-20 bg-muted/30">Contractor</th>
-                <th colSpan={2} className="py-1 px-2 text-xs font-bold text-left border-l">Contract Info</th>
-                <th colSpan={2} className="py-1 px-2 text-xs font-bold text-center border-l">Assets Provided</th>
+                <th colSpan={3} className="py-1 px-2 text-xs font-bold text-left border-l">Contract Info</th>
                 <th colSpan={3} className="py-1 px-2 text-xs font-bold text-right border-l">Financials</th>
                 <th colSpan={4} className="py-1 px-2 text-xs font-bold text-right border-l">Service Volume</th>
                 <th colSpan={4} className="py-1 px-2 text-xs font-bold text-right border-l">Efficiency Metrics</th>
@@ -172,54 +163,88 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                   <span className="inline-flex items-center">Mode<SortIcon field="mode" /></span>
                 </th>
                 <th className={`text-left ${thBase}`} onClick={() => handleSort('tos')}>
-                  <span className="inline-flex items-center">TOS<SortIcon field="tos" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center">TOS<SortIcon field="tos" /></TooltipTrigger>
+                    <TooltipContent>Type of Service</TooltipContent>
+                  </Tooltip>
                 </th>
-                
-                {/* Assets Provided */}
-                <th className={`text-center ${thBase} border-l`}>
-                  <Tooltip><TooltipTrigger>Vehicles</TooltipTrigger><TooltipContent>Buyer Supplies Vehicles</TooltipContent></Tooltip>
-                </th>
-                <th className={`text-center ${thBase}`}>
-                  <Tooltip><TooltipTrigger>Facility</TooltipTrigger><TooltipContent>Buyer Provides Maintenance Facility</TooltipContent></Tooltip>
+                <th className={`text-right ${thBase}`} onClick={() => handleSort('voms_under_contract')}>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">VOMS<SortIcon field="voms_under_contract" /></TooltipTrigger>
+                    <TooltipContent>Vehicles Operated in Maximum Service</TooltipContent>
+                  </Tooltip>
                 </th>
                 
                 {/* Financials */}
-                <th className={`text-right ${thBase} border-l`} onClick={() => handleSort('voms_under_contract')}>
-                  <span className="inline-flex items-center justify-end w-full">VOMS<SortIcon field="voms_under_contract" /></span>
-                </th>
-                <th className={`text-right ${thBase}`} onClick={() => handleSort('total_modal_expenses')}>
-                  <span className="inline-flex items-center justify-end w-full">Expenses<SortIcon field="total_modal_expenses" /></span>
+                <th className={`text-right ${thBase} border-l`} onClick={() => handleSort('total_modal_expenses')}>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">total_modal_expenses<SortIcon field="total_modal_expenses" /></TooltipTrigger>
+                    <TooltipContent>Total Modal Expenses</TooltipContent>
+                  </Tooltip>
                 </th>
                 <th className={`text-right ${thBase}`} onClick={() => handleSort('direct_payment_agency_subsidy')}>
-                  <span className="inline-flex items-center justify-end w-full">Subsidy<SortIcon field="direct_payment_agency_subsidy" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">direct_payment_agency_subsidy<SortIcon field="direct_payment_agency_subsidy" /></TooltipTrigger>
+                    <TooltipContent>Direct Payment Agency Subsidy</TooltipContent>
+                  </Tooltip>
+                </th>
+                <th className={`text-right ${thBase}`}>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">$/VOMS</TooltipTrigger>
+                    <TooltipContent>Cost per Vehicle (total_modal_expenses / VOMS)</TooltipContent>
+                  </Tooltip>
                 </th>
                 
                 {/* Service Volume */}
                 <th className={`text-right ${thBase} border-l`} onClick={() => handleSort('unlinked_passenger_trips')}>
-                  <span className="inline-flex items-center justify-end w-full">UPT<SortIcon field="unlinked_passenger_trips" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">UPT<SortIcon field="unlinked_passenger_trips" /></TooltipTrigger>
+                    <TooltipContent>Unlinked Passenger Trips</TooltipContent>
+                  </Tooltip>
                 </th>
                 <th className={`text-right ${thBase}`} onClick={() => handleSort('passenger_miles')}>
-                  <span className="inline-flex items-center justify-end w-full">Pass. Miles<SortIcon field="passenger_miles" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">passenger_miles<SortIcon field="passenger_miles" /></TooltipTrigger>
+                    <TooltipContent>Passenger Miles</TooltipContent>
+                  </Tooltip>
                 </th>
                 <th className={`text-right ${thBase}`} onClick={() => handleSort('vehicle_revenue_hours')}>
-                  <span className="inline-flex items-center justify-end w-full">VRH<SortIcon field="vehicle_revenue_hours" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">VRH<SortIcon field="vehicle_revenue_hours" /></TooltipTrigger>
+                    <TooltipContent>Vehicle Revenue Hours</TooltipContent>
+                  </Tooltip>
                 </th>
                 <th className={`text-right ${thBase}`} onClick={() => handleSort('vehicle_revenue_miles')}>
-                  <span className="inline-flex items-center justify-end w-full">VRM<SortIcon field="vehicle_revenue_miles" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">VRM<SortIcon field="vehicle_revenue_miles" /></TooltipTrigger>
+                    <TooltipContent>Vehicle Revenue Miles</TooltipContent>
+                  </Tooltip>
                 </th>
                 
                 {/* Efficiency Metrics */}
                 <th className={`text-right ${thBase} border-l`} onClick={() => handleSort('cost_per_hour')}>
-                  <span className="inline-flex items-center justify-end w-full">$/Hour<SortIcon field="cost_per_hour" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">cost_per_hour<SortIcon field="cost_per_hour" /></TooltipTrigger>
+                    <TooltipContent>Cost per Hour</TooltipContent>
+                  </Tooltip>
                 </th>
                 <th className={`text-right ${thBase}`} onClick={() => handleSort('cost_per_passenger')}>
-                  <span className="inline-flex items-center justify-end w-full">$/Pass<SortIcon field="cost_per_passenger" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">cost_per_passenger<SortIcon field="cost_per_passenger" /></TooltipTrigger>
+                    <TooltipContent>Cost per Passenger</TooltipContent>
+                  </Tooltip>
                 </th>
                 <th className={`text-right ${thBase}`} onClick={() => handleSort('cost_per_passenger_mile')}>
-                  <span className="inline-flex items-center justify-end w-full">$/PM<SortIcon field="cost_per_passenger_mile" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">cost_per_passenger_mile<SortIcon field="cost_per_passenger_mile" /></TooltipTrigger>
+                    <TooltipContent>Cost per Passenger Mile</TooltipContent>
+                  </Tooltip>
                 </th>
                 <th className={`text-right ${thBase}`} onClick={() => handleSort('passengers_per_hour')}>
-                  <span className="inline-flex items-center justify-end w-full">Pass/Hr<SortIcon field="passengers_per_hour" /></span>
+                  <Tooltip>
+                    <TooltipTrigger className="inline-flex items-center justify-end w-full">passengers_per_hour<SortIcon field="passengers_per_hour" /></TooltipTrigger>
+                    <TooltipContent>Passengers per Hour</TooltipContent>
+                  </Tooltip>
                 </th>
               </tr>
             </thead>
@@ -252,24 +277,21 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                   <td className={tdBase}>
                     {contract.tos && <Badge variant="secondary" className="text-xs">{contract.tos}</Badge>}
                   </td>
-                  
-                  {/* Assets Provided */}
-                  <td className={`${tdBase} text-center border-l`}>
-                    <BoolIcon value={contract.buyer_supplies_vehicles_to_seller} />
-                  </td>
-                  <td className={`${tdBase} text-center`}>
-                    <BoolIcon value={contract.buyer_provides_maintenance_facility_to_seller} />
+                  <td className={`${tdBase} text-right font-medium`}>
+                    {contract.voms_under_contract || '-'}
                   </td>
                   
                   {/* Financials */}
                   <td className={`${tdBase} text-right font-medium border-l`}>
-                    {contract.voms_under_contract || '-'}
-                  </td>
-                  <td className={`${tdBase} text-right font-medium`}>
                     {formatCurrency(contract.total_modal_expenses)}
                   </td>
                   <td className={`${tdBase} text-right`}>
                     {formatCurrency(contract.direct_payment_agency_subsidy)}
+                  </td>
+                  <td className={`${tdBase} text-right`}>
+                    {contract.total_modal_expenses && contract.voms_under_contract
+                      ? formatCurrency(contract.total_modal_expenses / contract.voms_under_contract)
+                      : '-'}
                   </td>
                   
                   {/* Service Volume */}
