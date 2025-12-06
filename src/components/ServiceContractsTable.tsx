@@ -132,7 +132,9 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
   };
 
   const thBase = "py-2 px-2 text-xs font-semibold cursor-pointer hover:bg-accent/50 transition-colors select-none whitespace-nowrap";
+  const thSticky = "sticky left-0 z-20 bg-background";
   const tdBase = "py-2 px-2 text-sm";
+  const tdSticky = "sticky left-0 z-10 bg-background";
 
   return (
     <Card>
@@ -148,7 +150,7 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
             <thead>
               {/* Group Headers */}
               <tr className="border-b bg-muted/30">
-                <th colSpan={2} className="py-1 px-2 text-xs font-bold text-left">Contractor</th>
+                <th colSpan={2} className="py-1 px-2 text-xs font-bold text-left sticky left-0 z-20 bg-muted/30">Contractor</th>
                 <th colSpan={2} className="py-1 px-2 text-xs font-bold text-left border-l">Contract Info</th>
                 <th colSpan={2} className="py-1 px-2 text-xs font-bold text-center border-l">Assets Provided</th>
                 <th colSpan={3} className="py-1 px-2 text-xs font-bold text-right border-l">Financials</th>
@@ -158,7 +160,7 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
               {/* Column Headers */}
               <tr className="border-b">
                 {/* Contractor */}
-                <th className={`text-left ${thBase}`} onClick={() => handleSort('contractor')}>
+                <th className={`text-left ${thBase} ${thSticky} min-w-[180px]`} onClick={() => handleSort('contractor')}>
                   <span className="inline-flex items-center">Name<SortIcon field="contractor" /></span>
                 </th>
                 <th className={`text-left ${thBase}`} onClick={() => handleSort('type_of_contract')}>
@@ -225,7 +227,7 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
               {sortedContractors.map((contract) => (
                 <tr key={contract.id} className="hover:bg-accent/50 transition-colors">
                   {/* Contractor */}
-                  <td className={tdBase}>
+                  <td className={`${tdBase} ${tdSticky} min-w-[180px]`}>
                     {contract.contractee_operator_name ? (
                       <Link 
                         to={`/transportation-providers/${encodeURIComponent(contract.contractee_operator_name)}`}
