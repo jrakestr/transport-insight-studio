@@ -89,18 +89,51 @@ const AgencyDetail = () => {
               Back
             </Button>
             
-            <div className="flex items-start gap-5 mb-6">
-              <div className="p-4 rounded-xl bg-gradient-primary shadow-soft">
-                <Building2 className="h-8 w-8 text-primary-foreground" />
+            <div className="flex flex-col lg:flex-row lg:items-start gap-6 mb-8">
+              {/* Agency Info */}
+              <div className="flex items-start gap-5 flex-1">
+                <div className="p-4 rounded-xl bg-gradient-primary shadow-soft">
+                  <Building2 className="h-8 w-8 text-primary-foreground" />
+                </div>
+                <div className="flex-1">
+                  <h1 className="text-3xl lg:text-4xl font-bold mb-2 leading-tight text-foreground">
+                    {agency.agency_name}
+                  </h1>
+                  <p className="text-lg text-muted-foreground mb-4">
+                    {getDescriptor()}
+                  </p>
+                  {/* Contact Info - inline */}
+                  {agency.address_line_1 && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4" />
+                      <span>{[agency.address_line_1, agency.city, agency.state, agency.zip_code].filter(Boolean).join(', ')}</span>
+                    </div>
+                  )}
+                  {agency.url && (
+                    <div className="flex items-center gap-2 text-sm mt-1">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      <a 
+                        href={agency.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {agency.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="flex-1">
-                <h1 className="text-3xl lg:text-4xl font-bold mb-2 leading-tight text-foreground">
-                  {agency.agency_name}
-                </h1>
-                <p className="text-lg text-muted-foreground">
-                  {getDescriptor()}
-                </p>
-              </div>
+              
+              {/* Map - right side on desktop */}
+              {agency.address_line_1 && (
+                <div className="lg:w-80 xl:w-96 shrink-0">
+                  <AgencyMap 
+                    address={[agency.address_line_1, agency.city, agency.state, agency.zip_code].filter(Boolean).join(', ')}
+                    agencyName={agency.agency_name}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Quick Stats Cards */}
@@ -234,59 +267,6 @@ const AgencyDetail = () => {
                 </Card>
               </TooltipProvider>
 
-              {/* Contact Card */}
-              <Card className="card-elevated border-border/50">
-                <CardHeader className="border-b border-border/30 bg-muted/20">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <div className="p-1.5 rounded-md bg-accent/10">
-                      <MapPin className="h-4 w-4 text-accent" />
-                    </div>
-                    Contact
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {agency.address_line_1 && (
-                      <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Address</p>
-                        <a 
-                          href={getMapUrl()} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-foreground hover:text-primary transition-colors block"
-                        >
-                          <p className="font-medium">{agency.address_line_1}</p>
-                          {agency.address_line_2 && <p>{agency.address_line_2}</p>}
-                          <p>{[agency.city, agency.state, agency.zip_code].filter(Boolean).join(", ")}</p>
-                        </a>
-                      </div>
-                    )}
-                    {agency.url && (
-                      <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Website</p>
-                        <a 
-                          href={agency.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors font-medium"
-                        >
-                          <Globe className="h-4 w-4" />
-                          {agency.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-                          <ExternalLink className="h-3 w-3 opacity-50" />
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Map */}
-              {agency.address_line_1 && (
-                <AgencyMap 
-                  address={[agency.address_line_1, agency.city, agency.state, agency.zip_code].filter(Boolean).join(', ')}
-                  agencyName={agency.agency_name}
-                />
-              )}
 
               {/* Fleet & Operations */}
               <TooltipProvider>
