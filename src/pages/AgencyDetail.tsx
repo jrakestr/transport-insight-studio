@@ -11,6 +11,7 @@ import { AgencyIntelligence } from "@/components/AgencyIntelligence";
 import { AgencySoftware } from "@/components/AgencySoftware";
 import { ServiceContractsTable } from "@/components/ServiceContractsTable";
 import { AgencyPerformanceMetrics } from "@/components/AgencyPerformanceMetrics";
+import { AgencyMap } from "@/components/AgencyMap";
 import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, Newspaper, Briefcase, Truck, Bus, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -278,6 +279,14 @@ const AgencyDetail = () => {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Map */}
+              {agency.address_line_1 && (
+                <AgencyMap 
+                  address={[agency.address_line_1, agency.city, agency.state, agency.zip_code].filter(Boolean).join(', ')}
+                  agencyName={agency.agency_name}
+                />
+              )}
 
               {/* Fleet & Operations */}
               <TooltipProvider>
