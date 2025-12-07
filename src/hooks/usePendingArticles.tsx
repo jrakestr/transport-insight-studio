@@ -59,6 +59,65 @@ export const usePendingArticleMutations = () => {
 
       if (insertError) throw insertError;
 
+      // Link extracted agencies to the article
+      if (pending.extracted_agencies && Array.isArray(pending.extracted_agencies)) {
+        const agencyLinks = [];
+        for (const agency of pending.extracted_agencies) {
+          // Try to find matching agency by name
+          const agencyObj = agency as { name?: string; mention_type?: string } | string;
+          const agencyName = typeof agencyObj === 'string' ? agencyObj : agencyObj?.name;
+          if (agencyName) {
+            const { data: matchedAgency } = await supabase
+              .from("transit_agencies")
+              .select("id")
+              .or(`agency_name.ilike.%${agencyName}%,doing_business_as.ilike.%${agencyName}%`)
+              .limit(1)
+              .single();
+
+            if (matchedAgency) {
+              agencyLinks.push({
+                article_id: article.id,
+                agency_id: matchedAgency.id,
+                mention_type: typeof agencyObj === 'object' && agencyObj?.mention_type ? agencyObj.mention_type : 'mentioned'
+              });
+            }
+          }
+        }
+
+        if (agencyLinks.length > 0) {
+          await supabase.from("article_agencies").insert(agencyLinks);
+        }
+      }
+
+      // Link extracted providers to the article
+      if (pending.extracted_providers && Array.isArray(pending.extracted_providers)) {
+        const providerLinks = [];
+        for (const provider of pending.extracted_providers) {
+          const providerObj = provider as { name?: string; mention_type?: string } | string;
+          const providerName = typeof providerObj === 'string' ? providerObj : providerObj?.name;
+          if (providerName) {
+            const { data: matchedProvider } = await supabase
+              .from("service_providers")
+              .select("id")
+              .ilike("name", `%${providerName}%`)
+              .limit(1)
+              .single();
+
+            if (matchedProvider) {
+              providerLinks.push({
+                article_id: article.id,
+                provider_id: matchedProvider.id,
+                mention_type: typeof providerObj === 'object' && providerObj?.mention_type ? providerObj.mention_type : 'mentioned'
+              });
+            }
+          }
+        }
+
+        if (providerLinks.length > 0) {
+          await supabase.from("article_providers").insert(providerLinks);
+        }
+      }
+
       // Update pending article status
       const { error: updateError } = await supabase
         .from("pending_articles")
