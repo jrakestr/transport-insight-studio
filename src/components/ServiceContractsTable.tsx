@@ -65,8 +65,13 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
     }
   };
 
+  // Filter out summary records (directly-operated totals without contract info)
+  const filteredContractors = useMemo(() => {
+    return contractors.filter(c => c.tos || c.type_of_contract || c.contractee_operator_name);
+  }, [contractors]);
+
   const sortedContractors = useMemo(() => {
-    if (!sortField || !sortDirection) return contractors;
+    if (!sortField || !sortDirection) return filteredContractors;
 
     return [...contractors].sort((a, b) => {
       let aVal: any;
@@ -101,7 +106,7 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
       
       return sortDirection === 'asc' ? aVal - bVal : bVal - aVal;
     });
-  }, [contractors, sortField, sortDirection]);
+  }, [filteredContractors, sortField, sortDirection]);
 
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) {
@@ -123,7 +128,7 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <DollarSign className="h-5 w-5" />
-          Service Contracts ({contractors.length})
+          Service Contracts ({filteredContractors.length})
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
