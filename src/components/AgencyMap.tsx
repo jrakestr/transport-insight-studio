@@ -52,8 +52,8 @@ export const AgencyMap: React.FC<AgencyMapProps> = ({ address, agencyName }) => 
           'top-right'
         );
 
-        // Add marker
-        new mapboxgl.Marker({ color: 'hsl(var(--primary))' })
+        // Add marker with a fixed color (CSS variables don't work here)
+        new mapboxgl.Marker({ color: '#2563eb' })
           .setLngLat([lng, lat])
           .setPopup(
             new mapboxgl.Popup({ offset: 25 }).setHTML(
