@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CollapsibleSection } from "@/components/CollapsibleSection";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,41 +51,39 @@ export const AgencyIntelligence = ({ agencyId, agencyUrl, agencyName }: AgencyIn
 
   const types = Object.keys(groupedIntelligence || {});
 
+  const actionButtons = isAdmin && agencyUrl ? (
+    <Button 
+      size="sm" 
+      onClick={handleScrape}
+      disabled={scrapeWebsite.isPending}
+    >
+      {scrapeWebsite.isPending ? (
+        <>
+          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          Scanning...
+        </>
+      ) : intelligence && intelligence.length > 0 ? (
+        <>
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Rescan Website
+        </>
+      ) : (
+        <>
+          <Search className="h-4 w-4 mr-2" />
+          Scan Website
+        </>
+      )}
+    </Button>
+  ) : null;
+
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Brain className="h-5 w-5" />
-            Website Intelligence
-          </CardTitle>
-          {isAdmin && agencyUrl && (
-            <Button 
-              size="sm" 
-              onClick={handleScrape}
-              disabled={scrapeWebsite.isPending}
-            >
-              {scrapeWebsite.isPending ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Scanning...
-                </>
-              ) : intelligence && intelligence.length > 0 ? (
-                <>
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Rescan Website
-                </>
-              ) : (
-                <>
-                  <Search className="h-4 w-4 mr-2" />
-                  Scan Website
-                </>
-              )}
-            </Button>
-          )}
-        </div>
-      </CardHeader>
-      <CardContent>
+    <>
+      <CollapsibleSection
+        title="Website Intelligence"
+        icon={<div className="p-1.5 rounded-md bg-accent/10"><Brain className="h-4 w-4 text-accent" /></div>}
+        isEmpty={!intelligence || intelligence.length === 0}
+        actions={actionButtons}
+      >
         {!agencyUrl ? (
           <div className="text-center py-8 text-muted-foreground">
             <Brain className="h-12 w-12 mx-auto mb-3 opacity-50" />
@@ -129,7 +127,6 @@ export const AgencyIntelligence = ({ agencyId, agencyUrl, agencyName }: AgencyIn
                             )}
                           </div>
                           
-                          {/* Render extracted data based on type */}
                           {type === 'contacts' && item.extracted_data?.contacts && (
                             <div className="space-y-2">
                               {item.extracted_data.contacts.map((contact: any, i: number) => (
@@ -161,7 +158,6 @@ export const AgencyIntelligence = ({ agencyId, agencyUrl, agencyName }: AgencyIn
 
                           {type === 'procurement' && item.extracted_data && (
                             <div className="space-y-2">
-                              {/* Open web search results (portals) */}
                               {item.extracted_data.source === 'open_web_search' && item.extracted_data.portals && (
                                 <div className="space-y-2">
                                   <p className="text-xs text-muted-foreground mb-2">
@@ -194,7 +190,6 @@ export const AgencyIntelligence = ({ agencyId, agencyUrl, agencyName }: AgencyIn
                                 </div>
                               )}
                               
-                              {/* Agency website procurement items */}
                               {item.extracted_data.items && item.extracted_data.items.map((proc: any, i: number) => (
                                 <div key={i} className="text-sm p-2 bg-muted/50 rounded">
                                   <p className="font-medium">{proc.title}</p>
@@ -275,7 +270,7 @@ export const AgencyIntelligence = ({ agencyId, agencyUrl, agencyName }: AgencyIn
             )}
           </div>
         )}
-      </CardContent>
+      </CollapsibleSection>
       
       <AlertDialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
         <AlertDialogContent>
@@ -301,6 +296,6 @@ export const AgencyIntelligence = ({ agencyId, agencyUrl, agencyName }: AgencyIn
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </Card>
+    </>
   );
 };

@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { CollapsibleSection } from "@/components/CollapsibleSection";
 import { DollarSign, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 
 interface Contract {
   id: string;
@@ -26,23 +26,11 @@ type SortField =
 
 type SortDirection = 'asc' | 'desc' | null;
 
-const formatNumber = (val: number | undefined | null): string => {
-  if (val === undefined || val === null) return '-';
-  if (val >= 1000000) return `${(val / 1000000).toFixed(1)}M`;
-  if (val >= 1000) return `${(val / 1000).toFixed(0)}K`;
-  return val.toLocaleString();
-};
-
 const formatCurrency = (val: number | undefined | null): string => {
   if (val === undefined || val === null) return '-';
   if (val >= 1000000) return `$${(val / 1000000).toFixed(2)}M`;
   if (val >= 1000) return `$${(val / 1000).toFixed(0)}K`;
   return `$${val.toFixed(2)}`;
-};
-
-const formatDecimal = (val: number | undefined | null): string => {
-  if (val === undefined || val === null) return '-';
-  return val.toFixed(2);
 };
 
 export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProps) => {
@@ -65,7 +53,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
     }
   };
 
-  // Filter out summary records (directly-operated totals without contract info)
   const filteredContractors = useMemo(() => {
     return contractors.filter(c => c.tos || c.type_of_contract || c.contractee_operator_name);
   }, [contractors]);
@@ -124,27 +111,22 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
   const tdSticky = "sticky left-0 z-10 bg-background";
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <DollarSign className="h-5 w-5" />
-          Service Contracts ({filteredContractors.length})
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-0">
-        <div className="overflow-x-auto">
+    <TooltipProvider>
+      <CollapsibleSection
+        title="Service Contracts"
+        icon={<div className="p-1.5 rounded-md bg-success/10"><DollarSign className="h-4 w-4 text-success" /></div>}
+        count={filteredContractors.length}
+        isEmpty={filteredContractors.length === 0}
+      >
+        <div className="overflow-x-auto -mx-6 px-6">
           <table className="w-full text-sm">
             <thead>
-              {/* Group Headers */}
               <tr className="border-b bg-muted/30">
                 <th colSpan={2} className="py-1 px-2 text-xs font-bold text-left sticky left-0 z-20 bg-muted/30">Contractor</th>
                 <th colSpan={3} className="py-1 px-2 text-xs font-bold text-left border-l">Contract Info</th>
                 <th colSpan={3} className="py-1 px-2 text-xs font-bold text-right border-l">Financials</th>
-                
               </tr>
-              {/* Column Headers */}
               <tr className="border-b">
-                {/* Contractor */}
                 <th className={`text-left ${thBase} ${thSticky} min-w-[180px]`} onClick={() => handleSort('contractor')}>
                   <span className="inline-flex items-center">Name<SortIcon field="contractor" /></span>
                 </th>
@@ -152,7 +134,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                   <span className="inline-flex items-center">Type<SortIcon field="type_of_contract" /></span>
                 </th>
                 
-                {/* Contract Info */}
                 <th className={`text-left ${thBase} border-l`} onClick={() => handleSort('mode')}>
                   <span className="inline-flex items-center">Mode<SortIcon field="mode" /></span>
                 </th>
@@ -169,7 +150,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                   </Tooltip>
                 </th>
                 
-                {/* Financials */}
                 <th className={`text-right ${thBase} border-l`} onClick={() => handleSort('total_modal_expenses')}>
                   <Tooltip>
                     <TooltipTrigger className="inline-flex items-center justify-end w-full">Expenses<SortIcon field="total_modal_expenses" /></TooltipTrigger>
@@ -188,13 +168,11 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                     <TooltipContent>Cost per Vehicle (total_modal_expenses / VOMS)</TooltipContent>
                   </Tooltip>
                 </th>
-                
               </tr>
             </thead>
             <tbody className="divide-y">
               {sortedContractors.map((contract) => (
                 <tr key={contract.id} className="hover:bg-accent/50 transition-colors">
-                  {/* Contractor */}
                   <td className={`${tdBase} ${tdSticky} min-w-[180px]`}>
                     {contract.contractee_operator_name ? (
                       <Link 
@@ -213,7 +191,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                     )}
                   </td>
                   
-                  {/* Contract Info */}
                   <td className={`${tdBase} border-l`}>
                     {contract.mode && <Badge variant="outline" className="text-xs">{contract.mode}</Badge>}
                   </td>
@@ -224,7 +201,6 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                     {contract.voms_under_contract || '-'}
                   </td>
                   
-                  {/* Financials */}
                   <td className={`${tdBase} text-right font-medium border-l`}>
                     {formatCurrency(contract.total_modal_expenses)}
                   </td>
@@ -236,13 +212,12 @@ export const ServiceContractsTable = ({ contractors }: ServiceContractsTableProp
                       ? formatCurrency(contract.total_modal_expenses / contract.voms_under_contract)
                       : '-'}
                   </td>
-                  
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </CardContent>
-    </Card>
+      </CollapsibleSection>
+    </TooltipProvider>
   );
 };
