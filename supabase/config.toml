@@ -37,4 +37,4 @@ verify_jwt = true
 verify_jwt = true
 
 [functions.extract-agency-logos]
-verify_jwt = true
+verify_jwt = false
