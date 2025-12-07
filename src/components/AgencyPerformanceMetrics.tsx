@@ -1,10 +1,9 @@
 import { useState, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CollapsibleSection } from "@/components/CollapsibleSection";
 import { BarChart3 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-// Mode code to name mapping
 const MODE_NAMES: Record<string, string> = {
   'MB': 'Bus',
   'DR': 'Demand Response',
@@ -28,7 +27,6 @@ const MODE_NAMES: Record<string, string> = {
   'OR': 'Other Rail',
 };
 
-// Type of Service mapping
 const TOS_NAMES: Record<string, string> = {
   'DO': 'Directly Operated',
   'PT': 'Purchased Transportation',
@@ -74,7 +72,6 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
   const [selectedMode, setSelectedMode] = useState<string>("");
   const [selectedTos, setSelectedTos] = useState<string>("");
 
-  // Get unique mode/TOS combinations from contractors
   const modeTosOptions = useMemo(() => {
     const options: { mode: string; tos: string; label: string }[] = [];
     
@@ -96,7 +93,6 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
     return options.sort((a, b) => a.label.localeCompare(b.label));
   }, [contractors]);
 
-  // Set default selection to first option
   useMemo(() => {
     if (modeTosOptions.length > 0 && !selectedMode && !selectedTos) {
       setSelectedMode(modeTosOptions[0].mode);
@@ -104,7 +100,6 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
     }
   }, [modeTosOptions, selectedMode, selectedTos]);
 
-  // Get metrics for selected mode/TOS combination
   const metrics = useMemo((): AggregatedMetrics | null => {
     const record = contractors.find(c => c.mode === selectedMode && c.tos === selectedTos);
     if (!record) return null;
@@ -142,157 +137,150 @@ export function AgencyPerformanceMetrics({ contractors }: AgencyPerformanceMetri
 
   const formatNumber = (val: number) => val.toLocaleString();
 
-  return (
-    <Card className="card-elevated border-border/50">
-      <CardHeader className="border-b border-border/30 bg-muted/20">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <div className="p-1.5 rounded-md bg-primary/10">
-              <BarChart3 className="h-4 w-4 text-primary" />
-            </div>
-            Performance
-          </CardTitle>
-          <Select 
-            value={`${selectedMode}-${selectedTos}`} 
-            onValueChange={handleSelectionChange}
-          >
-            <SelectTrigger className="w-full sm:w-[320px] bg-background">
-              <SelectValue placeholder="Select Mode & Service" />
-            </SelectTrigger>
-            <SelectContent className="bg-background border shadow-lg z-50">
-              {modeTosOptions.map(option => (
-                <SelectItem key={`${option.mode}-${option.tos}`} value={`${option.mode}-${option.tos}`}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <TooltipProvider>
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Core Metrics - Left Column */}
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="h-3 w-1 rounded-full bg-primary" />
-                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Core Metrics</p>
-              </div>
-              <div className="space-y-0">
-                {metrics.total_operating_expenses > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
-                        <span className="text-sm text-muted-foreground">Total Operating Expenses</span>
-                        <span className="text-lg font-bold text-foreground">{formatCurrency(metrics.total_operating_expenses)}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Total cost to operate this mode and service type</TooltipContent>
-                  </Tooltip>
-                )}
-                {metrics.unlinked_passenger_trips > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
-                        <span className="text-sm text-muted-foreground">Unlinked Passenger Trips (UPT)</span>
-                        <span className="text-lg font-bold text-foreground">{formatNumber(metrics.unlinked_passenger_trips)}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Number of passenger boardings, each boarding counted separately</TooltipContent>
-                  </Tooltip>
-                )}
-                {metrics.passenger_miles > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
-                        <span className="text-sm text-muted-foreground">Passenger Miles</span>
-                        <span className="text-lg font-bold text-foreground">{formatNumber(metrics.passenger_miles)}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Total miles traveled by all passengers</TooltipContent>
-                  </Tooltip>
-                )}
-                {metrics.vehicle_revenue_hours > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
-                        <span className="text-sm text-muted-foreground">Vehicle Revenue Hours (VRH)</span>
-                        <span className="text-lg font-bold text-foreground">{formatNumber(metrics.vehicle_revenue_hours)}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Hours vehicles spend in revenue-generating service</TooltipContent>
-                  </Tooltip>
-                )}
-                {metrics.vehicle_revenue_miles > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-3 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
-                        <span className="text-sm text-muted-foreground">Vehicle Revenue Miles (VRM)</span>
-                        <span className="text-lg font-bold text-foreground">{formatNumber(metrics.vehicle_revenue_miles)}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Miles vehicles travel while in revenue-generating service</TooltipContent>
-                  </Tooltip>
-                )}
-              </div>
-            </div>
+  const modeSelector = (
+    <Select 
+      value={`${selectedMode}-${selectedTos}`} 
+      onValueChange={handleSelectionChange}
+    >
+      <SelectTrigger className="w-full sm:w-[320px] bg-background">
+        <SelectValue placeholder="Select Mode & Service" />
+      </SelectTrigger>
+      <SelectContent className="bg-background border shadow-lg z-50">
+        {modeTosOptions.map(option => (
+          <SelectItem key={`${option.mode}-${option.tos}`} value={`${option.mode}-${option.tos}`}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
 
-            {/* Efficiency Metrics - Right Column */}
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="h-3 w-1 rounded-full bg-accent" />
-                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Efficiency Metrics</p>
-              </div>
-              <div className="space-y-0">
-                {metrics.cost_per_hour > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
-                        <span className="text-sm text-muted-foreground">Cost per Hour</span>
-                        <span className="text-lg font-bold text-foreground">${metrics.cost_per_hour.toFixed(2)}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Total Operating Expenses ÷ Vehicle Revenue Hours</TooltipContent>
-                  </Tooltip>
-                )}
-                {metrics.cost_per_passenger > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
-                        <span className="text-sm text-muted-foreground">Cost per Passenger</span>
-                        <span className="text-lg font-bold text-foreground">${metrics.cost_per_passenger.toFixed(2)}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Total Operating Expenses ÷ Unlinked Passenger Trips</TooltipContent>
-                  </Tooltip>
-                )}
-                {metrics.passengers_per_hour > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
-                        <span className="text-sm text-muted-foreground">Passengers per Hour</span>
-                        <span className="text-lg font-bold text-foreground">{metrics.passengers_per_hour.toFixed(1)}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Unlinked Passenger Trips ÷ Vehicle Revenue Hours</TooltipContent>
-                  </Tooltip>
-                )}
-                {metrics.cost_per_passenger_mile > 0 && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex justify-between items-baseline cursor-help py-3 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
-                        <span className="text-sm text-muted-foreground">Cost per Passenger Mile</span>
-                        <span className="text-lg font-bold text-foreground">${metrics.cost_per_passenger_mile.toFixed(2)}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>Total Operating Expenses ÷ Passenger Miles</TooltipContent>
-                  </Tooltip>
-                )}
-              </div>
+  return (
+    <TooltipProvider>
+      <CollapsibleSection
+        title="Performance"
+        icon={<div className="p-1.5 rounded-md bg-primary/10"><BarChart3 className="h-4 w-4 text-primary" /></div>}
+        actions={modeSelector}
+      >
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="h-3 w-1 rounded-full bg-primary" />
+              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Core Metrics</p>
+            </div>
+            <div className="space-y-0">
+              {metrics.total_operating_expenses > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
+                      <span className="text-sm text-muted-foreground">Total Operating Expenses</span>
+                      <span className="text-lg font-bold text-foreground">{formatCurrency(metrics.total_operating_expenses)}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Total cost to operate this mode and service type</TooltipContent>
+                </Tooltip>
+              )}
+              {metrics.unlinked_passenger_trips > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
+                      <span className="text-sm text-muted-foreground">Unlinked Passenger Trips (UPT)</span>
+                      <span className="text-lg font-bold text-foreground">{formatNumber(metrics.unlinked_passenger_trips)}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Number of passenger boardings, each boarding counted separately</TooltipContent>
+                </Tooltip>
+              )}
+              {metrics.passenger_miles > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
+                      <span className="text-sm text-muted-foreground">Passenger Miles</span>
+                      <span className="text-lg font-bold text-foreground">{formatNumber(metrics.passenger_miles)}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Total miles traveled by all passengers</TooltipContent>
+                </Tooltip>
+              )}
+              {metrics.vehicle_revenue_hours > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
+                      <span className="text-sm text-muted-foreground">Vehicle Revenue Hours (VRH)</span>
+                      <span className="text-lg font-bold text-foreground">{formatNumber(metrics.vehicle_revenue_hours)}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Hours vehicles spend in revenue-generating service</TooltipContent>
+                </Tooltip>
+              )}
+              {metrics.vehicle_revenue_miles > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex justify-between items-baseline cursor-help py-3 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
+                      <span className="text-sm text-muted-foreground">Vehicle Revenue Miles (VRM)</span>
+                      <span className="text-lg font-bold text-foreground">{formatNumber(metrics.vehicle_revenue_miles)}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Miles vehicles travel while in revenue-generating service</TooltipContent>
+                </Tooltip>
+              )}
             </div>
           </div>
-        </TooltipProvider>
-      </CardContent>
-    </Card>
+
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="h-3 w-1 rounded-full bg-accent" />
+              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Efficiency Metrics</p>
+            </div>
+            <div className="space-y-0">
+              {metrics.cost_per_hour > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
+                      <span className="text-sm text-muted-foreground">Cost per Hour</span>
+                      <span className="text-lg font-bold text-foreground">${metrics.cost_per_hour.toFixed(2)}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Total Operating Expenses ÷ Vehicle Revenue Hours</TooltipContent>
+                </Tooltip>
+              )}
+              {metrics.cost_per_passenger > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
+                      <span className="text-sm text-muted-foreground">Cost per Passenger</span>
+                      <span className="text-lg font-bold text-foreground">${metrics.cost_per_passenger.toFixed(2)}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Total Operating Expenses ÷ Unlinked Passenger Trips</TooltipContent>
+                </Tooltip>
+              )}
+              {metrics.passengers_per_hour > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex justify-between items-baseline cursor-help py-3 border-b border-border/30 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
+                      <span className="text-sm text-muted-foreground">Passengers per Hour</span>
+                      <span className="text-lg font-bold text-foreground">{metrics.passengers_per_hour.toFixed(1)}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Unlinked Passenger Trips ÷ Vehicle Revenue Hours</TooltipContent>
+                </Tooltip>
+              )}
+              {metrics.cost_per_passenger_mile > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex justify-between items-baseline cursor-help py-3 hover:bg-muted/30 px-2 -mx-2 rounded transition-colors">
+                      <span className="text-sm text-muted-foreground">Cost per Passenger Mile</span>
+                      <span className="text-lg font-bold text-foreground">${metrics.cost_per_passenger_mile.toFixed(2)}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>Total Operating Expenses ÷ Passenger Miles</TooltipContent>
+                </Tooltip>
+              )}
+            </div>
+          </div>
+        </div>
+      </CollapsibleSection>
+    </TooltipProvider>
   );
 }

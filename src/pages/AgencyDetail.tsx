@@ -2,7 +2,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAgency } from "@/hooks/useAgencies";
 import { useAgencyRelationships } from "@/hooks/useAgencyRelationships";
 import { useAgencyContractors } from "@/hooks/useAgencyContractors";
@@ -12,7 +11,8 @@ import { AgencySoftware } from "@/components/AgencySoftware";
 import { ServiceContractsTable } from "@/components/ServiceContractsTable";
 import { AgencyPerformanceMetrics } from "@/components/AgencyPerformanceMetrics";
 import { AgencyMap } from "@/components/AgencyMap";
-import { Loader2, Building2, MapPin, Users, ExternalLink, ArrowLeft, Globe, Newspaper, Briefcase, Truck, Bus, Map } from "lucide-react";
+import { CollapsibleSection } from "@/components/CollapsibleSection";
+import { Loader2, Building2, MapPin, ExternalLink, ArrowLeft, Globe, Newspaper, Briefcase, Truck, Bus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -200,129 +200,117 @@ const AgencyDetail = () => {
               
               {/* Overview Card */}
               <TooltipProvider>
-                <Card className="card-elevated border-border/50">
-                  <CardHeader className="border-b border-border/30 bg-muted/20">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <div className="p-1.5 rounded-md bg-primary/10">
-                        <Building2 className="h-4 w-4 text-primary" />
+                <CollapsibleSection
+                  title="Overview"
+                  icon={<div className="p-1.5 rounded-md bg-primary/10"><Building2 className="h-4 w-4 text-primary" /></div>}
+                  isEmpty={!agency.organization_type && !agency.reporting_module && !agency.region && !agency.uza_name && !agency.ntd_id && !agency.reporter_type}
+                >
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {agency.organization_type && (
+                      <div className="group">
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Agency Type</p>
+                        <p className="font-medium text-foreground group-hover:text-primary transition-colors">{agency.organization_type}</p>
                       </div>
-                      Overview
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {agency.organization_type && (
-                        <div className="group">
-                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Agency Type</p>
-                          <p className="font-medium text-foreground group-hover:text-primary transition-colors">{agency.organization_type}</p>
-                        </div>
-                      )}
-                      {agency.reporting_module && (
-                        <div className="group">
-                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Reporting Module</p>
-                          <p className="font-medium text-foreground group-hover:text-primary transition-colors">{agency.reporting_module}</p>
-                        </div>
-                      )}
-                      {agency.region && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="cursor-help group">
-                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">FTA Region</p>
-                              <p className="font-medium text-foreground group-hover:text-primary transition-colors">Region {agency.region}</p>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>Federal Transit Administration Region</TooltipContent>
-                        </Tooltip>
-                      )}
-                      {agency.uza_name && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="cursor-help group">
-                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Urbanized Area</p>
-                              <p className="font-medium text-foreground group-hover:text-primary transition-colors">{agency.uza_name}</p>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>Census-designated urbanized area</TooltipContent>
-                        </Tooltip>
-                      )}
-                      {agency.ntd_id && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="cursor-help group">
-                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">NTD ID</p>
-                              <p className="font-medium font-mono text-foreground group-hover:text-primary transition-colors">{agency.ntd_id}</p>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>National Transit Database Identifier</TooltipContent>
-                        </Tooltip>
-                      )}
-                      {agency.reporter_type && (
-                        <div className="group">
-                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Reporter Type</p>
-                          <p className="font-medium text-foreground group-hover:text-primary transition-colors">{agency.reporter_type}</p>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
+                    )}
+                    {agency.reporting_module && (
+                      <div className="group">
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Reporting Module</p>
+                        <p className="font-medium text-foreground group-hover:text-primary transition-colors">{agency.reporting_module}</p>
+                      </div>
+                    )}
+                    {agency.region && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help group">
+                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">FTA Region</p>
+                            <p className="font-medium text-foreground group-hover:text-primary transition-colors">Region {agency.region}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Federal Transit Administration Region</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.uza_name && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help group">
+                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Urbanized Area</p>
+                            <p className="font-medium text-foreground group-hover:text-primary transition-colors">{agency.uza_name}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Census-designated urbanized area</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.ntd_id && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help group">
+                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">NTD ID</p>
+                            <p className="font-medium font-mono text-foreground group-hover:text-primary transition-colors">{agency.ntd_id}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>National Transit Database Identifier</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.reporter_type && (
+                      <div className="group">
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Reporter Type</p>
+                        <p className="font-medium text-foreground group-hover:text-primary transition-colors">{agency.reporter_type}</p>
+                      </div>
+                    )}
+                  </div>
+                </CollapsibleSection>
               </TooltipProvider>
 
 
               {/* Fleet & Operations */}
               <TooltipProvider>
-                <Card className="card-elevated border-border/50">
-                  <CardHeader className="border-b border-border/30 bg-muted/20">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <div className="p-1.5 rounded-md bg-success/10">
-                        <Bus className="h-4 w-4 text-success" />
+                <CollapsibleSection
+                  title="Fleet & Operations"
+                  icon={<div className="p-1.5 rounded-md bg-success/10"><Bus className="h-4 w-4 text-success" /></div>}
+                  isEmpty={!agency.total_voms && agency.voms_do === null && agency.voms_pt === null}
+                >
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {agency.total_voms && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help border-l-2 border-primary pl-4">
+                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Total Fleet</p>
+                            <p className="text-2xl font-bold text-primary">{agency.total_voms.toLocaleString()}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Vehicles Operated in Maximum Service (VOMS)</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.voms_do !== null && agency.voms_do !== undefined && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help border-l-2 border-accent/60 pl-4">
+                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Directly Operated</p>
+                            <p className="text-2xl font-bold text-foreground">{agency.voms_do.toLocaleString()}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>DO - Vehicles operated directly by the agency</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.voms_pt !== null && agency.voms_pt !== undefined && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="cursor-help border-l-2 border-warning/60 pl-4">
+                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Purchased Transport</p>
+                            <p className="text-2xl font-bold text-foreground">{agency.voms_pt.toLocaleString()}</p>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>PT - Vehicles operated by contractors</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {agency.volunteer_drivers !== null && agency.volunteer_drivers !== undefined && agency.volunteer_drivers > 0 && (
+                      <div className="border-l-2 border-muted-foreground/30 pl-4">
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Volunteer Drivers</p>
+                        <p className="text-2xl font-bold text-foreground">{agency.volunteer_drivers.toLocaleString()}</p>
                       </div>
-                      Fleet & Operations
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                      {agency.total_voms && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="cursor-help border-l-2 border-primary pl-4">
-                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Total Fleet</p>
-                              <p className="text-2xl font-bold text-primary">{agency.total_voms.toLocaleString()}</p>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>Vehicles Operated in Maximum Service (VOMS)</TooltipContent>
-                        </Tooltip>
-                      )}
-                      {agency.voms_do !== null && agency.voms_do !== undefined && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="cursor-help border-l-2 border-accent/60 pl-4">
-                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Directly Operated</p>
-                              <p className="text-2xl font-bold text-foreground">{agency.voms_do.toLocaleString()}</p>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>DO - Vehicles operated directly by the agency</TooltipContent>
-                        </Tooltip>
-                      )}
-                      {agency.voms_pt !== null && agency.voms_pt !== undefined && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="cursor-help border-l-2 border-warning/60 pl-4">
-                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Purchased Transport</p>
-                              <p className="text-2xl font-bold text-foreground">{agency.voms_pt.toLocaleString()}</p>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>PT - Vehicles operated by contractors</TooltipContent>
-                        </Tooltip>
-                      )}
-                      {agency.volunteer_drivers !== null && agency.volunteer_drivers !== undefined && agency.volunteer_drivers > 0 && (
-                        <div className="border-l-2 border-muted-foreground/30 pl-4">
-                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Volunteer Drivers</p>
-                          <p className="text-2xl font-bold text-foreground">{agency.volunteer_drivers.toLocaleString()}</p>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
+                    )}
+                  </div>
+                </CollapsibleSection>
               </TooltipProvider>
 
               {/* Service Area */}
@@ -354,17 +342,14 @@ const AgencyDetail = () => {
               <AgencySoftware agencyId={agency.id} />
 
               {/* Related Articles */}
-              {!isLoadingRelationships && relationships?.articles && relationships.articles.length > 0 && (
-                <Card className="card-elevated border-border/50">
-                  <CardHeader className="border-b border-border/30 bg-muted/20">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <div className="p-1.5 rounded-md bg-primary/10">
-                        <Newspaper className="h-4 w-4 text-primary" />
-                      </div>
-                      Related Articles ({relationships.articles.length})
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
+              {!isLoadingRelationships && (
+                <CollapsibleSection
+                  title="Related Articles"
+                  icon={<div className="p-1.5 rounded-md bg-primary/10"><Newspaper className="h-4 w-4 text-primary" /></div>}
+                  count={relationships?.articles?.length || 0}
+                  isEmpty={!relationships?.articles || relationships.articles.length === 0}
+                >
+                  {relationships?.articles && relationships.articles.length > 0 ? (
                     <div className="space-y-4">
                       {relationships.articles.map((article: any) => (
                         <Link
@@ -397,22 +382,24 @@ const AgencyDetail = () => {
                         </Link>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
+                  ) : (
+                    <div className="text-center py-4 text-muted-foreground">
+                      <Newspaper className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm">No related articles yet</p>
+                    </div>
+                  )}
+                </CollapsibleSection>
               )}
 
               {/* Related Opportunities */}
-              {!isLoadingRelationships && relationships?.opportunities && relationships.opportunities.length > 0 && (
-                <Card className="card-elevated border-border/50">
-                  <CardHeader className="border-b border-border/30 bg-muted/20">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <div className="p-1.5 rounded-md bg-success/10">
-                        <Briefcase className="h-4 w-4 text-success" />
-                      </div>
-                      Related Opportunities ({relationships.opportunities.length})
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
+              {!isLoadingRelationships && (
+                <CollapsibleSection
+                  title="Related Opportunities"
+                  icon={<div className="p-1.5 rounded-md bg-success/10"><Briefcase className="h-4 w-4 text-success" /></div>}
+                  count={relationships?.opportunities?.length || 0}
+                  isEmpty={!relationships?.opportunities || relationships.opportunities.length === 0}
+                >
+                  {relationships?.opportunities && relationships.opportunities.length > 0 ? (
                     <div className="space-y-4">
                       {relationships.opportunities.map((opportunity: any) => (
                         <Link
@@ -440,22 +427,24 @@ const AgencyDetail = () => {
                         </Link>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
+                  ) : (
+                    <div className="text-center py-4 text-muted-foreground">
+                      <Briefcase className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm">No related opportunities yet</p>
+                    </div>
+                  )}
+                </CollapsibleSection>
               )}
 
               {/* Related Providers */}
-              {!isLoadingRelationships && relationships?.providers && relationships.providers.length > 0 && (
-                <Card className="card-elevated border-border/50">
-                  <CardHeader className="border-b border-border/30 bg-muted/20">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <div className="p-1.5 rounded-md bg-accent/10">
-                        <Truck className="h-4 w-4 text-accent" />
-                      </div>
-                      Related Transportation Providers ({relationships.providers.length})
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
+              {!isLoadingRelationships && (
+                <CollapsibleSection
+                  title="Related Transportation Providers"
+                  icon={<div className="p-1.5 rounded-md bg-accent/10"><Truck className="h-4 w-4 text-accent" /></div>}
+                  count={relationships?.providers?.length || 0}
+                  isEmpty={!relationships?.providers || relationships.providers.length === 0}
+                >
+                  {relationships?.providers && relationships.providers.length > 0 ? (
                     <div className="space-y-4">
                       {relationships.providers.map((provider: any) => (
                         <Link
@@ -487,8 +476,13 @@ const AgencyDetail = () => {
                         </Link>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
+                  ) : (
+                    <div className="text-center py-4 text-muted-foreground">
+                      <Truck className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm">No related providers yet</p>
+                    </div>
+                  )}
+                </CollapsibleSection>
               )}
             </div>
           </div>

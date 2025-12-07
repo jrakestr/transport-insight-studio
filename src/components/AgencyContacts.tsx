@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import { CollapsibleSection } from "@/components/CollapsibleSection";
 import {
   Dialog,
   DialogContent,
@@ -104,138 +104,139 @@ export const AgencyContacts = ({ agencyId }: AgencyContactsProps) => {
 
   const isSaving = createContact.isPending || updateContact.isPending;
 
-  return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Contacts ({contacts?.length || 0})
-          </CardTitle>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled>
-              <CloudUpload className="h-4 w-4 mr-2" />
-              Sync to Salesforce
+  const actionButtons = (
+    <div className="flex gap-2">
+      <Button variant="outline" size="sm" disabled>
+        <CloudUpload className="h-4 w-4 mr-2" />
+        Sync to Salesforce
+      </Button>
+      {isAdmin && (
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm" onClick={handleOpenNew}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Contact
             </Button>
-            {isAdmin && (
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button size="sm" onClick={handleOpenNew}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Contact
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>
-                      {editingContact ? "Edit Contact" : "Add New Contact"}
-                    </DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="first_name">First Name *</Label>
-                        <Input
-                          id="first_name"
-                          value={formData.first_name}
-                          onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="last_name">Last Name *</Label>
-                        <Input
-                          id="last_name"
-                          value={formData.last_name}
-                          onChange={(e) => setFormData(prev => ({ ...prev, last_name: e.target.value }))}
-                          required
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="job_title">Job Title</Label>
-                      <Input
-                        id="job_title"
-                        value={formData.job_title || ""}
-                        onChange={(e) => setFormData(prev => ({ ...prev, job_title: e.target.value }))}
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="department">Department</Label>
-                      <Input
-                        id="department"
-                        value={formData.department || ""}
-                        onChange={(e) => setFormData(prev => ({ ...prev, department: e.target.value }))}
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email || ""}
-                        onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone</Label>
-                      <Input
-                        id="phone"
-                        value={formData.phone || ""}
-                        onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="linkedin_url">LinkedIn URL</Label>
-                      <Input
-                        id="linkedin_url"
-                        value={formData.linkedin_url || ""}
-                        onChange={(e) => setFormData(prev => ({ ...prev, linkedin_url: e.target.value }))}
-                        placeholder="https://linkedin.com/in/..."
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="notes">Notes</Label>
-                      <Textarea
-                        id="notes"
-                        value={formData.notes || ""}
-                        onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                        rows={3}
-                      />
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      <Switch
-                        id="is_primary"
-                        checked={formData.is_primary || false}
-                        onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_primary: checked }))}
-                      />
-                      <Label htmlFor="is_primary">Primary Contact</Label>
-                    </div>
-                    
-                    <div className="flex justify-end gap-2 pt-4">
-                      <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                        Cancel
-                      </Button>
-                      <Button type="submit" disabled={isSaving}>
-                        {isSaving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                        {editingContact ? "Update" : "Add"} Contact
-                      </Button>
-                    </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
-            )}
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>
+                {editingContact ? "Edit Contact" : "Add New Contact"}
+              </DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="first_name">First Name *</Label>
+                  <Input
+                    id="first_name"
+                    value={formData.first_name}
+                    onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="last_name">Last Name *</Label>
+                  <Input
+                    id="last_name"
+                    value={formData.last_name}
+                    onChange={(e) => setFormData(prev => ({ ...prev, last_name: e.target.value }))}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="job_title">Job Title</Label>
+                <Input
+                  id="job_title"
+                  value={formData.job_title || ""}
+                  onChange={(e) => setFormData(prev => ({ ...prev, job_title: e.target.value }))}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="department">Department</Label>
+                <Input
+                  id="department"
+                  value={formData.department || ""}
+                  onChange={(e) => setFormData(prev => ({ ...prev, department: e.target.value }))}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email || ""}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone</Label>
+                <Input
+                  id="phone"
+                  value={formData.phone || ""}
+                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="linkedin_url">LinkedIn URL</Label>
+                <Input
+                  id="linkedin_url"
+                  value={formData.linkedin_url || ""}
+                  onChange={(e) => setFormData(prev => ({ ...prev, linkedin_url: e.target.value }))}
+                  placeholder="https://linkedin.com/in/..."
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="notes">Notes</Label>
+                <Textarea
+                  id="notes"
+                  value={formData.notes || ""}
+                  onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                  rows={3}
+                />
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="is_primary"
+                  checked={formData.is_primary || false}
+                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_primary: checked }))}
+                />
+                <Label htmlFor="is_primary">Primary Contact</Label>
+              </div>
+              
+              <div className="flex justify-end gap-2 pt-4">
+                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isSaving}>
+                  {isSaving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                  {editingContact ? "Update" : "Add"} Contact
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+
+  return (
+    <>
+      <CollapsibleSection
+        title="Contacts"
+        icon={<div className="p-1.5 rounded-md bg-primary/10"><Users className="h-4 w-4 text-primary" /></div>}
+        count={contacts?.length || 0}
+        isEmpty={!contacts || contacts.length === 0}
+        actions={actionButtons}
+      >
         {isLoading ? (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -337,7 +338,7 @@ export const AgencyContacts = ({ agencyId }: AgencyContactsProps) => {
             )}
           </div>
         )}
-      </CardContent>
+      </CollapsibleSection>
       
       <AlertDialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
         <AlertDialogContent>
@@ -355,6 +356,6 @@ export const AgencyContacts = ({ agencyId }: AgencyContactsProps) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </Card>
+    </>
   );
 };

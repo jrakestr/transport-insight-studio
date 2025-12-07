@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CollapsibleSection } from "@/components/CollapsibleSection";
 import {
   Dialog,
   DialogContent,
@@ -89,7 +89,6 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
     headquarters: "",
   });
 
-  // Group software by category
   const groupedSoftware = agencySoftware?.reduce((acc, item) => {
     const category = item.software_providers?.category || 'other';
     if (!acc[category]) acc[category] = [];
@@ -134,7 +133,6 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
       pricing_model: "",
       headquarters: "",
     });
-    // Auto-select the newly created provider
     setSelectedSoftwareId(result.id);
   };
 
@@ -142,113 +140,112 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
     return SOFTWARE_CATEGORIES.find(c => c.value === value)?.label || value;
   };
 
-  return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Monitor className="h-5 w-5" />
-            Software Stack ({agencySoftware?.length || 0})
-          </CardTitle>
-          {isAdmin && (
-            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-              <DialogTrigger asChild>
-                <Button size="sm">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Software
+  const actionButtons = isAdmin ? (
+    <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm">
+          <Plus className="h-4 w-4 mr-2" />
+          Add Software
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Add Software to Agency</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search software providers..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          
+          <div className="max-h-60 overflow-y-auto border rounded-lg">
+            {filteredProviders?.length === 0 ? (
+              <div className="p-4 text-center text-muted-foreground">
+                <p>No providers found</p>
+                <Button 
+                  variant="link" 
+                  onClick={() => setIsNewProviderDialogOpen(true)}
+                >
+                  Create new provider
                 </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-lg">
-                <DialogHeader>
-                  <DialogTitle>Add Software to Agency</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search software providers..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                  
-                  <div className="max-h-60 overflow-y-auto border rounded-lg">
-                    {filteredProviders?.length === 0 ? (
-                      <div className="p-4 text-center text-muted-foreground">
-                        <p>No providers found</p>
-                        <Button 
-                          variant="link" 
-                          onClick={() => setIsNewProviderDialogOpen(true)}
-                        >
-                          Create new provider
-                        </Button>
-                      </div>
-                    ) : (
-                      filteredProviders?.map(provider => (
-                        <div 
-                          key={provider.id}
-                          className={`p-3 border-b cursor-pointer hover:bg-accent/50 transition-colors ${
-                            selectedSoftwareId === provider.id ? 'bg-accent' : ''
-                          }`}
-                          onClick={() => setSelectedSoftwareId(provider.id)}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="font-medium">{provider.name}</p>
-                              {provider.product_name && (
-                                <p className="text-sm text-muted-foreground">{provider.product_name}</p>
-                              )}
-                            </div>
-                            <Badge variant="outline" className="text-xs">
-                              {categoryIcons[provider.category]} {getCategoryLabel(provider.category)}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Implementation Status</Label>
-                    <Select value={implementationStatus} onValueChange={setImplementationStatus}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="planned">Planned</SelectItem>
-                        <SelectItem value="evaluating">Evaluating</SelectItem>
-                        <SelectItem value="retired">Retired</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex justify-between pt-4">
-                    <Button variant="outline" onClick={() => setIsNewProviderDialogOpen(true)}>
-                      <Plus className="h-4 w-4 mr-2" />
-                      New Provider
-                    </Button>
-                    <div className="flex gap-2">
-                      <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-                        Cancel
-                      </Button>
-                      <Button 
-                        onClick={handleAddSoftware} 
-                        disabled={!selectedSoftwareId || addSoftwareToAgency.isPending}
-                      >
-                        {addSoftwareToAgency.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                        Add
-                      </Button>
+              </div>
+            ) : (
+              filteredProviders?.map(provider => (
+                <div 
+                  key={provider.id}
+                  className={`p-3 border-b cursor-pointer hover:bg-accent/50 transition-colors ${
+                    selectedSoftwareId === provider.id ? 'bg-accent' : ''
+                  }`}
+                  onClick={() => setSelectedSoftwareId(provider.id)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">{provider.name}</p>
+                      {provider.product_name && (
+                        <p className="text-sm text-muted-foreground">{provider.product_name}</p>
+                      )}
                     </div>
+                    <Badge variant="outline" className="text-xs">
+                      {categoryIcons[provider.category]} {getCategoryLabel(provider.category)}
+                    </Badge>
                   </div>
                 </div>
-              </DialogContent>
-            </Dialog>
-          )}
+              ))
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label>Implementation Status</Label>
+            <Select value={implementationStatus} onValueChange={setImplementationStatus}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="planned">Planned</SelectItem>
+                <SelectItem value="evaluating">Evaluating</SelectItem>
+                <SelectItem value="retired">Retired</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex justify-between pt-4">
+            <Button variant="outline" onClick={() => setIsNewProviderDialogOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              New Provider
+            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleAddSoftware} 
+                disabled={!selectedSoftwareId || addSoftwareToAgency.isPending}
+              >
+                {addSoftwareToAgency.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                Add
+              </Button>
+            </div>
+          </div>
         </div>
-      </CardHeader>
-      <CardContent>
+      </DialogContent>
+    </Dialog>
+  ) : null;
+
+  return (
+    <>
+      <CollapsibleSection
+        title="Software Stack"
+        icon={<div className="p-1.5 rounded-md bg-warning/10"><Monitor className="h-4 w-4 text-warning" /></div>}
+        count={agencySoftware?.length || 0}
+        isEmpty={!agencySoftware || agencySoftware.length === 0}
+        actions={actionButtons}
+      >
         {isLoading ? (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -366,7 +363,7 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
             )}
           </div>
         )}
-      </CardContent>
+      </CollapsibleSection>
 
       {/* New Provider Dialog */}
       <Dialog open={isNewProviderDialogOpen} onOpenChange={setIsNewProviderDialogOpen}>
@@ -442,7 +439,7 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Pricing Model</Label>
+                <Label>Pricing</Label>
                 <Select 
                   value={newProvider.pricing_model} 
                   onValueChange={(val) => setNewProvider(prev => ({ ...prev, pricing_model: val }))}
@@ -454,7 +451,7 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
                     <SelectItem value="subscription">Subscription</SelectItem>
                     <SelectItem value="perpetual">Perpetual</SelectItem>
                     <SelectItem value="usage-based">Usage-Based</SelectItem>
-                    <SelectItem value="contact">Contact for Pricing</SelectItem>
+                    <SelectItem value="per-seat">Per Seat</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -466,7 +463,7 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
                 id="headquarters"
                 value={newProvider.headquarters}
                 onChange={(e) => setNewProvider(prev => ({ ...prev, headquarters: e.target.value }))}
-                placeholder="City, State"
+                placeholder="City, State/Country"
               />
             </div>
 
@@ -476,7 +473,7 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
                 id="description"
                 value={newProvider.description}
                 onChange={(e) => setNewProvider(prev => ({ ...prev, description: e.target.value }))}
-                rows={2}
+                rows={3}
               />
             </div>
 
@@ -492,13 +489,13 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
           </form>
         </DialogContent>
       </Dialog>
-      
+
       <AlertDialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Remove Software</AlertDialogTitle>
             <AlertDialogDescription>
-              Remove {deleteConfirm?.software_providers?.name} from this agency? This won't delete the software provider from the system.
+              Are you sure you want to remove {deleteConfirm?.software_providers?.name} from this agency? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -517,6 +514,6 @@ export const AgencySoftware = ({ agencyId }: AgencySoftwareProps) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </Card>
+    </>
   );
 };
