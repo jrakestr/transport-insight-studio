@@ -337,43 +337,6 @@ const AgencyDetail = () => {
               </TooltipProvider>
 
               {/* Service Area */}
-              {(agency.service_area_pop || agency.service_area_sq_miles || agency.density) && (
-                <Card className="card-elevated border-border/50">
-                  <CardHeader className="border-b border-border/30 bg-muted/20">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <div className="p-1.5 rounded-md bg-warning/10">
-                        <Map className="h-4 w-4 text-warning" />
-                      </div>
-                      Service Area
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                      {agency.service_area_pop && (
-                        <div className="border-l-2 border-primary pl-4">
-                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Population Served</p>
-                          <p className="text-2xl font-bold text-foreground">{agency.service_area_pop.toLocaleString()}</p>
-                        </div>
-                      )}
-                      {agency.service_area_sq_miles && (
-                        <div className="border-l-2 border-accent/60 pl-4">
-                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Geographic Area</p>
-                          <p className="text-2xl font-bold text-foreground">{agency.service_area_sq_miles.toLocaleString()} <span className="text-sm font-normal text-muted-foreground">sq mi</span></p>
-                        </div>
-                      )}
-                      {agency.density && (
-                        <div className="border-l-2 border-success/60 pl-4">
-                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Population Density</p>
-                          <p className="text-2xl font-bold text-foreground">{agency.density.toLocaleString()} <span className="text-sm font-normal text-muted-foreground">per sq mi</span></p>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Divider */}
-              <div className="divider-gradient my-8" />
 
               {/* Performance Metrics */}
               {!isLoadingContractors && contractors && contractors.length > 0 && (
