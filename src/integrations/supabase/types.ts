@@ -1450,6 +1450,7 @@ export type Database = {
           fy_end_date: string | null
           id: string
           legacy_ntd_id: string | null
+          logo_url: string | null
           notes: string | null
           ntd_id: string | null
           organization_type: string | null
@@ -1495,6 +1496,7 @@ export type Database = {
           fy_end_date?: string | null
           id?: string
           legacy_ntd_id?: string | null
+          logo_url?: string | null
           notes?: string | null
           ntd_id?: string | null
           organization_type?: string | null
@@ -1540,6 +1542,7 @@ export type Database = {
           fy_end_date?: string | null
           id?: string
           legacy_ntd_id?: string | null
+          logo_url?: string | null
           notes?: string | null
           ntd_id?: string | null
           organization_type?: string | null
