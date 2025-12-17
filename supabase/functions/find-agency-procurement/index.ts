@@ -78,12 +78,13 @@ serve(async (req) => {
       agencies = [data];
     } else if (mode === 'batch') {
       // Get agencies ordered by priority (total_voms as proxy for importance)
+      // Limit to 3 for faster response, avoid timeout
       const { data, error } = await supabase
         .from('transit_agencies')
         .select('id, agency_name, url, city, state, doing_business_as, uza_name, total_voms')
         .not('url', 'is', null)
         .order('total_voms', { ascending: false, nullsFirst: false })
-        .limit(10);
+        .limit(3);
       
       if (error) throw error;
       agencies = data || [];
