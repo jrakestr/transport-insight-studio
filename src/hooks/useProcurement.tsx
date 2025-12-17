@@ -229,7 +229,7 @@ export const useVerifyOpportunity = () => {
         .from("procurement_opportunities")
         .update({ 
           is_verified: verified,
-          verified_at: verified ? new Date().toISOString() : null,
+          status: verified ? 'verified' : 'active',
         })
         .eq("id", id);
       
