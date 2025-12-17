@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Database, Loader2, Sparkles, X } from "lucide-react";
+import { Send, Bot, User, Database, Loader2, Sparkles, X, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -172,7 +172,11 @@ export default function TransitChat() {
                   {message.toolsUsed && message.toolsUsed.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-border/50">
                       <div className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
-                        <Database className="h-3 w-3" />
+                        {message.toolsUsed.some(t => t.tool === "web_search") ? (
+                          <Globe className="h-3 w-3" />
+                        ) : (
+                          <Database className="h-3 w-3" />
+                        )}
                         <span>Data sources used:</span>
                       </div>
                       <div className="flex flex-wrap gap-1">

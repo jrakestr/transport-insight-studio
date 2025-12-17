@@ -162,6 +162,27 @@ const tools = [
         required: ["agency_names"]
       }
     }
+  },
+  {
+    type: "function",
+    function: {
+      name: "web_search",
+      description: "Search the web for current information about transit topics, news, regulations, or industry trends not in the database. Use this for recent news, external information, or topics not covered in the database.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "Search query for web search"
+          },
+          num_results: {
+            type: "number",
+            description: "Number of results to return (default 5)"
+          }
+        },
+        required: ["query"]
+      }
+    }
   }
 ];
 
@@ -415,6 +436,60 @@ async function executeCompareAgencies(supabase: any, args: any) {
   };
 }
 
+async function executeWebSearch(args: any) {
+  const { query, num_results = 5 } = args;
+  
+  const EXA_API_KEY = Deno.env.get("EXA_API_KEY");
+  if (!EXA_API_KEY) {
+    return { 
+      error: "Web search not configured",
+      results: [],
+      source: "web search unavailable"
+    };
+  }
+  
+  try {
+    const response = await fetch("https://api.exa.ai/search", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${EXA_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query: `${query} transit public transportation`,
+        numResults: num_results,
+        type: "neural",
+        useAutoprompt: true,
+        contents: {
+          text: { maxCharacters: 500 }
+        }
+      })
+    });
+    
+    if (!response.ok) {
+      console.error("Exa search error:", response.status);
+      return { error: "Web search failed", results: [], source: "web search" };
+    }
+    
+    const data = await response.json();
+    const results = data.results?.map((r: any) => ({
+      title: r.title,
+      url: r.url,
+      snippet: r.text?.substring(0, 300),
+      published: r.publishedDate
+    })) || [];
+    
+    return {
+      results,
+      count: results.length,
+      source: "web search (Exa)"
+    };
+  } catch (error) {
+    console.error("Web search error:", error);
+    return { error: "Web search failed", results: [], source: "web search" };
+  }
+}
+
 async function executeTool(supabase: any, toolName: string, args: any) {
   console.log(`Executing tool: ${toolName}`, args);
   
@@ -433,6 +508,8 @@ async function executeTool(supabase: any, toolName: string, args: any) {
       return await executeGetStatistics(supabase, args);
     case "compare_agencies":
       return await executeCompareAgencies(supabase, args);
+    case "web_search":
+      return await executeWebSearch(args);
     default:
       return { error: `Unknown tool: ${toolName}` };
   }
@@ -455,29 +532,40 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const systemPrompt = `You are an expert transit industry analyst with access to a comprehensive database of US public transit agencies and service providers. Your role is to provide accurate, data-driven answers about transit agencies, their operations, contractors, and industry trends.
+    const systemPrompt = `You are an expert transit industry analyst with access to a comprehensive database of US public transit agencies and service providers, plus web search capabilities. Your role is to provide accurate, data-driven answers about transit agencies, their operations, contractors, and industry trends.
+
+CRITICAL FORMATTING RULES:
+- DO NOT use any markdown formatting in your responses
+- DO NOT use asterisks (*) for bold or italics
+- DO NOT use hash symbols (#) for headers
+- Use plain text only with natural sentence structure
+- Use numbered lists (1. 2. 3.) or dashes (-) for lists
+- Separate sections with blank lines
 
 IMPORTANT GUIDELINES:
 1. ALWAYS use the available tools to search the database before answering questions about specific agencies, providers, or statistics.
-2. When you retrieve data, cite the source (e.g., "According to our transit_agencies database...").
-3. If data is not available in the database, clearly state that.
-4. Provide specific numbers, names, and details from the database when available.
+2. When you retrieve data, cite the source (e.g., "According to our transit agencies database...").
+3. If data is not available in the database, use the web_search tool to find current information.
+4. Provide specific numbers, names, and details from the data when available.
 5. For comparisons, use the compare_agencies tool.
 6. For aggregate statistics, use the get_statistics tool.
-7. Be concise but thorough. Include relevant context from the data.
+7. For current news or external information, use the web_search tool.
+8. Be concise but thorough. Include relevant context from the data.
 
 Available data includes:
 - Transit agency profiles (name, location, fleet size, service area, organization type)
-- Service provider/contractor information
+- Service provider/contractor information  
 - Contract relationships between agencies and providers
 - News articles about transit agencies
 - Operational metrics and statistics
+- Web search for current news and external information
 
 When presenting results:
 - List specific agencies/providers with their key metrics
 - Include location (city, state) for context
 - Mention fleet size (VOMS) when relevant
-- Cite the data source`;
+- Cite the data source
+- Use plain text formatting only`;
 
     // Initial API call with tools
     let response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
