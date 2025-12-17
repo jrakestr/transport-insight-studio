@@ -273,7 +273,12 @@ async function executePhase1(
     });
 
     const mapData = await mapResponse.json();
-    const allUrls: string[] = mapData.links || [agency.url];
+    
+    if (!mapResponse.ok) {
+      console.error('Firecrawl map error:', mapData);
+    }
+    
+    const allUrls: string[] = mapData.links || mapData.data?.links || [agency.url];
     
     // Filter for procurement-related pages
     const procurementKeywords = [
@@ -317,10 +322,14 @@ async function executePhase1(
         });
 
         const scrapeData = await scrapeResponse.json();
-        if (!scrapeResponse.ok || !scrapeData.success) continue;
+        if (!scrapeResponse.ok) {
+          console.error(`Scrape failed for ${url}:`, scrapeData);
+          continue;
+        }
+        if (!scrapeData.success) continue;
 
         const content = scrapeData.data?.markdown;
-        if (!content) continue;
+        if (!content || content.length < 100) continue;
 
         sources.push(url);
 
