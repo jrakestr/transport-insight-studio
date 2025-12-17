@@ -135,6 +135,69 @@ export type Database = {
           },
         ]
       }
+      agency_procurement_status: {
+        Row: {
+          agency_id: string
+          created_at: string
+          has_active_rfps: boolean | null
+          id: string
+          last_search_at: string | null
+          last_search_run_id: string | null
+          next_search_due: string | null
+          notes: string | null
+          overall_confidence: number | null
+          procurement_portal_url: string | null
+          search_priority: string | null
+          total_opportunities_found: number | null
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          created_at?: string
+          has_active_rfps?: boolean | null
+          id?: string
+          last_search_at?: string | null
+          last_search_run_id?: string | null
+          next_search_due?: string | null
+          notes?: string | null
+          overall_confidence?: number | null
+          procurement_portal_url?: string | null
+          search_priority?: string | null
+          total_opportunities_found?: number | null
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          created_at?: string
+          has_active_rfps?: boolean | null
+          id?: string
+          last_search_at?: string | null
+          last_search_run_id?: string | null
+          next_search_due?: string | null
+          notes?: string | null
+          overall_confidence?: number | null
+          procurement_portal_url?: string | null
+          search_priority?: string | null
+          total_opportunities_found?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_procurement_status_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: true
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_procurement_status_last_search_run_id_fkey"
+            columns: ["last_search_run_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_search_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agency_software: {
         Row: {
           agency_id: string
@@ -839,6 +902,140 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      procurement_opportunities: {
+        Row: {
+          agency_id: string
+          confidence_score: number | null
+          contact_info: Json | null
+          created_at: string
+          deadline: string | null
+          description: string | null
+          estimated_value: number | null
+          extracted_data: Json | null
+          id: string
+          is_verified: boolean | null
+          opportunity_type: string | null
+          search_run_id: string | null
+          source_type: string | null
+          source_url: string
+          status: string | null
+          title: string
+          updated_at: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          agency_id: string
+          confidence_score?: number | null
+          contact_info?: Json | null
+          created_at?: string
+          deadline?: string | null
+          description?: string | null
+          estimated_value?: number | null
+          extracted_data?: Json | null
+          id?: string
+          is_verified?: boolean | null
+          opportunity_type?: string | null
+          search_run_id?: string | null
+          source_type?: string | null
+          source_url: string
+          status?: string | null
+          title: string
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          agency_id?: string
+          confidence_score?: number | null
+          contact_info?: Json | null
+          created_at?: string
+          deadline?: string | null
+          description?: string | null
+          estimated_value?: number | null
+          extracted_data?: Json | null
+          id?: string
+          is_verified?: boolean | null
+          opportunity_type?: string | null
+          search_run_id?: string | null
+          source_type?: string | null
+          source_url?: string
+          status?: string | null
+          title?: string
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procurement_opportunities_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "procurement_opportunities_search_run_id_fkey"
+            columns: ["search_run_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_search_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      procurement_search_runs: {
+        Row: {
+          agency_id: string
+          completed_at: string | null
+          confidence_score: number | null
+          created_at: string
+          current_phase: number
+          error_message: string | null
+          id: string
+          opportunities_found: number | null
+          phases_completed: Json
+          started_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          current_phase?: number
+          error_message?: string | null
+          id?: string
+          opportunities_found?: number | null
+          phases_completed?: Json
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          current_phase?: number
+          error_message?: string | null
+          id?: string
+          opportunities_found?: number | null
+          phases_completed?: Json
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procurement_search_runs_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       query_execution_log: {
         Row: {
