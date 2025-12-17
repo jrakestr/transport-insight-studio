@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen, Sparkles, Inbox, Zap, Menu, X, LayoutDashboard } from "lucide-react";
+import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen, Sparkles, Inbox, Zap, Menu, X, LayoutDashboard, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -17,6 +17,7 @@ const navItems = [
   { title: "Review Queue", url: "/admin/pending-articles", icon: Inbox },
   { title: "AI Assistant", url: "/admin/agentic-review", icon: Sparkles },
   { title: "Test Searches", url: "/admin/automated-search-test", icon: Zap },
+  { title: "Procurement Agent", url: "/admin/procurement", icon: Search },
 ];
 
 export default function AdminLayout() {
