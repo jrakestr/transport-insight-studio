@@ -38,3 +38,6 @@ verify_jwt = true
 
 [functions.extract-agency-logos]
 verify_jwt = false
+
+[functions.transit-chat]
+verify_jwt = true

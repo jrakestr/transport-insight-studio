@@ -92,6 +92,11 @@ export const Header = () => {
                   Software Providers
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/chat" className="cursor-pointer">
+                  Transit AI Chat
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -195,6 +200,13 @@ export const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Software Providers
+              </Link>
+              <Link
+                to="/chat"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Transit AI Chat
               </Link>
             </div>
             

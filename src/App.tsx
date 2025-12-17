@@ -19,6 +19,7 @@ import Playbook from "./pages/Playbook";
 import PlaybookDetail from "./pages/PlaybookDetail";
 import SoftwareProviders from "./pages/SoftwareProviders";
 import Auth from "./pages/Auth";
+import Chat from "./pages/Chat";
 import AdminLayout from "./components/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ArticlesAdmin from "./pages/admin/Articles";
@@ -76,6 +77,7 @@ const App = () => (
           <Route path="/playbook/:slug" element={<PlaybookDetail />} />
           <Route path="/software-providers" element={<SoftwareProviders />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="articles" element={<ArticlesAdmin />} />
