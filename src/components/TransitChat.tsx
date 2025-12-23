@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Database, Loader2, Sparkles, X, Globe } from "lucide-react";
+import { Send, Bot, User, Database, Loader2, Sparkles, X, Globe, History, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -10,10 +10,18 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 interface Message {
+  id?: string;
   role: "user" | "assistant";
   content: string;
   toolsUsed?: { tool: string; args: any; resultCount: number }[];
   sources?: string[];
+}
+
+interface Conversation {
+  id: string;
+  title: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 const SUGGESTED_QUESTIONS = [
@@ -28,14 +36,145 @@ export default function TransitChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Check auth state and load conversations
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUserId(user?.id || null);
+      if (user) {
+        loadConversations();
+      }
+    };
+    checkAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUserId(session?.user?.id || null);
+      if (session?.user) {
+        loadConversations();
+      } else {
+        setConversations([]);
+        setConversationId(null);
+        setMessages([]);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const loadConversations = async () => {
+    const { data, error } = await supabase
+      .from("chat_conversations")
+      .select("*")
+      .order("updated_at", { ascending: false })
+      .limit(20);
+
+    if (error) {
+      console.error("Error loading conversations:", error);
+      return;
+    }
+    setConversations(data || []);
+  };
+
+  const loadConversation = async (convId: string) => {
+    const { data, error } = await supabase
+      .from("chat_messages")
+      .select("*")
+      .eq("conversation_id", convId)
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      console.error("Error loading messages:", error);
+      toast.error("Failed to load conversation");
+      return;
+    }
+
+    setConversationId(convId);
+    setMessages(
+      (data || []).map((m) => ({
+        id: m.id,
+        role: m.role as "user" | "assistant",
+        content: m.content,
+        toolsUsed: m.tools_used as any,
+        sources: m.sources,
+      }))
+    );
+    setShowHistory(false);
+  };
+
+  const createConversation = async (firstMessage: string): Promise<string | null> => {
+    if (!userId) return null;
+
+    const title = firstMessage.slice(0, 50) + (firstMessage.length > 50 ? "..." : "");
+    const { data, error } = await supabase
+      .from("chat_conversations")
+      .insert({ user_id: userId, title })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error creating conversation:", error);
+      return null;
+    }
+
+    setConversationId(data.id);
+    loadConversations();
+    return data.id;
+  };
+
+  const saveMessage = async (convId: string, message: Message) => {
+    if (!userId) return;
+
+    const { error } = await supabase.from("chat_messages").insert({
+      conversation_id: convId,
+      role: message.role,
+      content: message.content,
+      tools_used: message.toolsUsed || null,
+      sources: message.sources || null,
+    });
+
+    if (error) {
+      console.error("Error saving message:", error);
+    }
+
+    // Update conversation timestamp
+    await supabase
+      .from("chat_conversations")
+      .update({ updated_at: new Date().toISOString() })
+      .eq("id", convId);
+  };
+
+  const deleteConversation = async (convId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const { error } = await supabase
+      .from("chat_conversations")
+      .delete()
+      .eq("id", convId);
+
+    if (error) {
+      toast.error("Failed to delete conversation");
+      return;
+    }
+
+    if (conversationId === convId) {
+      setConversationId(null);
+      setMessages([]);
+    }
+    loadConversations();
+    toast.success("Conversation deleted");
+  };
 
   const handleSend = async (messageText?: string) => {
     const text = messageText || input.trim();
@@ -47,6 +186,17 @@ export default function TransitChat() {
     setIsLoading(true);
 
     try {
+      // Create conversation if needed (for logged-in users)
+      let currentConvId = conversationId;
+      if (userId && !currentConvId) {
+        currentConvId = await createConversation(text);
+      }
+
+      // Save user message
+      if (currentConvId) {
+        await saveMessage(currentConvId, userMessage);
+      }
+
       const { data, error } = await supabase.functions.invoke("transit-chat", {
         body: {
           messages: [...messages, userMessage].map((m) => ({
@@ -71,6 +221,11 @@ export default function TransitChat() {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+
+      // Save assistant message
+      if (currentConvId) {
+        await saveMessage(currentConvId, assistantMessage);
+      }
     } catch (error: any) {
       console.error("Chat error:", error);
       toast.error(error.message || "Failed to get response");
@@ -86,8 +241,10 @@ export default function TransitChat() {
     }
   };
 
-  const clearChat = () => {
+  const startNewChat = () => {
+    setConversationId(null);
     setMessages([]);
+    setShowHistory(false);
   };
 
   return (
@@ -101,17 +258,69 @@ export default function TransitChat() {
           <div>
             <h3 className="font-semibold">Transit Intelligence Assistant</h3>
             <p className="text-xs text-muted-foreground">
-              Powered by your agency & provider database
+              {userId ? "Chat history auto-saved" : "Log in to save chats"}
             </p>
           </div>
         </div>
-        {messages.length > 0 && (
-          <Button variant="ghost" size="sm" onClick={clearChat}>
-            <X className="h-4 w-4 mr-1" />
-            Clear
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {userId && (
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowHistory(!showHistory)}
+                className={cn(showHistory && "bg-muted")}
+              >
+                <History className="h-4 w-4 mr-1" />
+                History
+              </Button>
+              <Button variant="ghost" size="sm" onClick={startNewChat}>
+                <Plus className="h-4 w-4 mr-1" />
+                New
+              </Button>
+            </>
+          )}
+          {messages.length > 0 && !showHistory && (
+            <Button variant="ghost" size="sm" onClick={startNewChat}>
+              <X className="h-4 w-4 mr-1" />
+              Clear
+            </Button>
+          )}
+        </div>
       </div>
+
+      {/* History Panel */}
+      {showHistory && userId && (
+        <div className="border-b bg-muted/20 p-3 max-h-[200px] overflow-y-auto">
+          <p className="text-xs font-medium text-muted-foreground mb-2">Recent Conversations</p>
+          {conversations.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No saved conversations yet</p>
+          ) : (
+            <div className="space-y-1">
+              {conversations.map((conv) => (
+                <div
+                  key={conv.id}
+                  onClick={() => loadConversation(conv.id)}
+                  className={cn(
+                    "flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-muted transition-colors text-sm",
+                    conversationId === conv.id && "bg-muted"
+                  )}
+                >
+                  <span className="truncate flex-1">{conv.title || "Untitled"}</span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 opacity-50 hover:opacity-100"
+                    onClick={(e) => deleteConversation(conv.id, e)}
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Messages */}
       <ScrollArea className="flex-1 p-4" ref={scrollRef}>
@@ -145,7 +354,7 @@ export default function TransitChat() {
           <div className="space-y-4">
             {messages.map((message, index) => (
               <div
-                key={index}
+                key={message.id || index}
                 className={cn(
                   "flex gap-3",
                   message.role === "user" ? "justify-end" : "justify-start"
@@ -253,7 +462,10 @@ export default function TransitChat() {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground mt-2 text-center">
-          Responses are generated from your transit agency database
+          {userId 
+            ? "Your conversations are automatically saved"
+            : "Log in to save your chat history"
+          }
         </p>
       </div>
     </Card>
