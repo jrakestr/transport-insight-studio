@@ -255,10 +255,10 @@ export default function TransitChat() {
           <div className="p-2 rounded-lg bg-primary/10">
             <Bot className="h-5 w-5 text-primary" />
           </div>
-          <div>
+        <div>
             <h3 className="font-semibold">Transit Intelligence Assistant</h3>
             <p className="text-xs text-muted-foreground">
-              {userId ? "Chat history auto-saved" : "Log in to save chats"}
+              Powered by your agency & provider database
             </p>
           </div>
         </div>
@@ -462,10 +462,7 @@ export default function TransitChat() {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground mt-2 text-center">
-          {userId 
-            ? "Your conversations are automatically saved"
-            : "Log in to save your chat history"
-          }
+          Responses are generated from your transit agency database
         </p>
       </div>
     </Card>
