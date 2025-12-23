@@ -57,24 +57,23 @@ const tools = [
     type: "function",
     function: {
       name: "search_providers",
-      description: "Search for service providers (contractors that operate transit services) by name, type, or location.",
+      description: "Search for service providers (contractors that operate transit services) by name, type, or location. You can search by name, filter by provider_type, or both.",
       parameters: {
         type: "object",
         properties: {
           query: {
             type: "string",
-            description: "Search query - provider name or type"
+            description: "Optional: Search query for provider name"
           },
           provider_type: {
             type: "string",
-            description: "Filter by provider type"
+            description: "Optional: Filter by exact provider type (e.g., 'operator', 'technology', 'tnc', 'other')"
           },
           limit: {
             type: "number",
             description: "Maximum number of results (default 10)"
           }
-        },
-        required: ["query"]
+        }
       }
     }
   },
@@ -261,12 +260,14 @@ async function executeSearchProviders(supabase: any, args: any) {
     .order("total_operating_expenses", { ascending: false, nullsFirst: false })
     .limit(limit);
   
+  // Allow searching by name OR provider_type (or both)
   if (query) {
     dbQuery = dbQuery.ilike("name", `%${query}%`);
   }
   
   if (provider_type) {
-    dbQuery = dbQuery.ilike("provider_type", `%${provider_type}%`);
+    // Use exact match for provider_type to properly filter
+    dbQuery = dbQuery.eq("provider_type", provider_type);
   }
   
   const { data, error } = await dbQuery;
