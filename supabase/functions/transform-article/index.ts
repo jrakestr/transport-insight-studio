@@ -23,8 +23,26 @@ serve(async (req) => {
 
     const { content } = await req.json();
 
+    // Input validation
     if (!content) {
-      throw new Error("No content provided");
+      return new Response(JSON.stringify({ error: "No content provided" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    
+    if (typeof content !== 'string') {
+      return new Response(JSON.stringify({ error: "Content must be a string" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    
+    if (content.length > 500000) {
+      return new Response(JSON.stringify({ error: "Content too long: limit is 500000 characters" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");

@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import * as LucideIcons from "lucide-react";
 import { useState } from "react";
+import DOMPurify from "dompurify";
 
 const PlaybookDetail = () => {
   const { slug } = useParams();
@@ -145,7 +146,7 @@ const PlaybookDetail = () => {
                   ) : (
                     <div 
                       className="playbook-content prose prose-lg max-w-none"
-                      dangerouslySetInnerHTML={{ __html: phase.content }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(phase.content) }}
                     />
                   )}
 

@@ -14,6 +14,37 @@ serve(async (req) => {
   try {
     const { messages } = await req.json();
     
+    // Input validation
+    if (!messages || !Array.isArray(messages)) {
+      return new Response(JSON.stringify({ error: 'Invalid messages: must be an array' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    if (messages.length > 100) {
+      return new Response(JSON.stringify({ error: 'Too many messages: limit is 100' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    // Validate message structure
+    for (const msg of messages) {
+      if (!msg || typeof msg !== 'object' || !msg.role || !msg.content) {
+        return new Response(JSON.stringify({ error: 'Invalid message format: each message must have role and content' }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      if (typeof msg.content === 'string' && msg.content.length > 50000) {
+        return new Response(JSON.stringify({ error: 'Message content too long: limit is 50000 characters' }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+    
     const authHeader = req.headers.get('Authorization');
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
