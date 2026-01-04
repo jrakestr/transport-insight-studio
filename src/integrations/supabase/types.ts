@@ -14,6 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      agency_board_actions: {
+        Row: {
+          action_date: string | null
+          action_type: string
+          agency_id: string
+          confidence_score: number | null
+          contract_value: number | null
+          created_at: string
+          description: string | null
+          extracted_data: Json | null
+          id: string
+          meeting_date: string | null
+          source_document: string | null
+          source_url: string | null
+          title: string
+          updated_at: string
+          vendor_id: string | null
+          vendor_name: string | null
+        }
+        Insert: {
+          action_date?: string | null
+          action_type: string
+          agency_id: string
+          confidence_score?: number | null
+          contract_value?: number | null
+          created_at?: string
+          description?: string | null
+          extracted_data?: Json | null
+          id?: string
+          meeting_date?: string | null
+          source_document?: string | null
+          source_url?: string | null
+          title: string
+          updated_at?: string
+          vendor_id?: string | null
+          vendor_name?: string | null
+        }
+        Update: {
+          action_date?: string | null
+          action_type?: string
+          agency_id?: string
+          confidence_score?: number | null
+          contract_value?: number | null
+          created_at?: string
+          description?: string | null
+          extracted_data?: Json | null
+          id?: string
+          meeting_date?: string | null
+          source_document?: string | null
+          source_url?: string | null
+          title?: string
+          updated_at?: string
+          vendor_id?: string | null
+          vendor_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_board_actions_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_board_actions_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "agency_vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agency_contacts: {
         Row: {
           agency_id: string
@@ -135,6 +207,139 @@ export type Database = {
           },
         ]
       }
+      agency_pain_points: {
+        Row: {
+          agency_id: string
+          category: string
+          created_at: string
+          description: string
+          id: string
+          is_sales_opportunity: boolean | null
+          opportunity_notes: string | null
+          severity: string | null
+          source_date: string | null
+          source_type: string | null
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          category: string
+          created_at?: string
+          description: string
+          id?: string
+          is_sales_opportunity?: boolean | null
+          opportunity_notes?: string | null
+          severity?: string | null
+          source_date?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_sales_opportunity?: boolean | null
+          opportunity_notes?: string | null
+          severity?: string | null
+          source_date?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_pain_points_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_plan_documents: {
+        Row: {
+          agency_id: string
+          created_at: string
+          current_service_model: string | null
+          document_type: string
+          document_url: string | null
+          effective_date: string | null
+          expiration_date: string | null
+          has_service_model_changes: boolean | null
+          has_technology_upgrade_plans: boolean | null
+          id: string
+          key_findings: Json | null
+          paratransit_provider: string | null
+          parse_status: string | null
+          parsed_at: string | null
+          planned_changes: Json | null
+          planning_mode_flags: Json | null
+          published_date: string | null
+          summary: string | null
+          technology_stack: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          created_at?: string
+          current_service_model?: string | null
+          document_type: string
+          document_url?: string | null
+          effective_date?: string | null
+          expiration_date?: string | null
+          has_service_model_changes?: boolean | null
+          has_technology_upgrade_plans?: boolean | null
+          id?: string
+          key_findings?: Json | null
+          paratransit_provider?: string | null
+          parse_status?: string | null
+          parsed_at?: string | null
+          planned_changes?: Json | null
+          planning_mode_flags?: Json | null
+          published_date?: string | null
+          summary?: string | null
+          technology_stack?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          created_at?: string
+          current_service_model?: string | null
+          document_type?: string
+          document_url?: string | null
+          effective_date?: string | null
+          expiration_date?: string | null
+          has_service_model_changes?: boolean | null
+          has_technology_upgrade_plans?: boolean | null
+          id?: string
+          key_findings?: Json | null
+          paratransit_provider?: string | null
+          parse_status?: string | null
+          parsed_at?: string | null
+          planned_changes?: Json | null
+          planning_mode_flags?: Json | null
+          published_date?: string | null
+          summary?: string | null
+          technology_stack?: Json | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_plan_documents_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agency_procurement_status: {
         Row: {
           agency_id: string
@@ -144,14 +349,18 @@ export type Database = {
           created_at: string
           has_active_rfps: boolean | null
           id: string
+          is_planning_mode: boolean | null
           last_search_at: string | null
           last_search_run_id: string | null
           next_search_due: string | null
           notes: string | null
           overall_confidence: number | null
           pages_crawled: number | null
+          planning_mode_reason: string | null
           procurement_portal_url: string | null
           search_priority: string | null
+          service_model_change_planned: boolean | null
+          technology_upgrade_planned: boolean | null
           total_opportunities_found: number | null
           updated_at: string
         }
@@ -163,14 +372,18 @@ export type Database = {
           created_at?: string
           has_active_rfps?: boolean | null
           id?: string
+          is_planning_mode?: boolean | null
           last_search_at?: string | null
           last_search_run_id?: string | null
           next_search_due?: string | null
           notes?: string | null
           overall_confidence?: number | null
           pages_crawled?: number | null
+          planning_mode_reason?: string | null
           procurement_portal_url?: string | null
           search_priority?: string | null
+          service_model_change_planned?: boolean | null
+          technology_upgrade_planned?: boolean | null
           total_opportunities_found?: number | null
           updated_at?: string
         }
@@ -182,14 +395,18 @@ export type Database = {
           created_at?: string
           has_active_rfps?: boolean | null
           id?: string
+          is_planning_mode?: boolean | null
           last_search_at?: string | null
           last_search_run_id?: string | null
           next_search_due?: string | null
           notes?: string | null
           overall_confidence?: number | null
           pages_crawled?: number | null
+          planning_mode_reason?: string | null
           procurement_portal_url?: string | null
           search_priority?: string | null
+          service_model_change_planned?: boolean | null
+          technology_upgrade_planned?: boolean | null
           total_opportunities_found?: number | null
           updated_at?: string
         }
@@ -260,6 +477,74 @@ export type Database = {
             columns: ["software_id"]
             isOneToOne: false
             referencedRelation: "software_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_vendors: {
+        Row: {
+          agency_id: string
+          confidence_score: number | null
+          contract_end_date: string | null
+          contract_number: string | null
+          contract_start_date: string | null
+          contract_value: number | null
+          created_at: string
+          extracted_data: Json | null
+          id: string
+          is_current: boolean | null
+          notes: string | null
+          service_category: string
+          service_component: string
+          source_type: string | null
+          source_url: string | null
+          updated_at: string
+          vendor_name: string
+        }
+        Insert: {
+          agency_id: string
+          confidence_score?: number | null
+          contract_end_date?: string | null
+          contract_number?: string | null
+          contract_start_date?: string | null
+          contract_value?: number | null
+          created_at?: string
+          extracted_data?: Json | null
+          id?: string
+          is_current?: boolean | null
+          notes?: string | null
+          service_category: string
+          service_component: string
+          source_type?: string | null
+          source_url?: string | null
+          updated_at?: string
+          vendor_name: string
+        }
+        Update: {
+          agency_id?: string
+          confidence_score?: number | null
+          contract_end_date?: string | null
+          contract_number?: string | null
+          contract_start_date?: string | null
+          contract_value?: number | null
+          created_at?: string
+          extracted_data?: Json | null
+          id?: string
+          is_current?: boolean | null
+          notes?: string | null
+          service_category?: string
+          service_component?: string
+          source_type?: string | null
+          source_url?: string | null
+          updated_at?: string
+          vendor_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_vendors_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
             referencedColumns: ["id"]
           },
         ]
