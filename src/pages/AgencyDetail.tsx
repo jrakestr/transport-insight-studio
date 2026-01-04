@@ -12,6 +12,7 @@ import { ServiceContractsTable } from "@/components/ServiceContractsTable";
 import { AgencyPerformanceMetrics } from "@/components/AgencyPerformanceMetrics";
 import { AgencyMap } from "@/components/AgencyMap";
 import { CollapsibleSection } from "@/components/CollapsibleSection";
+import { SubscribeButton } from "@/components/SubscribeButton";
 import { Loader2, Building2, MapPin, ExternalLink, ArrowLeft, Globe, Newspaper, Briefcase, Truck, Bus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -173,6 +174,11 @@ const AgencyDetail = () => {
 
             {/* Primary Actions */}
             <div className="flex flex-wrap gap-3">
+              <SubscribeButton
+                entityType="agency"
+                entityId={agency.id}
+                entityName={agency.agency_name}
+              />
               {agency.url && (
                 <Button asChild className="bg-gradient-primary hover:opacity-90 transition-opacity shadow-soft">
                   <a href={agency.url} target="_blank" rel="noopener noreferrer">
