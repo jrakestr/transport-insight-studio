@@ -255,7 +255,7 @@ async function executeSearchProviders(supabase: any, args: any) {
   const { query, provider_type, limit = 10 } = args;
   
   let dbQuery = supabase
-    .from("service_providers")
+    .from("agency_vendors")
     .select("id, name, provider_type, location, website, state, city, total_operating_expenses, unlinked_passenger_trips")
     .order("total_operating_expenses", { ascending: false, nullsFirst: false })
     .limit(limit);
@@ -276,7 +276,7 @@ async function executeSearchProviders(supabase: any, args: any) {
   return {
     results: data,
     count: data?.length || 0,
-    source: "service_providers table"
+    source: "agency_vendors table"
   };
 }
 

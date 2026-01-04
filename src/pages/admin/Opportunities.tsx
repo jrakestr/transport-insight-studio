@@ -39,8 +39,8 @@ export default function OpportunitiesAdmin() {
                     {opportunity.transit_agencies && (
                       <span>Agency: {opportunity.transit_agencies.agency_name}</span>
                     )}
-                    {opportunity.service_providers && (
-                      <span>Provider: {opportunity.service_providers.name}</span>
+                    {opportunity.agency_vendors && (
+                      <span>Provider: {opportunity.agency_vendors.name}</span>
                     )}
                   </div>
                   {opportunity.articles && (

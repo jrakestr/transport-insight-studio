@@ -77,13 +77,6 @@ export type Database = {
             referencedRelation: "transit_agencies"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "agency_board_actions_vendor_id_fkey"
-            columns: ["vendor_id"]
-            isOneToOne: false
-            referencedRelation: "agency_vendors"
-            referencedColumns: ["id"]
-          },
         ]
       }
       agency_contacts: {
@@ -483,65 +476,275 @@ export type Database = {
       }
       agency_vendors: {
         Row: {
-          agency_id: string
+          agency: string | null
+          agency_id: string | null
+          agency_name: string | null
+          agency_voms: number | null
+          buyer_provides_maintenance_facility_to_seller: string | null
+          buyer_supplies_vehicles_to_seller: string | null
+          city: string | null
           confidence_score: number | null
+          contract_capital_leasing_expenses: number | null
           contract_end_date: string | null
           contract_number: string | null
           contract_start_date: string | null
-          contract_value: number | null
+          contractee_agency_id: string | null
+          contractee_ntd_id: string | null
+          cost_per_hour: number | null
+          cost_per_hour_questionable: string | null
+          cost_per_passenger: number | null
+          cost_per_passenger_1: number | null
+          cost_per_passenger_mile: number | null
+          cost_per_passenger_mile_1: number | null
           created_at: string
+          direct_payment_agency_subsidy: number | null
+          discovery_method: string | null
           extracted_data: Json | null
+          fare_revenues_earned: number | null
+          fare_revenues_earned_1: number | null
+          fare_revenues_per_total: number | null
+          fare_revenues_per_total_1: number | null
+          fare_revenues_per_unlinked: number | null
+          fare_revenues_per_unlinked_1: number | null
+          fares_retained_by: string | null
           id: string
           is_current: boolean | null
+          location: string | null
+          mode: string | null
+          mode_contract: string | null
+          mode_name: string | null
+          mode_voms: number | null
+          months_seller_operated_in_fy: number | null
+          name: string
           notes: string | null
-          service_category: string
-          service_component: string
+          ntd_id: string | null
+          ntd_id_contract: string | null
+          organization_type: string | null
+          other_operating_expenses_incurred_by_the_buyer: number | null
+          other_party: string | null
+          other_public_assets_provided: string | null
+          other_public_assets_provided_desc: string | null
+          other_reconciling_item_expenses_incurred_by_the_buyer: number | null
+          passenger_miles: number | null
+          passenger_miles_questionable: string | null
+          passenger_out_of_pocket_expenses: number | null
+          passengers_per_hour: number | null
+          passengers_per_hour_1: number | null
+          primary_feature: string | null
+          primary_uza_population: number | null
+          provider_type: string | null
+          pt_fare_revenues_passenger_fees: number | null
+          report_year: number | null
+          reporter_contractual_position: string | null
+          reporter_type: string | null
+          reporter_type_contract: string | null
+          reporting_module: string | null
+          service_captured: string | null
+          service_category: string | null
+          service_component: string | null
           source_type: string | null
           source_url: string | null
+          state: string | null
+          tos: string | null
+          total_modal_expenses: number | null
+          total_operating_expenses: number | null
+          total_operating_expenses_1: number | null
+          transportation_provider: string | null
+          type_of_contract: string | null
+          type_of_service: string | null
+          uace_code: string | null
+          unlinked_passenger_trips: number | null
+          unlinked_passenger_trips_1: number | null
           updated_at: string
-          vendor_name: string
+          uza_name: string | null
+          vehicle_revenue_hours: number | null
+          vehicle_revenue_hours_1: number | null
+          vehicle_revenue_miles: number | null
+          vehicle_revenue_miles_1: number | null
+          voms_under_contract: number | null
+          website: string | null
         }
         Insert: {
-          agency_id: string
+          agency?: string | null
+          agency_id?: string | null
+          agency_name?: string | null
+          agency_voms?: number | null
+          buyer_provides_maintenance_facility_to_seller?: string | null
+          buyer_supplies_vehicles_to_seller?: string | null
+          city?: string | null
           confidence_score?: number | null
+          contract_capital_leasing_expenses?: number | null
           contract_end_date?: string | null
           contract_number?: string | null
           contract_start_date?: string | null
-          contract_value?: number | null
+          contractee_agency_id?: string | null
+          contractee_ntd_id?: string | null
+          cost_per_hour?: number | null
+          cost_per_hour_questionable?: string | null
+          cost_per_passenger?: number | null
+          cost_per_passenger_1?: number | null
+          cost_per_passenger_mile?: number | null
+          cost_per_passenger_mile_1?: number | null
           created_at?: string
+          direct_payment_agency_subsidy?: number | null
+          discovery_method?: string | null
           extracted_data?: Json | null
+          fare_revenues_earned?: number | null
+          fare_revenues_earned_1?: number | null
+          fare_revenues_per_total?: number | null
+          fare_revenues_per_total_1?: number | null
+          fare_revenues_per_unlinked?: number | null
+          fare_revenues_per_unlinked_1?: number | null
+          fares_retained_by?: string | null
           id?: string
           is_current?: boolean | null
+          location?: string | null
+          mode?: string | null
+          mode_contract?: string | null
+          mode_name?: string | null
+          mode_voms?: number | null
+          months_seller_operated_in_fy?: number | null
+          name: string
           notes?: string | null
-          service_category: string
-          service_component: string
+          ntd_id?: string | null
+          ntd_id_contract?: string | null
+          organization_type?: string | null
+          other_operating_expenses_incurred_by_the_buyer?: number | null
+          other_party?: string | null
+          other_public_assets_provided?: string | null
+          other_public_assets_provided_desc?: string | null
+          other_reconciling_item_expenses_incurred_by_the_buyer?: number | null
+          passenger_miles?: number | null
+          passenger_miles_questionable?: string | null
+          passenger_out_of_pocket_expenses?: number | null
+          passengers_per_hour?: number | null
+          passengers_per_hour_1?: number | null
+          primary_feature?: string | null
+          primary_uza_population?: number | null
+          provider_type?: string | null
+          pt_fare_revenues_passenger_fees?: number | null
+          report_year?: number | null
+          reporter_contractual_position?: string | null
+          reporter_type?: string | null
+          reporter_type_contract?: string | null
+          reporting_module?: string | null
+          service_captured?: string | null
+          service_category?: string | null
+          service_component?: string | null
           source_type?: string | null
           source_url?: string | null
+          state?: string | null
+          tos?: string | null
+          total_modal_expenses?: number | null
+          total_operating_expenses?: number | null
+          total_operating_expenses_1?: number | null
+          transportation_provider?: string | null
+          type_of_contract?: string | null
+          type_of_service?: string | null
+          uace_code?: string | null
+          unlinked_passenger_trips?: number | null
+          unlinked_passenger_trips_1?: number | null
           updated_at?: string
-          vendor_name: string
+          uza_name?: string | null
+          vehicle_revenue_hours?: number | null
+          vehicle_revenue_hours_1?: number | null
+          vehicle_revenue_miles?: number | null
+          vehicle_revenue_miles_1?: number | null
+          voms_under_contract?: number | null
+          website?: string | null
         }
         Update: {
-          agency_id?: string
+          agency?: string | null
+          agency_id?: string | null
+          agency_name?: string | null
+          agency_voms?: number | null
+          buyer_provides_maintenance_facility_to_seller?: string | null
+          buyer_supplies_vehicles_to_seller?: string | null
+          city?: string | null
           confidence_score?: number | null
+          contract_capital_leasing_expenses?: number | null
           contract_end_date?: string | null
           contract_number?: string | null
           contract_start_date?: string | null
-          contract_value?: number | null
+          contractee_agency_id?: string | null
+          contractee_ntd_id?: string | null
+          cost_per_hour?: number | null
+          cost_per_hour_questionable?: string | null
+          cost_per_passenger?: number | null
+          cost_per_passenger_1?: number | null
+          cost_per_passenger_mile?: number | null
+          cost_per_passenger_mile_1?: number | null
           created_at?: string
+          direct_payment_agency_subsidy?: number | null
+          discovery_method?: string | null
           extracted_data?: Json | null
+          fare_revenues_earned?: number | null
+          fare_revenues_earned_1?: number | null
+          fare_revenues_per_total?: number | null
+          fare_revenues_per_total_1?: number | null
+          fare_revenues_per_unlinked?: number | null
+          fare_revenues_per_unlinked_1?: number | null
+          fares_retained_by?: string | null
           id?: string
           is_current?: boolean | null
+          location?: string | null
+          mode?: string | null
+          mode_contract?: string | null
+          mode_name?: string | null
+          mode_voms?: number | null
+          months_seller_operated_in_fy?: number | null
+          name?: string
           notes?: string | null
-          service_category?: string
-          service_component?: string
+          ntd_id?: string | null
+          ntd_id_contract?: string | null
+          organization_type?: string | null
+          other_operating_expenses_incurred_by_the_buyer?: number | null
+          other_party?: string | null
+          other_public_assets_provided?: string | null
+          other_public_assets_provided_desc?: string | null
+          other_reconciling_item_expenses_incurred_by_the_buyer?: number | null
+          passenger_miles?: number | null
+          passenger_miles_questionable?: string | null
+          passenger_out_of_pocket_expenses?: number | null
+          passengers_per_hour?: number | null
+          passengers_per_hour_1?: number | null
+          primary_feature?: string | null
+          primary_uza_population?: number | null
+          provider_type?: string | null
+          pt_fare_revenues_passenger_fees?: number | null
+          report_year?: number | null
+          reporter_contractual_position?: string | null
+          reporter_type?: string | null
+          reporter_type_contract?: string | null
+          reporting_module?: string | null
+          service_captured?: string | null
+          service_category?: string | null
+          service_component?: string | null
           source_type?: string | null
           source_url?: string | null
+          state?: string | null
+          tos?: string | null
+          total_modal_expenses?: number | null
+          total_operating_expenses?: number | null
+          total_operating_expenses_1?: number | null
+          transportation_provider?: string | null
+          type_of_contract?: string | null
+          type_of_service?: string | null
+          uace_code?: string | null
+          unlinked_passenger_trips?: number | null
+          unlinked_passenger_trips_1?: number | null
           updated_at?: string
-          vendor_name?: string
+          uza_name?: string | null
+          vehicle_revenue_hours?: number | null
+          vehicle_revenue_hours_1?: number | null
+          vehicle_revenue_miles?: number | null
+          vehicle_revenue_miles_1?: number | null
+          voms_under_contract?: number | null
+          website?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "agency_vendors_agency_id_fkey"
+            foreignKeyName: "transportation_providers_agency_id_fkey"
             columns: ["agency_id"]
             isOneToOne: false
             referencedRelation: "transit_agencies"
@@ -689,7 +892,7 @@ export type Database = {
             foreignKeyName: "article_providers_provider_id_fkey"
             columns: ["provider_id"]
             isOneToOne: false
-            referencedRelation: "service_providers"
+            referencedRelation: "agency_vendors"
             referencedColumns: ["id"]
           },
         ]
@@ -856,7 +1059,7 @@ export type Database = {
             foreignKeyName: "automated_searches_provider_id_fkey"
             columns: ["provider_id"]
             isOneToOne: false
-            referencedRelation: "service_providers"
+            referencedRelation: "agency_vendors"
             referencedColumns: ["id"]
           },
         ]
@@ -1123,7 +1326,7 @@ export type Database = {
             foreignKeyName: "opportunities_provider_id_fkey"
             columns: ["provider_id"]
             isOneToOne: false
-            referencedRelation: "service_providers"
+            referencedRelation: "agency_vendors"
             referencedColumns: ["id"]
           },
         ]
@@ -1911,251 +2114,6 @@ export type Database = {
           },
         ]
       }
-      service_providers: {
-        Row: {
-          agency: string | null
-          agency_id: string | null
-          agency_name: string | null
-          agency_voms: number | null
-          buyer_provides_maintenance_facility_to_seller: string | null
-          buyer_supplies_vehicles_to_seller: string | null
-          city: string | null
-          contract_capital_leasing_expenses: number | null
-          contractee_agency_id: string | null
-          contractee_ntd_id: string | null
-          cost_per_hour: number | null
-          cost_per_hour_questionable: string | null
-          cost_per_passenger: number | null
-          cost_per_passenger_1: number | null
-          cost_per_passenger_mile: number | null
-          cost_per_passenger_mile_1: number | null
-          created_at: string
-          direct_payment_agency_subsidy: number | null
-          fare_revenues_earned: number | null
-          fare_revenues_earned_1: number | null
-          fare_revenues_per_total: number | null
-          fare_revenues_per_total_1: number | null
-          fare_revenues_per_unlinked: number | null
-          fare_revenues_per_unlinked_1: number | null
-          fares_retained_by: string | null
-          id: string
-          location: string | null
-          mode: string | null
-          mode_contract: string | null
-          mode_name: string | null
-          mode_voms: number | null
-          months_seller_operated_in_fy: number | null
-          name: string
-          notes: string | null
-          ntd_id: string | null
-          ntd_id_contract: string | null
-          organization_type: string | null
-          other_operating_expenses_incurred_by_the_buyer: number | null
-          other_party: string | null
-          other_public_assets_provided: string | null
-          other_public_assets_provided_desc: string | null
-          other_reconciling_item_expenses_incurred_by_the_buyer: number | null
-          passenger_miles: number | null
-          passenger_miles_questionable: string | null
-          passenger_out_of_pocket_expenses: number | null
-          passengers_per_hour: number | null
-          passengers_per_hour_1: number | null
-          primary_feature: string | null
-          primary_uza_population: number | null
-          provider_type: string | null
-          pt_fare_revenues_passenger_fees: number | null
-          report_year: number | null
-          reporter_contractual_position: string | null
-          reporter_type: string | null
-          reporter_type_contract: string | null
-          reporting_module: string | null
-          service_captured: string | null
-          state: string | null
-          tos: string | null
-          total_modal_expenses: number | null
-          total_operating_expenses: number | null
-          total_operating_expenses_1: number | null
-          transportation_provider: string | null
-          type_of_contract: string | null
-          type_of_service: string | null
-          uace_code: string | null
-          unlinked_passenger_trips: number | null
-          unlinked_passenger_trips_1: number | null
-          updated_at: string
-          uza_name: string | null
-          vehicle_revenue_hours: number | null
-          vehicle_revenue_hours_1: number | null
-          vehicle_revenue_miles: number | null
-          vehicle_revenue_miles_1: number | null
-          voms_under_contract: number | null
-          website: string | null
-        }
-        Insert: {
-          agency?: string | null
-          agency_id?: string | null
-          agency_name?: string | null
-          agency_voms?: number | null
-          buyer_provides_maintenance_facility_to_seller?: string | null
-          buyer_supplies_vehicles_to_seller?: string | null
-          city?: string | null
-          contract_capital_leasing_expenses?: number | null
-          contractee_agency_id?: string | null
-          contractee_ntd_id?: string | null
-          cost_per_hour?: number | null
-          cost_per_hour_questionable?: string | null
-          cost_per_passenger?: number | null
-          cost_per_passenger_1?: number | null
-          cost_per_passenger_mile?: number | null
-          cost_per_passenger_mile_1?: number | null
-          created_at?: string
-          direct_payment_agency_subsidy?: number | null
-          fare_revenues_earned?: number | null
-          fare_revenues_earned_1?: number | null
-          fare_revenues_per_total?: number | null
-          fare_revenues_per_total_1?: number | null
-          fare_revenues_per_unlinked?: number | null
-          fare_revenues_per_unlinked_1?: number | null
-          fares_retained_by?: string | null
-          id?: string
-          location?: string | null
-          mode?: string | null
-          mode_contract?: string | null
-          mode_name?: string | null
-          mode_voms?: number | null
-          months_seller_operated_in_fy?: number | null
-          name: string
-          notes?: string | null
-          ntd_id?: string | null
-          ntd_id_contract?: string | null
-          organization_type?: string | null
-          other_operating_expenses_incurred_by_the_buyer?: number | null
-          other_party?: string | null
-          other_public_assets_provided?: string | null
-          other_public_assets_provided_desc?: string | null
-          other_reconciling_item_expenses_incurred_by_the_buyer?: number | null
-          passenger_miles?: number | null
-          passenger_miles_questionable?: string | null
-          passenger_out_of_pocket_expenses?: number | null
-          passengers_per_hour?: number | null
-          passengers_per_hour_1?: number | null
-          primary_feature?: string | null
-          primary_uza_population?: number | null
-          provider_type?: string | null
-          pt_fare_revenues_passenger_fees?: number | null
-          report_year?: number | null
-          reporter_contractual_position?: string | null
-          reporter_type?: string | null
-          reporter_type_contract?: string | null
-          reporting_module?: string | null
-          service_captured?: string | null
-          state?: string | null
-          tos?: string | null
-          total_modal_expenses?: number | null
-          total_operating_expenses?: number | null
-          total_operating_expenses_1?: number | null
-          transportation_provider?: string | null
-          type_of_contract?: string | null
-          type_of_service?: string | null
-          uace_code?: string | null
-          unlinked_passenger_trips?: number | null
-          unlinked_passenger_trips_1?: number | null
-          updated_at?: string
-          uza_name?: string | null
-          vehicle_revenue_hours?: number | null
-          vehicle_revenue_hours_1?: number | null
-          vehicle_revenue_miles?: number | null
-          vehicle_revenue_miles_1?: number | null
-          voms_under_contract?: number | null
-          website?: string | null
-        }
-        Update: {
-          agency?: string | null
-          agency_id?: string | null
-          agency_name?: string | null
-          agency_voms?: number | null
-          buyer_provides_maintenance_facility_to_seller?: string | null
-          buyer_supplies_vehicles_to_seller?: string | null
-          city?: string | null
-          contract_capital_leasing_expenses?: number | null
-          contractee_agency_id?: string | null
-          contractee_ntd_id?: string | null
-          cost_per_hour?: number | null
-          cost_per_hour_questionable?: string | null
-          cost_per_passenger?: number | null
-          cost_per_passenger_1?: number | null
-          cost_per_passenger_mile?: number | null
-          cost_per_passenger_mile_1?: number | null
-          created_at?: string
-          direct_payment_agency_subsidy?: number | null
-          fare_revenues_earned?: number | null
-          fare_revenues_earned_1?: number | null
-          fare_revenues_per_total?: number | null
-          fare_revenues_per_total_1?: number | null
-          fare_revenues_per_unlinked?: number | null
-          fare_revenues_per_unlinked_1?: number | null
-          fares_retained_by?: string | null
-          id?: string
-          location?: string | null
-          mode?: string | null
-          mode_contract?: string | null
-          mode_name?: string | null
-          mode_voms?: number | null
-          months_seller_operated_in_fy?: number | null
-          name?: string
-          notes?: string | null
-          ntd_id?: string | null
-          ntd_id_contract?: string | null
-          organization_type?: string | null
-          other_operating_expenses_incurred_by_the_buyer?: number | null
-          other_party?: string | null
-          other_public_assets_provided?: string | null
-          other_public_assets_provided_desc?: string | null
-          other_reconciling_item_expenses_incurred_by_the_buyer?: number | null
-          passenger_miles?: number | null
-          passenger_miles_questionable?: string | null
-          passenger_out_of_pocket_expenses?: number | null
-          passengers_per_hour?: number | null
-          passengers_per_hour_1?: number | null
-          primary_feature?: string | null
-          primary_uza_population?: number | null
-          provider_type?: string | null
-          pt_fare_revenues_passenger_fees?: number | null
-          report_year?: number | null
-          reporter_contractual_position?: string | null
-          reporter_type?: string | null
-          reporter_type_contract?: string | null
-          reporting_module?: string | null
-          service_captured?: string | null
-          state?: string | null
-          tos?: string | null
-          total_modal_expenses?: number | null
-          total_operating_expenses?: number | null
-          total_operating_expenses_1?: number | null
-          transportation_provider?: string | null
-          type_of_contract?: string | null
-          type_of_service?: string | null
-          uace_code?: string | null
-          unlinked_passenger_trips?: number | null
-          unlinked_passenger_trips_1?: number | null
-          updated_at?: string
-          uza_name?: string | null
-          vehicle_revenue_hours?: number | null
-          vehicle_revenue_hours_1?: number | null
-          vehicle_revenue_miles?: number | null
-          vehicle_revenue_miles_1?: number | null
-          voms_under_contract?: number | null
-          website?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "transportation_providers_agency_id_fkey"
-            columns: ["agency_id"]
-            isOneToOne: false
-            referencedRelation: "transit_agencies"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       software_providers: {
         Row: {
           category: string
@@ -2517,7 +2475,7 @@ export type Database = {
             foreignKeyName: "transportation_providers_provider_id_fkey"
             columns: ["provider_id"]
             isOneToOne: false
-            referencedRelation: "service_providers"
+            referencedRelation: "agency_vendors"
             referencedColumns: ["id"]
           },
         ]

@@ -10,7 +10,7 @@ export default function AdminDashboard() {
       const [articles, agencies, providers, opportunities, reports] = await Promise.all([
         supabase.from("articles").select("id", { count: "exact", head: true }),
         supabase.from("transit_agencies").select("id", { count: "exact", head: true }),
-        supabase.from("service_providers").select("id", { count: "exact", head: true }),
+        supabase.from("agency_vendors").select("id", { count: "exact", head: true }),
         supabase.from("opportunities").select("id", { count: "exact", head: true }),
         supabase.from("reports").select("id", { count: "exact", head: true }),
       ]);
