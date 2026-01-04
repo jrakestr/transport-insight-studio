@@ -32,6 +32,29 @@ export const usePendingArticleMutations = () => {
 
       if (fetchError) throw fetchError;
 
+      // Get or generate image
+      let imageUrl = pending.image_url;
+      try {
+        const { data: imageData, error: imageError } = await supabase.functions.invoke(
+          "generate-article-image",
+          {
+            body: {
+              title: pending.title,
+              description: pending.description,
+              content: pending.content,
+              existingImageUrl: pending.image_url,
+            },
+          }
+        );
+
+        if (!imageError && imageData?.success && imageData?.imageUrl) {
+          imageUrl = imageData.imageUrl;
+          console.log(`Image ${imageData.source}: ${imageUrl?.slice(0, 50)}...`);
+        }
+      } catch (imgErr) {
+        console.warn("Image generation failed, using existing:", imgErr);
+      }
+
       // Create slug
       const slug = pending.title
         .toLowerCase()
@@ -49,7 +72,7 @@ export const usePendingArticleMutations = () => {
           published_at: pending.published_at,
           source_url: pending.source_url,
           source_name: pending.source_name,
-          image_url: pending.image_url,
+          image_url: imageUrl,
           author_name: pending.author_name,
           author_role: pending.author_role,
           category: pending.extracted_category,

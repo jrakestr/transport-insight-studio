@@ -44,3 +44,6 @@ verify_jwt = true
 
 [functions.process-procurement-documents]
 verify_jwt = false
+
+[functions.generate-article-image]
+verify_jwt = false
