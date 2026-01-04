@@ -92,6 +92,14 @@ export default function AdminLayout() {
                 ))}
               </ul>
               <div className="border-t border-indigo-500 pt-4 mt-4">
+                <Link
+                  to="/"
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors mb-1"
+                >
+                  <span className="text-xs">↗</span>
+                  View Site
+                </Link>
                 <button
                   onClick={handleSignOut}
                   className="flex w-full items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors"
