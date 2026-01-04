@@ -41,6 +41,7 @@ import PendingArticles from "./pages/admin/PendingArticles";
 import AgenticReview from "./pages/admin/AgenticReview";
 import AutomatedSearchTest from "./pages/admin/AutomatedSearchTest";
 import ProcurementDiscovery from "./pages/admin/ProcurementDiscovery";
+import Procurement from "./pages/Procurement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -79,6 +80,7 @@ const App = () => (
           <Route path="/software-providers" element={<SoftwareProviders />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/procurement" element={<Procurement />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="articles" element={<ArticlesAdmin />} />
