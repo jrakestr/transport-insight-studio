@@ -965,6 +965,173 @@ export type Database = {
         }
         Relationships: []
       }
+      procurement_crawl_schedule: {
+        Row: {
+          agency_id: string
+          crawl_frequency: string | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          items_found_last: number | null
+          last_crawl_at: string | null
+          last_crawl_error: string | null
+          last_crawl_status: string | null
+          next_crawl_at: string | null
+          priority: number | null
+          source_url: string
+          total_crawls: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          agency_id: string
+          crawl_frequency?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          items_found_last?: number | null
+          last_crawl_at?: string | null
+          last_crawl_error?: string | null
+          last_crawl_status?: string | null
+          next_crawl_at?: string | null
+          priority?: number | null
+          source_url: string
+          total_crawls?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          agency_id?: string
+          crawl_frequency?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          items_found_last?: number | null
+          last_crawl_at?: string | null
+          last_crawl_error?: string | null
+          last_crawl_status?: string | null
+          next_crawl_at?: string | null
+          priority?: number | null
+          source_url?: string
+          total_crawls?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procurement_crawl_schedule_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      procurement_documents: {
+        Row: {
+          agency_id: string
+          content_hash: string | null
+          content_type: string | null
+          created_at: string | null
+          discovered_at: string | null
+          file_size_bytes: number | null
+          id: string
+          opportunity_id: string | null
+          page_count: number | null
+          parse_error: string | null
+          parse_status: string | null
+          parsed_at: string | null
+          raw_content: string | null
+          title: string | null
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          agency_id: string
+          content_hash?: string | null
+          content_type?: string | null
+          created_at?: string | null
+          discovered_at?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          opportunity_id?: string | null
+          page_count?: number | null
+          parse_error?: string | null
+          parse_status?: string | null
+          parsed_at?: string | null
+          raw_content?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          agency_id?: string
+          content_hash?: string | null
+          content_type?: string | null
+          created_at?: string | null
+          discovered_at?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          opportunity_id?: string | null
+          page_count?: number | null
+          parse_error?: string | null
+          parse_status?: string | null
+          parsed_at?: string | null
+          raw_content?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procurement_documents_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "procurement_documents_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      procurement_embeddings: {
+        Row: {
+          chunk_index: number | null
+          content_preview: string | null
+          created_at: string | null
+          embedding: Json | null
+          embedding_model: string | null
+          id: string
+          source_id: string
+          source_type: string
+          token_count: number | null
+        }
+        Insert: {
+          chunk_index?: number | null
+          content_preview?: string | null
+          created_at?: string | null
+          embedding?: Json | null
+          embedding_model?: string | null
+          id?: string
+          source_id: string
+          source_type: string
+          token_count?: number | null
+        }
+        Update: {
+          chunk_index?: number | null
+          content_preview?: string | null
+          created_at?: string | null
+          embedding?: Json | null
+          embedding_model?: string | null
+          id?: string
+          source_id?: string
+          source_type?: string
+          token_count?: number | null
+        }
+        Relationships: []
+      }
       procurement_opportunities: {
         Row: {
           agency_id: string
@@ -1042,6 +1209,73 @@ export type Database = {
             columns: ["search_run_id"]
             isOneToOne: false
             referencedRelation: "procurement_search_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      procurement_raw_items: {
+        Row: {
+          agency_id: string
+          content_hash: string
+          crawl_schedule_id: string | null
+          created_at: string | null
+          fetched_at: string | null
+          id: string
+          is_processed: boolean | null
+          opportunity_id: string | null
+          processed_at: string | null
+          raw_html: string | null
+          raw_json: Json | null
+          source_url: string
+        }
+        Insert: {
+          agency_id: string
+          content_hash: string
+          crawl_schedule_id?: string | null
+          created_at?: string | null
+          fetched_at?: string | null
+          id?: string
+          is_processed?: boolean | null
+          opportunity_id?: string | null
+          processed_at?: string | null
+          raw_html?: string | null
+          raw_json?: Json | null
+          source_url: string
+        }
+        Update: {
+          agency_id?: string
+          content_hash?: string
+          crawl_schedule_id?: string | null
+          created_at?: string | null
+          fetched_at?: string | null
+          id?: string
+          is_processed?: boolean | null
+          opportunity_id?: string | null
+          processed_at?: string | null
+          raw_html?: string | null
+          raw_json?: Json | null
+          source_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procurement_raw_items_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "transit_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "procurement_raw_items_crawl_schedule_id_fkey"
+            columns: ["crawl_schedule_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_crawl_schedule"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "procurement_raw_items_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_opportunities"
             referencedColumns: ["id"]
           },
         ]
@@ -1990,6 +2224,86 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_opportunity_matches: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_dismissed: boolean | null
+          is_saved: boolean | null
+          match_signals: Json | null
+          opportunity_id: string
+          relevance_score: number
+          updated_at: string | null
+          user_id: string
+          viewed_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_dismissed?: boolean | null
+          is_saved?: boolean | null
+          match_signals?: Json | null
+          opportunity_id: string
+          relevance_score?: number
+          updated_at?: string | null
+          user_id: string
+          viewed_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_dismissed?: boolean | null
+          is_saved?: boolean | null
+          match_signals?: Json | null
+          opportunity_id?: string
+          relevance_score?: number
+          updated_at?: string | null
+          user_id?: string
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_opportunity_matches_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_preferences: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          preference_type: string
+          preference_value: string
+          updated_at: string | null
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          preference_type: string
+          preference_value: string
+          updated_at?: string | null
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          preference_type?: string
+          preference_value?: string
+          updated_at?: string | null
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
