@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useArticles } from "@/hooks/useArticles";
+import { useAuth } from "@/hooks/useAuth";
+import { IntelligenceFeed } from "@/components/IntelligenceFeed";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { format } from "date-fns";
@@ -15,9 +17,11 @@ import technologyDashboard from "@/assets/technology-dashboard.jpg";
 
 const Index = () => {
   const { data: articles, isLoading } = useArticles();
+  const { user } = useAuth();
   const previousMonth = new Date();
   previousMonth.setMonth(previousMonth.getMonth() - 1);
   const reportMonthYear = format(previousMonth, "MMMM yyyy");
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -55,7 +59,7 @@ const Index = () => {
                         View {reportMonthYear} Data Dispatch
                       </Link>
                     </Button>
-                    <Link to="/opportunities" className="text-sm/6 font-semibold text-foreground hover:text-primary transition-colors">
+                    <Link to="/procurement" className="text-sm/6 font-semibold text-foreground hover:text-primary transition-colors">
                       Browse Opportunities <span aria-hidden="true">→</span>
                     </Link>
                   </div>
@@ -92,6 +96,23 @@ const Index = () => {
             </div>
           </div>
         </section>
+
+        {/* Intelligence Feed - For logged-in users */}
+        {user && (
+          <section className="py-12 lg:py-16 bg-muted/30">
+            <div className="section-container">
+              <div className="max-w-6xl mx-auto">
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold mb-2">Your Intelligence Dashboard</h2>
+                  <p className="text-muted-foreground">
+                    Real-time insights from agencies, procurement opportunities, and market activity.
+                  </p>
+                </div>
+                <IntelligenceFeed />
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* News Feed */}
         <section className="py-16 lg:py-24">
