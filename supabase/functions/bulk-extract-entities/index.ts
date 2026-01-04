@@ -405,9 +405,9 @@ Return format:
             }
           }
         } else {
-          // Route to service_providers table (operators, TNCs, OEMs, consultants, services)
+          // Route to agency_vendors table (operators, TNCs, OEMs, consultants, services)
           const { data: existing } = await supabaseClient
-            .from('service_providers')
+            .from('agency_vendors')
             .select('id')
             .ilike('name', provider.name)
             .maybeSingle();
@@ -416,7 +416,7 @@ Return format:
             providerIds.push(existing.id);
           } else {
             const { data: newProvider, error } = await supabaseClient
-              .from('service_providers')
+              .from('agency_vendors')
               .insert({
                 name: provider.name,
                 location: provider.location || null,

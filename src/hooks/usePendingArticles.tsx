@@ -97,7 +97,7 @@ export const usePendingArticleMutations = () => {
           const providerName = typeof providerObj === 'string' ? providerObj : providerObj?.name;
           if (providerName) {
             const { data: matchedProvider } = await supabase
-              .from("service_providers")
+              .from("agency_vendors")
               .select("id")
               .ilike("name", `%${providerName}%`)
               .limit(1)

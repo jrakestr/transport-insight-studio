@@ -115,7 +115,7 @@ Deno.serve(async (req) => {
 
     // 2. PROVIDER-BASED SEARCHES
     const { data: providers, error: providersError } = await supabase
-      .from('service_providers')
+      .from('agency_vendors')
       .select('id, name, provider_type, city, state')
       .not('provider_type', 'is', null)
       .limit(50);

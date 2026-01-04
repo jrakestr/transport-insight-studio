@@ -12,7 +12,7 @@
  * 3. Batch insert into transportation_providers table
  * 
  * Database Structure:
- * - service_providers: Directory of provider entities (id, name, type, location, website, notes)
+ * - agency_vendors: Directory of provider entities (id, name, type, location, website, notes)
  * - transportation_providers: Contract records with 68 metric columns + foreign keys (agency_id, provider_id)
  * - transit_agencies: Agency directory (used for ntd_id lookup)
  * 
@@ -202,7 +202,7 @@ export default function MetricsImport() {
     try {
       // Try to find existing provider
       const { data: existingProvider, error: findError } = await supabase
-        .from('service_providers')
+        .from('agency_vendors')
         .select('id')
         .eq('name', providerName)
         .maybeSingle();
@@ -218,7 +218,7 @@ export default function MetricsImport() {
 
       // Create new provider if not found
       const { data: newProvider, error: createError } = await supabase
-        .from('service_providers')
+        .from('agency_vendors')
         .insert({ name: providerName })
         .select('id')
         .single();
@@ -468,7 +468,7 @@ export default function MetricsImport() {
               </p>
               <p>
                 <strong>Result:</strong> Contract records with proper relationships to both 
-                transit_agencies and service_providers tables.
+                transit_agencies and agency_vendors tables.
               </p>
             </div>
           </div>

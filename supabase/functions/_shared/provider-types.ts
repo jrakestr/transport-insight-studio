@@ -50,8 +50,8 @@ export const SOFTWARE_CATEGORIES = [
 ] as const;
 
 // Helper to determine which table a provider should be routed to
-export function getProviderTable(providerType: string): 'software_providers' | 'service_providers' {
-  return providerType === PROVIDER_TYPES.TECHNOLOGY ? 'software_providers' : 'service_providers';
+export function getProviderTable(providerType: string): 'software_providers' | 'agency_vendors' {
+  return providerType === PROVIDER_TYPES.TECHNOLOGY ? 'software_providers' : 'agency_vendors';
 }
 
 // Interface for extracted provider data

@@ -28,7 +28,7 @@ export default function AutomatedSearchTest() {
         .select(`
           *,
           transit_agencies!automated_searches_agency_id_fkey(agency_name),
-          service_providers!automated_searches_provider_id_fkey(name)
+          agency_vendors!automated_searches_provider_id_fkey(name)
         `)
         .order('created_at', { ascending: false });
       
@@ -313,7 +313,7 @@ export default function AutomatedSearchTest() {
                         </TableCell>
                         <TableCell className="text-sm">
                           {search.transit_agencies?.agency_name || 
-                           search.service_providers?.name || 
+                           search.agency_vendors?.name || 
                            (search.tags && search.tags[0]) || 
                            '-'}
                         </TableCell>
