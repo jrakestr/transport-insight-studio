@@ -117,7 +117,7 @@ serve(async (req) => {
 
       try {
         // ===== PHASE 1: Direct Agency Website Scrape =====
-        const phase1Result = await executePhase1(agency, FIRECRAWL_API_KEY, LOVABLE_API_KEY);
+        const phase1Result = await executePhase1(agency, FIRECRAWL_API_KEY, LOVABLE_API_KEY, supabase);
         phaseResults.push(phase1Result);
         opportunities.push(...(phase1Result as any).opportunities || []);
         overallConfidence = Math.max(overallConfidence, phase1Result.confidence);
@@ -238,7 +238,8 @@ serve(async (req) => {
 async function executePhase1(
   agency: any, 
   firecrawlKey: string, 
-  lovableKey: string
+  lovableKey: string,
+  supabaseClient: any
 ): Promise<SearchPhaseResult & { opportunities: ProcurementOpportunity[] }> {
   const opportunities: ProcurementOpportunity[] = [];
   const sources: string[] = [];
@@ -354,9 +355,17 @@ async function executePhase1(
           }
         }
 
-        // Also check for procurement portal links
+        // Also check for procurement portal links and documents
         const links = scrapeData.data?.links || [];
+        const documentLinks: string[] = [];
+        
         for (const link of links) {
+          // Check for document links (PDFs, DOCs)
+          if (link.match(/\.(pdf|doc|docx|xls|xlsx)$/i)) {
+            documentLinks.push(link);
+          }
+          
+          // Check for procurement portals
           if (KNOWN_PROCUREMENT_PORTALS.some(portal => link.includes(portal))) {
             opportunities.push({
               title: `External Procurement Portal`,
@@ -368,6 +377,22 @@ async function executePhase1(
               extracted_data: { discovered_from: url },
             });
           }
+        }
+        
+        // Store discovered documents for later RAG processing
+        if (documentLinks.length > 0 && supabaseClient) {
+          console.log(`Found ${documentLinks.length} documents on ${url}`);
+          const docsToInsert = documentLinks.slice(0, 10).map(docUrl => ({
+            agency_id: agency.id,
+            url: docUrl,
+            title: docUrl.split('/').pop() || 'Unknown Document',
+            content_type: docUrl.match(/\.pdf$/i) ? 'application/pdf' : 'application/octet-stream',
+            parse_status: 'pending',
+          }));
+          
+          await supabaseClient
+            .from('procurement_documents')
+            .upsert(docsToInsert, { onConflict: 'url', ignoreDuplicates: true });
         }
       } catch (scrapeError) {
         console.error(`Error scraping ${url}:`, scrapeError);

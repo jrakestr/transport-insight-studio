@@ -41,3 +41,6 @@ verify_jwt = false
 
 [functions.transit-chat]
 verify_jwt = true
+
+[functions.process-procurement-documents]
+verify_jwt = false
