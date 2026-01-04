@@ -138,6 +138,9 @@ export type Database = {
       agency_procurement_status: {
         Row: {
           agency_id: string
+          crawl_enabled: boolean | null
+          crawl_error: string | null
+          crawl_frequency: string | null
           created_at: string
           has_active_rfps: boolean | null
           id: string
@@ -146,6 +149,7 @@ export type Database = {
           next_search_due: string | null
           notes: string | null
           overall_confidence: number | null
+          pages_crawled: number | null
           procurement_portal_url: string | null
           search_priority: string | null
           total_opportunities_found: number | null
@@ -153,6 +157,9 @@ export type Database = {
         }
         Insert: {
           agency_id: string
+          crawl_enabled?: boolean | null
+          crawl_error?: string | null
+          crawl_frequency?: string | null
           created_at?: string
           has_active_rfps?: boolean | null
           id?: string
@@ -161,6 +168,7 @@ export type Database = {
           next_search_due?: string | null
           notes?: string | null
           overall_confidence?: number | null
+          pages_crawled?: number | null
           procurement_portal_url?: string | null
           search_priority?: string | null
           total_opportunities_found?: number | null
@@ -168,6 +176,9 @@ export type Database = {
         }
         Update: {
           agency_id?: string
+          crawl_enabled?: boolean | null
+          crawl_error?: string | null
+          crawl_frequency?: string | null
           created_at?: string
           has_active_rfps?: boolean | null
           id?: string
@@ -176,6 +187,7 @@ export type Database = {
           next_search_due?: string | null
           notes?: string | null
           overall_confidence?: number | null
+          pages_crawled?: number | null
           procurement_portal_url?: string | null
           search_priority?: string | null
           total_opportunities_found?: number | null
