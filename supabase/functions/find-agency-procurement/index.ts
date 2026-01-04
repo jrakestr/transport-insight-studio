@@ -50,7 +50,7 @@ serve(async (req) => {
   try {
     const { agencyId, mode = 'single' } = await req.json();
     
-    const FIRECRAWL_API_KEY = Deno.env.get('FIRECRAWL_API_KEY');
+    const FIRECRAWL_API_KEY = Deno.env.get('FIRECRAWL_API_KEY_1') || Deno.env.get('FIRECRAWL_API_KEY');
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     const EXA_API_KEY = Deno.env.get('EXA_API_KEY');
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
