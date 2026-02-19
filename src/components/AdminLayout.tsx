@@ -1,12 +1,30 @@
-import { useEffect } from "react";
-import { useNavigate, Outlet, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen, Sparkles, Inbox } from "lucide-react";
+import { Loader2, LogOut, Newspaper, Building2, Truck, Target, FileText, BookOpen, Sparkles, Inbox, Zap, Menu, X, LayoutDashboard, Search } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const navItems = [
+  { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
+  { title: "Articles", url: "/admin/articles", icon: Newspaper },
+  { title: "Agencies", url: "/admin/agencies", icon: Building2 },
+  { title: "Service Providers", url: "/admin/providers", icon: Truck },
+  { title: "Transportation Providers", url: "/admin/transportation-providers", icon: Building2 },
+  { title: "Opportunities", url: "/admin/opportunities", icon: Target },
+  { title: "Reports", url: "/admin/reports", icon: FileText },
+  { title: "Playbooks", url: "/admin/playbooks", icon: BookOpen },
+  { title: "Review Queue", url: "/admin/pending-articles", icon: Inbox },
+  { title: "AI Assistant", url: "/admin/agentic-review", icon: Sparkles },
+  { title: "Test Searches", url: "/admin/automated-search-test", icon: Zap },
+  { title: "Procurement Agent", url: "/admin/procurement", icon: Search },
+];
 
 export default function AdminLayout() {
   const { user, isAdmin, loading, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) {
@@ -31,86 +49,140 @@ export default function AdminLayout() {
     navigate("/auth");
   };
 
+  const isActivePath = (path: string) => {
+    if (path === "/admin") {
+      return location.pathname === "/admin";
+    }
+    return location.pathname.startsWith(path);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      <nav className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <Link to="/admin" className="text-xl font-bold">
+    <div className="min-h-screen w-full">
+      {/* Mobile sidebar */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="fixed inset-0 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
+          <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-indigo-600 flex flex-col">
+            <div className="flex items-center justify-between p-6 shrink-0">
+              <Link to="/admin" className="text-xl font-bold text-white" onClick={() => setSidebarOpen(false)}>
                 Admin Panel
               </Link>
-              <div className="flex gap-2">
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/articles">
-                    <Newspaper className="h-4 w-4 mr-2" />
-                    Articles
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/agencies">
-                    <Building2 className="h-4 w-4 mr-2" />
-                    Agencies
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/providers">
-                    <Truck className="h-4 w-4 mr-2" />
-                    Service Providers
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/transportation-providers">
-                    <Building2 className="h-4 w-4 mr-2" />
-                    Transportation Providers
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/opportunities">
-                    <Target className="h-4 w-4 mr-2" />
-                    Opportunities
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/reports">
-                    <FileText className="h-4 w-4 mr-2" />
-                    Reports
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/playbooks">
-                    <BookOpen className="h-4 w-4 mr-2" />
-                    Playbooks
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/pending-articles">
-                    <Inbox className="h-4 w-4 mr-2" />
-                    Review Queue
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/admin/agentic-review">
-                    <Sparkles className="h-4 w-4 mr-2" />
-                    AI Assistant
-                  </Link>
-                </Button>
+              <button onClick={() => setSidebarOpen(false)} className="text-white">
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            <nav className="flex-1 overflow-y-auto px-6 pb-4">
+              <ul className="space-y-1">
+                {navItems.map((item) => (
+                  <li key={item.url}>
+                    <Link
+                      to={item.url}
+                      onClick={() => setSidebarOpen(false)}
+                      className={cn(
+                        "flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold transition-colors",
+                        isActivePath(item.url)
+                          ? "bg-indigo-700 text-white"
+                          : "text-indigo-200 hover:bg-indigo-700 hover:text-white"
+                      )}
+                    >
+                      <item.icon className="h-6 w-6 shrink-0" />
+                      {item.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <div className="border-t border-indigo-500 pt-4 mt-4">
+                <Link
+                  to="/"
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors mb-1"
+                >
+                  <span className="text-xs">↗</span>
+                  View Site
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="flex w-full items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors"
+                >
+                  <LogOut className="h-6 w-6 shrink-0" />
+                  Logout
+                </button>
               </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/">View Site</Link>
-              </Button>
-              <Button variant="ghost" size="sm" onClick={handleSignOut}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
-            </div>
+            </nav>
           </div>
         </div>
-      </nav>
-      <main className="container mx-auto px-4 py-8">
-        <Outlet />
+      )}
+
+      {/* Desktop sidebar */}
+      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6">
+          <div className="flex h-16 shrink-0 items-center">
+            <Link to="/admin" className="text-xl font-bold text-white">
+              Admin Panel
+            </Link>
+          </div>
+          <nav className="flex flex-1 flex-col pb-4">
+            <ul className="flex flex-1 flex-col gap-y-7">
+              <li>
+                <ul className="-mx-2 space-y-1">
+                  {navItems.map((item) => (
+                    <li key={item.url}>
+                      <Link
+                        to={item.url}
+                        className={cn(
+                          "flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold transition-colors",
+                          isActivePath(item.url)
+                            ? "bg-indigo-700 text-white"
+                            : "text-indigo-200 hover:bg-indigo-700 hover:text-white"
+                        )}
+                      >
+                        <item.icon className="h-6 w-6 shrink-0" />
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li className="mt-auto">
+                <div className="border-t border-indigo-500 pt-4 -mx-2">
+                  <Link
+                    to="/"
+                    className="flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors mb-1"
+                  >
+                    <span className="text-xs">↗</span>
+                    View Site
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="flex w-full items-center gap-x-3 rounded-md p-2 text-sm font-semibold text-indigo-200 hover:bg-indigo-700 hover:text-white transition-colors"
+                  >
+                    <LogOut className="h-6 w-6 shrink-0" />
+                    Logout
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      {/* Mobile header */}
+      <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-indigo-600 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="-m-2.5 p-2.5 text-indigo-200 hover:text-white"
+        >
+          <span className="sr-only">Open sidebar</span>
+          <Menu className="h-6 w-6" />
+        </button>
+        <div className="flex-1 text-sm font-semibold text-white">Admin Panel</div>
+      </div>
+
+      {/* Main content */}
+      <main className="py-10 lg:pl-72">
+        <div className="px-4 sm:px-6 lg:px-8">
+          <Outlet />
+        </div>
       </main>
     </div>
   );

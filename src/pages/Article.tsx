@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2, ExternalLink } from "lucide-react";
 import { useArticles } from "@/hooks/useArticles";
 import { format } from "date-fns";
+import DOMPurify from "dompurify";
 
 const Article = () => {
   const { slug } = useParams();
@@ -138,7 +139,7 @@ const Article = () => {
                 <article 
                   className="article-content prose prose-lg dark:prose-invert max-w-none"
                   dangerouslySetInnerHTML={{ 
-                    __html: linkifyAgencies(article.content, article.article_agencies || []) 
+                    __html: DOMPurify.sanitize(linkifyAgencies(article.content, article.article_agencies || [])) 
                   }}
                 />
               )}

@@ -6,7 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
+
+const PROVIDER_TYPES = [
+  { value: 'operator', label: 'Operator', description: 'Transit service operators (e.g., First Transit, MV Transportation)' },
+  { value: 'technology', label: 'Technology', description: 'Software/platform providers (e.g., Trapeze, Via, Swiftly)' },
+  { value: 'tnc', label: 'TNC', description: 'Transportation Network Companies (e.g., Uber, Lyft)' },
+  { value: 'oem', label: 'OEM', description: 'Vehicle/equipment manufacturers (e.g., New Flyer, Gillig, BYD)' },
+  { value: 'consultant', label: 'Consultant', description: 'Planning/advisory firms (e.g., WSP, AECOM)' },
+  { value: 'service', label: 'Service', description: 'Other service providers (brokers, staffing, etc.)' },
+];
 
 export default function ProviderForm() {
   const { id } = useParams();
@@ -56,6 +66,8 @@ export default function ProviderForm() {
     );
   }
 
+  const selectedType = PROVIDER_TYPES.find(t => t.value === formData.provider_type);
+
   return (
     <div className="max-w-2xl">
       <h1 className="text-3xl font-bold mb-6">{isEditing ? "Edit" : "New"} Provider</h1>
@@ -78,12 +90,26 @@ export default function ProviderForm() {
 
             <div>
               <Label htmlFor="provider_type">Provider Type</Label>
-              <Input
-                id="provider_type"
-                placeholder="e.g., TNC, Broker, Operator"
+              <Select
                 value={formData.provider_type}
-                onChange={(e) => setFormData({ ...formData, provider_type: e.target.value })}
-              />
+                onValueChange={(value) => setFormData({ ...formData, provider_type: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select provider type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PROVIDER_TYPES.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {selectedType && (
+                <p className="text-sm text-muted-foreground mt-1">
+                  {selectedType.description}
+                </p>
+              )}
             </div>
 
             <div>

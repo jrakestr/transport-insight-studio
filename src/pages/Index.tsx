@@ -55,7 +55,7 @@ const Index = () => {
                         View {reportMonthYear} Data Dispatch
                       </Link>
                     </Button>
-                    <Link to="/opportunities" className="text-sm/6 font-semibold text-foreground hover:text-primary transition-colors">
+                    <Link to="/procurement" className="text-sm/6 font-semibold text-foreground hover:text-primary transition-colors">
                       Browse Opportunities <span aria-hidden="true">→</span>
                     </Link>
                   </div>

@@ -1,5 +1,11 @@
 project_id = "nuaqnxskrudgwcnfmnnk"
 
+[functions.scrape-agency-website]
+verify_jwt = true
+
+[functions.generate-adaptive-query]
+verify_jwt = true
+
 [functions.transform-article]
 verify_jwt = true
 
@@ -7,7 +13,37 @@ verify_jwt = true
 verify_jwt = true
 
 [functions.discover-articles]
-verify_jwt = true
+verify_jwt = false
 
 [functions.agentic-review]
 verify_jwt = true
+
+[functions.generate-targeted-searches]
+verify_jwt = true
+
+[functions.execute-automated-searches]
+verify_jwt = false
+
+[functions.process-search-results]
+verify_jwt = false
+
+[functions.find-agency-procurement]
+verify_jwt = false
+
+[functions.transform-report]
+verify_jwt = true
+
+[functions.import-transportation-providers]
+verify_jwt = true
+
+[functions.extract-agency-logos]
+verify_jwt = false
+
+[functions.transit-chat]
+verify_jwt = true
+
+[functions.process-procurement-documents]
+verify_jwt = false
+
+[functions.generate-article-image]
+verify_jwt = false

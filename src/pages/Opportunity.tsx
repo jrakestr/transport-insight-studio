@@ -97,7 +97,7 @@ const Opportunity = () => {
                 </Card>
               )}
 
-              {opportunity.service_providers && (
+              {opportunity.agency_vendors && (
                 <Card>
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
@@ -106,11 +106,11 @@ const Opportunity = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="font-semibold text-lg">{opportunity.service_providers.name}</p>
-                    {opportunity.service_providers.location && (
+                    <p className="font-semibold text-lg">{opportunity.agency_vendors.name}</p>
+                    {opportunity.agency_vendors.location && (
                       <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
                         <MapPin className="h-3 w-3" />
-                        {opportunity.service_providers.location}
+                        {opportunity.agency_vendors.location}
                       </p>
                     )}
                   </CardContent>

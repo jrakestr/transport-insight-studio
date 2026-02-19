@@ -37,22 +37,45 @@ async function processArticle(articleId: string, supabaseClient: any, LOVABLE_AP
 Industry verticals (transit sectors): paratransit, corporate-shuttles, school, healthcare, government, fixed-route
 Article categories (topics): Funding, RFPs & Procurement, Technology Partnerships, Safety & Security, Technology, Market Trends, Microtransit, Government
 
+PROVIDER TYPE CLASSIFICATION (choose exactly one):
+- "operator": Companies that operate transit services under contract (e.g., First Transit, MV Transportation, Transdev, National Express)
+- "technology": Software, platforms, or technology solutions for transit (e.g., Trapeze, Via, Swiftly, IER, Cubic, Clever Devices)
+- "tnc": Transportation Network Companies / ride-hailing (e.g., Uber, Lyft, Via when providing rides)
+- "oem": Vehicle or equipment manufacturers (e.g., New Flyer, Gillig, BYD, Proterra, NFI Group)
+- "consultant": Planning, engineering, or advisory firms (e.g., WSP, AECOM, Kimley-Horn, HDR)
+- "service": Other service providers like brokers, staffing agencies, maintenance contractors
+
+TRANSIT MODES (for technology providers, list which modes the software supports):
+MB=Bus, RB=Bus Rapid Transit, CB=Commuter Bus, DR=Demand Response, DT=Demand Response Taxi, VP=Vanpool, LR=Light Rail, HR=Heavy Rail, CR=Commuter Rail, SR=Streetcar, TB=Trolleybus, FB=Ferryboat
+
+SOFTWARE CATEGORIES (for technology providers only):
+cad_avl, scheduling, fare_payment, passenger_info, fleet_management, analytics, demand_response, microtransit, maintenance, safety, ev_charging, other
+
 CRITICAL INSTRUCTIONS FOR PROVIDERS:
 - Extract the provider's official company name
 - If a provider website is mentioned in the article, use the fetch_provider_website tool to get their official business description
 - In "notes", describe what the provider's core business actually is based on their official identity
-- Focus on their primary product or service offering (e.g., "paratransit contract operator", "transit scheduling software provider", "electric bus manufacturer", "fare payment technology vendor")
+- Focus on their primary product or service offering
 - DO NOT describe why they were mentioned in this article
 - DO NOT describe projects they're working on
-- Describe what the company fundamentally does as their business
+- For technology providers: include software_category and transit_modes
 
 Article content:
 ${article.content}
 
-Return format (categories should be an array of ALL relevant categories):
+Return format:
 {
   "agencies": [{"name": "Agency Name", "location": "City, State", "notes": "relevant details"}],
-  "providers": [{"name": "Official Provider Name", "location": "City, State", "provider_type": "technology/service", "notes": "Core business: what this company actually does as their primary offering"}],
+  "providers": [
+    {
+      "name": "Official Provider Name",
+      "location": "City, State",
+      "provider_type": "operator|technology|tnc|oem|consultant|service",
+      "notes": "Core business description",
+      "software_category": "cad_avl|scheduling|etc (only for technology type)",
+      "transit_modes": ["MB", "DR"] (only for technology type, use mode codes)
+    }
+  ],
   "verticals": ["paratransit", "fixed-route"],
   "categories": ["Technology", "RFPs & Procurement"]
 }`;
@@ -344,31 +367,71 @@ Return format (categories should be an array of ALL relevant categories):
       return matrix[str2.length][str1.length];
     }
 
-    // Process providers
+    // Process providers - route to appropriate table based on type
     if (extracted.providers?.length > 0) {
       for (const provider of extracted.providers) {
-        const { data: existing } = await supabaseClient
-          .from('transportation_providers')
-          .select('id')
-          .ilike('name', provider.name)
-          .single();
-
-        if (existing) {
-          providerIds.push(existing.id);
-        } else {
-          const { data: newProvider, error } = await supabaseClient
-            .from('transportation_providers')
-            .insert({
-              name: provider.name,
-              location: provider.location || null,
-              provider_type: provider.provider_type || null,
-              notes: provider.notes || null
-            })
+        const providerType = provider.provider_type || 'service';
+        const isTechnologyProvider = providerType === 'technology';
+        
+        if (isTechnologyProvider) {
+          // Route to software_providers table
+          const { data: existing } = await supabaseClient
+            .from('software_providers')
             .select('id')
-            .single();
+            .ilike('name', provider.name)
+            .maybeSingle();
 
-          if (!error && newProvider) {
-            providerIds.push(newProvider.id);
+          if (existing) {
+            // Update existing with any new info
+            console.log(`✓ Technology provider already exists: ${provider.name}`);
+          } else {
+            const { data: newProvider, error } = await supabaseClient
+              .from('software_providers')
+              .insert({
+                name: provider.name,
+                category: provider.software_category || 'other',
+                description: provider.notes || null,
+                headquarters: provider.location || null,
+                modes: provider.transit_modes || [],
+                notes: `Extracted from article. Type: ${providerType}`
+              })
+              .select('id')
+              .single();
+
+            if (!error && newProvider) {
+              console.log(`✓ Created software provider: ${provider.name}`);
+            } else if (error) {
+              console.error(`Error creating software provider ${provider.name}:`, error.message);
+            }
+          }
+        } else {
+          // Route to agency_vendors table (operators, TNCs, OEMs, consultants, services)
+          const { data: existing } = await supabaseClient
+            .from('agency_vendors')
+            .select('id')
+            .ilike('name', provider.name)
+            .maybeSingle();
+
+          if (existing) {
+            providerIds.push(existing.id);
+          } else {
+            const { data: newProvider, error } = await supabaseClient
+              .from('agency_vendors')
+              .insert({
+                name: provider.name,
+                location: provider.location || null,
+                provider_type: providerType,
+                notes: provider.notes || null
+              })
+              .select('id')
+              .single();
+
+            if (!error && newProvider) {
+              providerIds.push(newProvider.id);
+              console.log(`✓ Created service provider: ${provider.name} (${providerType})`);
+            } else if (error) {
+              console.error(`Error creating service provider ${provider.name}:`, error.message);
+            }
           }
         }
       }

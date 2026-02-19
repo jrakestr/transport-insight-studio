@@ -32,6 +32,29 @@ export const usePendingArticleMutations = () => {
 
       if (fetchError) throw fetchError;
 
+      // Get or generate image
+      let imageUrl = pending.image_url;
+      try {
+        const { data: imageData, error: imageError } = await supabase.functions.invoke(
+          "generate-article-image",
+          {
+            body: {
+              title: pending.title,
+              description: pending.description,
+              content: pending.content,
+              existingImageUrl: pending.image_url,
+            },
+          }
+        );
+
+        if (!imageError && imageData?.success && imageData?.imageUrl) {
+          imageUrl = imageData.imageUrl;
+          console.log(`Image ${imageData.source}: ${imageUrl?.slice(0, 50)}...`);
+        }
+      } catch (imgErr) {
+        console.warn("Image generation failed, using existing:", imgErr);
+      }
+
       // Create slug
       const slug = pending.title
         .toLowerCase()
@@ -49,7 +72,7 @@ export const usePendingArticleMutations = () => {
           published_at: pending.published_at,
           source_url: pending.source_url,
           source_name: pending.source_name,
-          image_url: pending.image_url,
+          image_url: imageUrl,
           author_name: pending.author_name,
           author_role: pending.author_role,
           category: pending.extracted_category,
@@ -58,6 +81,65 @@ export const usePendingArticleMutations = () => {
         .single();
 
       if (insertError) throw insertError;
+
+      // Link extracted agencies to the article
+      if (pending.extracted_agencies && Array.isArray(pending.extracted_agencies)) {
+        const agencyLinks = [];
+        for (const agency of pending.extracted_agencies) {
+          // Try to find matching agency by name
+          const agencyObj = agency as { name?: string; mention_type?: string } | string;
+          const agencyName = typeof agencyObj === 'string' ? agencyObj : agencyObj?.name;
+          if (agencyName) {
+            const { data: matchedAgency } = await supabase
+              .from("transit_agencies")
+              .select("id")
+              .or(`agency_name.ilike.%${agencyName}%,doing_business_as.ilike.%${agencyName}%`)
+              .limit(1)
+              .single();
+
+            if (matchedAgency) {
+              agencyLinks.push({
+                article_id: article.id,
+                agency_id: matchedAgency.id,
+                mention_type: typeof agencyObj === 'object' && agencyObj?.mention_type ? agencyObj.mention_type : 'mentioned'
+              });
+            }
+          }
+        }
+
+        if (agencyLinks.length > 0) {
+          await supabase.from("article_agencies").insert(agencyLinks);
+        }
+      }
+
+      // Link extracted providers to the article
+      if (pending.extracted_providers && Array.isArray(pending.extracted_providers)) {
+        const providerLinks = [];
+        for (const provider of pending.extracted_providers) {
+          const providerObj = provider as { name?: string; mention_type?: string } | string;
+          const providerName = typeof providerObj === 'string' ? providerObj : providerObj?.name;
+          if (providerName) {
+            const { data: matchedProvider } = await supabase
+              .from("agency_vendors")
+              .select("id")
+              .ilike("name", `%${providerName}%`)
+              .limit(1)
+              .single();
+
+            if (matchedProvider) {
+              providerLinks.push({
+                article_id: article.id,
+                provider_id: matchedProvider.id,
+                mention_type: typeof providerObj === 'object' && providerObj?.mention_type ? providerObj.mention_type : 'mentioned'
+              });
+            }
+          }
+        }
+
+        if (providerLinks.length > 0) {
+          await supabase.from("article_providers").insert(providerLinks);
+        }
+      }
 
       // Update pending article status
       const { error: updateError } = await supabase

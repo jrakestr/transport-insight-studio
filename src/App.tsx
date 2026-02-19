@@ -17,7 +17,9 @@ import TransportationProviders from "./pages/TransportationProviders";
 import TransportationProviderDetail from "./pages/TransportationProviderDetail";
 import Playbook from "./pages/Playbook";
 import PlaybookDetail from "./pages/PlaybookDetail";
+import SoftwareProviders from "./pages/SoftwareProviders";
 import Auth from "./pages/Auth";
+import Chat from "./pages/Chat";
 import AdminLayout from "./components/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ArticlesAdmin from "./pages/admin/Articles";
@@ -37,6 +39,9 @@ import PlaybooksAdmin from "./pages/admin/Playbooks";
 import PlaybookForm from "./pages/admin/PlaybookForm";
 import PendingArticles from "./pages/admin/PendingArticles";
 import AgenticReview from "./pages/admin/AgenticReview";
+import AutomatedSearchTest from "./pages/admin/AutomatedSearchTest";
+import ProcurementDiscovery from "./pages/admin/ProcurementDiscovery";
+import Procurement from "./pages/Procurement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -72,7 +77,10 @@ const App = () => (
           <Route path="/transportation-providers/:name" element={<TransportationProviderDetail />} />
           <Route path="/playbook" element={<Playbook />} />
           <Route path="/playbook/:slug" element={<PlaybookDetail />} />
+          <Route path="/software-providers" element={<SoftwareProviders />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/procurement" element={<Procurement />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="articles" element={<ArticlesAdmin />} />
@@ -98,6 +106,8 @@ const App = () => (
             <Route path="playbooks/:id/edit" element={<PlaybookForm />} />
             <Route path="pending-articles" element={<PendingArticles />} />
             <Route path="agentic-review" element={<AgenticReview />} />
+            <Route path="automated-search-test" element={<AutomatedSearchTest />} />
+            <Route path="procurement" element={<ProcurementDiscovery />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

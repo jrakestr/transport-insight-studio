@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { TrackerLogo } from "@/components/TrackerLogo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -86,11 +87,22 @@ export const Header = () => {
                   Sales Playbooks
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/software-providers" className="cursor-pointer">
+                  Software Providers
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/chat" className="cursor-pointer">
+                  Transit AI Chat
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-        <div className="hidden md:flex md:gap-x-4">
+        <div className="hidden md:flex md:gap-x-3 md:items-center">
+          <ThemeToggle />
           <Button variant="ghost" size="sm" asChild>
             <Link to="/auth">Sign In</Link>
           </Button>
@@ -181,6 +193,20 @@ export const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Sales Playbooks
+              </Link>
+              <Link
+                to="/software-providers"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Software Providers
+              </Link>
+              <Link
+                to="/chat"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Transit AI Chat
               </Link>
             </div>
             
