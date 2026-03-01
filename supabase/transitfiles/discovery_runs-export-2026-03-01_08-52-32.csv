@@ -1,0 +1,5 @@
+id;started_at;completed_at;status;articles_discovered;articles_processed;articles_added;error_message;run_metadata
+0223a7a5-1ef2-4179-a214-4e9aff29ba1d;2025-11-10 20:18:43.031834+00;;running;0;0;0;;"{""search_queries"":[""transit technology"",""transit RFP"",""public transportation news""]}"
+e335904d-0fb4-4725-a296-0e3b0b8a9dfa;2025-12-06 01:13:54.94922+00;;running;0;0;0;;"{""search_queries"":[""transit technology"",""transit RFP"",""public transportation news""]}"
+bf528baa-07a6-4839-8fb6-36d76849d337;2025-12-19 20:35:47.374465+00;;running;0;0;0;;"{""search_queries"":[""transit technology"",""transit RFP"",""public transportation news""]}"
+5c1f9a84-9571-44ff-8a98-91ec1d71fab8;2026-01-04 16:40:33.630861+00;;running;0;0;0;;"{""search_queries"":[""transit technology"",""transit RFP"",""public transportation news""]}"

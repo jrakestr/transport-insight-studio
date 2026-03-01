@@ -1,0 +1,748 @@
+id;title;slug;description;content;icon;category;order_index;created_at;updated_at
+1f24896b-c73d-497c-9d5c-685059861fce;Sales Playbook;sales-playbook;"This comprehensive playbook transforms the traditional paratransit software sales process into a strategic intelligence-gathering operation. By leveraging the Sales Enablement Platform's real-time market data, news insights, and opportunity tracking, sales teams can arrive at every meeting with deep contextual knowledge and tailored positioning.
+";"<div class=""overflow-hidden bg-background py-12"">
+  <div class=""mx-auto max-w-4xl"">
+    <section class=""mt-16 space-y-16"">
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 0 — Preparation (Before first meeting)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>BDR + OpCo SME</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Arrive informed and with tailored materials</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>1–2 days</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Actions:</h3>
+          <ul class=""mt-4 space-y-3 text-base/7 text-muted-foreground"">
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Review public info: fleet size, service area, any recent news.</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Build/update a one-page capability map linking product features to specific customer needs (geocoding, reporting, real-time).</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Prepare a 2-page agency/customer questionnaire and a demo dataset template.</span>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Capability map, questionnaire, demo data template</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 1 — Discovery Kickoff (Week 1)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>BDR + OpCo SME</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Establish relationship, confirm system size and immediate pain points</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>60 minutes</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Meeting Agenda & Sample Questions:</h3>
+          <ul class=""mt-4 space-y-4 text-base/7 text-muted-foreground"">
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span><strong>Quick intro and credibility statement</strong> (5–10 min)</span>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Confirm system classification:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""How many vehicles do you operate daily? Would you classify as small, medium, or large?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Identify top pain points:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""What's your biggest operational headache right now? Scheduling bottlenecks, driver shortages, reporting burdens?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Current system landscape:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""Can you walk me through your current stack—scheduling, dispatching, billing?""</div>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Notes on system size, pain points, current tech, follow-up questionnaire delivered post-call</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 2 — Operational Deep-Dive (Week 2)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>OpCo SME + BDR</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Understand daily workflow, constraints, and must-have features</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>90 minutes</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Focus Areas & Questions:</h3>
+          <ul class=""mt-4 space-y-4 text-base/7 text-muted-foreground"">
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Trip volume & patterns:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""How many trips per day? Peak hours? Weekend patterns?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Scheduling complexity:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""How far in advance do you schedule? Same-day vs. pre-booked ratio?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Dispatching challenges:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""Do you handle dispatch manually, semi-auto, or fully automated?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Compliance & reporting:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""What reports do you run monthly? Any state-specific requirements?""</div>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Workflow diagram, trip data sample, compliance checklist</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 3 — Technology Validation (Week 3)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>BDR + OpCo SME</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Confirm technical feasibility, integrations, and security requirements</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>60 minutes</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Key Questions:</h3>
+          <ul class=""mt-4 space-y-4 text-base/7 text-muted-foreground"">
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Integration needs:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""What systems must we integrate with? Billing, CAD/AVL, payment processors?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Data migration:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""How much historical data do you need migrated? What format?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Security & compliance:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""Any specific security certifications required? HIPAA, SOC 2?""</div>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Integration specification, security questionnaire, data migration plan</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 4 — Stakeholder Intelligence (Week 4)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>BDR + Strategic Accounts</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Map decision-making process and identify champions/blockers</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>45 minutes</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Strategic Questions:</h3>
+          <ul class=""mt-4 space-y-4 text-base/7 text-muted-foreground"">
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Decision authority:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""Who has final sign-off on this purchase? IT, Operations, Finance?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Budget & timeline:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""What's your target implementation date? Budget already allocated?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Internal champions:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""Who internally is most excited about this change?""</div>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Stakeholder map, decision timeline, champion identification</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 5 — Dispatcher & Driver Interviews (if necessary) (Week 5)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>BDR + SME </span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Understand end-user needs and pain points</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>2–3 hours (multiple sessions)</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">User-Focused Questions:</h3>
+          <ul class=""mt-4 space-y-4 text-base/7 text-muted-foreground"">
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>For dispatchers:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""What's the hardest part of your day? Where do bottlenecks happen?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>For drivers:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""What information do you wish you had in real-time? Navigation, trip updates?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Feature requests:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""If you could add one feature to your current system, what would it be?""</div>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">User personas, pain point summary, feature wish list</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 6 — Competitive Analysis (Week 6)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>Competitive Intelligence Team</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Identify other vendors in consideration and differentiate</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>30 minutes</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Competitive Questions:</h3>
+          <ul class=""mt-4 space-y-4 text-base/7 text-muted-foreground"">
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Vendor landscape:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""Are you evaluating other vendors? Who are they?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Evaluation criteria:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""What factors matter most in your decision? Price, features, support?""</div>
+            </li>
+            <li>
+              <div class=""flex gap-x-3"">
+                <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+                <span><strong>Incumbent weaknesses:</strong></span>
+              </div>
+              <div class=""ml-6 mt-2 italic"">""What don't you like about your current vendor?""</div>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Competitive battle card, differentiation strategy</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 7 — Custom Demo Preparation (Week 7)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>OpCo SME + Product Team + BDR</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Build personalized demo using agency data</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>3–5 days</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Demo Preparation:</h3>
+          <ul class=""mt-4 space-y-3 text-base/7 text-muted-foreground"">
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Load agency's sample trip data into demo environment</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Configure demo to reflect their workflow and pain points</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Prepare custom reports showing efficiency gains</span>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Personalized demo environment, demo script, ROI calculator</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 8 — Executive Demo & ROI Presentation (Week 8)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>BDR + OpCo SME + Strategic Accounts</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Demonstrate value and present business case</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>90 minutes</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Presentation Structure:</h3>
+          <ul class=""mt-4 space-y-3 text-base/7 text-muted-foreground"">
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span><strong>Executive summary:</strong> Problem statement and proposed solution (10 min)</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span><strong>Custom demo:</strong> Walk through their workflow in your system (40 min)</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span><strong>ROI analysis:</strong> Cost savings, efficiency gains, payback period (20 min)</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span><strong>Q&A and next steps:</strong> (20 min)</span>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Executive presentation deck, ROI analysis, demo recording</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 9 — Commercial Proposal (Week 9)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>BDR + OpCo SME</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Present pricing, terms, and implementation plan</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>60 minutes</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Proposal Components:</h3>
+          <ul class=""mt-4 space-y-3 text-base/7 text-muted-foreground"">
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Pricing breakdown: software licensing, implementation, training, support</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Implementation timeline: phased rollout plan</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Contract terms: length, renewal, cancellation</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Success metrics and guarantees</span>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Formal proposal document, pricing spreadsheet, SOW draft</p>
+        </div>
+      </div>
+
+      <h2 class=""text-3xl font-semibold tracking-tight text-foreground"">Phase 10 — Closing & Handoff (Week 10)</h2>
+      <div class=""border-l-4 border-primary pl-8"">
+        <div class=""mt-6 grid gap-4 text-base/7 text-muted-foreground"">
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Lead:</span>
+            <span>BDR + Strategic Accounts</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Goal:</span>
+            <span>Finalize contract and transition to implementation</span>
+          </div>
+          <div class=""flex gap-x-3"">
+            <span class=""font-semibold text-foreground min-w-20"">Time:</span>
+            <span>Ongoing until signature</span>
+          </div>
+        </div>
+        <div class=""mt-6"">
+          <h3 class=""text-lg font-semibold text-foreground"">Final Steps:</h3>
+          <ul class=""mt-4 space-y-3 text-base/7 text-muted-foreground"">
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Address any final objections or concerns</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Negotiate final terms and pricing</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Execute contract</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Warm handoff to implementation team</span>
+            </li>
+            <li class=""flex gap-x-3"">
+              <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+              <span>Schedule kickoff meeting</span>
+            </li>
+          </ul>
+        </div>
+        <div class=""mt-6"">
+          <p class=""text-sm/6 font-semibold text-foreground"">Artifacts:</p>
+          <p class=""mt-2 text-base/7 text-muted-foreground"">Signed contract, implementation plan, customer success handoff document</p>
+        </div>
+      </div>
+    </section>
+
+    <section class=""mt-20 border-t border-border pt-16"">
+      <div class=""bg-muted/30 rounded-lg p-8"">
+        <h2 class=""text-2xl font-semibold text-foreground mb-6"">Quick Interview Cheat Sheet</h2>
+        <div class=""grid gap-6 md:grid-cols-2"">
+          <div>
+            <h3 class=""text-lg font-semibold text-foreground mb-3"">Opening Prompts</h3>
+            <ul class=""space-y-2 text-sm text-muted-foreground"">
+              <li class=""flex gap-x-2"">
+                <span class=""text-primary"">•</span>
+                <span>""Walk me through a typical day for your dispatchers.""</span>
+              </li>
+              <li class=""flex gap-x-2"">
+                <span class=""text-primary"">•</span>
+                <span>""What keeps you up at night about your operations?""</span>
+              </li>
+              <li class=""flex gap-x-2"">
+                <span class=""text-primary"">•</span>
+                <span>""If you could wave a magic wand, what would you fix first?""</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class=""text-lg font-semibold text-foreground mb-3"">Follow-Up Tactics</h3>
+            <ul class=""space-y-2 text-sm text-muted-foreground"">
+              <li class=""flex gap-x-2"">
+                <span class=""text-primary"">•</span>
+                <span>""Can you give me a specific example?""</span>
+              </li>
+              <li class=""flex gap-x-2"">
+                <span class=""text-primary"">•</span>
+                <span>""How does that impact your bottom line?""</span>
+              </li>
+              <li class=""flex gap-x-2"">
+                <span class=""text-primary"">•</span>
+                <span>""Who else should I talk to about this?""</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class=""mt-12 bg-primary/5 rounded-lg p-8"">
+      <h2 class=""text-2xl font-semibold text-foreground mb-4"">Tactics & Best Practices</h2>
+      <ul class=""space-y-3 text-base/7 text-muted-foreground"">
+        <li class=""flex gap-x-3"">
+          <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+          <span><strong class=""text-foreground"">Listen 70%, talk 30%</strong> — Your goal is intel, not a sales pitch</span>
+        </li>
+        <li class=""flex gap-x-3"">
+          <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+          <span><strong class=""text-foreground"">Document everything</strong> — Capture quotes, pain points, and requests in CRM</span>
+        </li>
+        <li class=""flex gap-x-3"">
+          <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+          <span><strong class=""text-foreground"">Deliver value after every meeting</strong> — Send summary, additional resources, or answer open questions</span>
+        </li>
+        <li class=""flex gap-x-3"">
+          <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+          <span><strong class=""text-foreground"">Build multi-threading</strong> — Connect with multiple stakeholders, not just one champion</span>
+        </li>
+        <li class=""flex gap-x-3"">
+          <span class=""mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary""></span>
+          <span><strong class=""text-foreground"">Stay consultative</strong> — Position yourself as an industry expert, not just a vendor</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+</div>";;Sales Playbook;0;2025-11-08 06:31:43.693726+00;2025-11-12 19:33:05.994528+00
+09324432-deef-4b00-bb32-3cceca91fc68;Client Account Profile Template;profile-template;CRM template for managing transit agency client relationships, tracking operations, technology stack, challenges, budget, and sales pipeline status;"<h1>Client Account Profile Template</h1>
+
+<h2>Basic Information</h2>
+<p><strong>Agency/Organization Name:</strong> [Full Official Name]<br>
+<strong>Location:</strong> [City, State]<br>
+<strong>Service Area:</strong> [Geographic coverage]<br>
+<strong>Population Served:</strong> [Approximate number]<br>
+<strong>Agency Type:</strong> [Municipal | County | Regional | Private | Non-profit]</p>
+
+<h2>Key Contacts</h2>
+
+<h3>Primary Decision Maker</h3>
+<ul>
+  <li><strong>Name:</strong> [Full Name]</li>
+  <li><strong>Title:</strong> [Position]</li>
+  <li><strong>Email:</strong> <a href=""mailto:email@domain.com"">email@domain.com</a></li>
+  <li><strong>Phone:</strong> [(xxx) xxx-xxxx]</li>
+  <li><strong>Notes:</strong> [Communication preferences, best times to reach]</li>
+</ul>
+
+<h3>Technical Contact</h3>
+<ul>
+  <li><strong>Name:</strong> [Full Name]</li>
+  <li><strong>Title:</strong> [Position]</li>
+  <li><strong>Email:</strong> <a href=""mailto:email@domain.com"">email@domain.com</a></li>
+  <li><strong>Phone:</strong> [(xxx) xxx-xxxx]</li>
+</ul>
+
+<h3>Additional Stakeholders</h3>
+<ul>
+  <li>[Name] - [Title] - [Role in decision process]</li>
+</ul>
+
+<h2>Current Operations</h2>
+
+<h3>Service Types</h3>
+<ul>
+  <li><input type=""checkbox""> Fixed Route</li>
+  <li><input type=""checkbox""> Paratransit/ADA</li>
+  <li><input type=""checkbox""> Demand Response</li>
+  <li><input type=""checkbox""> NEMT (Non-Emergency Medical Transportation)</li>
+  <li><input type=""checkbox""> Microtransit</li>
+  <li><input type=""checkbox""> Other: [Specify]</li>
+</ul>
+
+<h3>Fleet Information</h3>
+<ul>
+  <li><strong>Total Vehicles:</strong> [Number]</li>
+  <li><strong>Vehicle Types:</strong> [Buses, Vans, Sedans, etc.]</li>
+  <li><strong>Average Age:</strong> [Years]</li>
+  <li><strong>Annual Revenue Miles:</strong> [If known]</li>
+</ul>
+
+<h3>Current Technology Stack</h3>
+<ul>
+  <li><strong>Scheduling Software:</strong> [Current system]</li>
+  <li><strong>Dispatching:</strong> [Current system]</li>
+  <li><strong>CAD/AVL:</strong> [Current system]</li>
+  <li><strong>Fare Collection:</strong> [Current system]</li>
+  <li><strong>Other Systems:</strong> [List relevant systems]</li>
+</ul>
+
+<h2>Business Intelligence</h2>
+
+<h3>Current Challenges</h3>
+<ul>
+  <li>[Challenge 1 - detailed description]</li>
+  <li>[Challenge 2 - detailed description]</li>
+  <li>[Challenge 3 - detailed description]</li>
+</ul>
+
+<h3>Goals and Objectives</h3>
+<ul>
+  <li>[Goal 1 - what they want to achieve]</li>
+  <li>[Goal 2 - timeline and metrics if known]</li>
+  <li>[Goal 3 - budget constraints if discussed]</li>
+</ul>
+
+<h3>Budget Information</h3>
+<ul>
+  <li><strong>Annual Operating Budget:</strong> [If disclosed]</li>
+  <li><strong>Capital Budget:</strong> [If disclosed]</li>
+  <li><strong>Grant Funding:</strong> [Sources and amounts if known]</li>
+  <li><strong>Budget Cycle:</strong> [When they make purchasing decisions]</li>
+</ul>
+
+<h2>Competitive Landscape</h2>
+
+<h3>Current Vendors</h3>
+<ul>
+  <li><strong>Primary:</strong> [Company name and relationship]</li>
+  <li><strong>Secondary:</strong> [Other vendors they work with]</li>
+  <li><strong>Contract Expiration:</strong> [When current contracts expire]</li>
+</ul>
+
+<h3>Previous RFPs</h3>
+<ul>
+  <li><strong>Recent RFPs:</strong> [What they've put out recently]</li>
+  <li><strong>Decision Factors:</strong> [What influences their vendor selection]</li>
+</ul>
+
+<h2>Transit Technologies Opportunity</h2>
+
+<h3>Relevant TT Solutions</h3>
+<ul>
+  <li><input type=""checkbox""> Ecolane (Paratransit/Demand Response)</li>
+  <li><input type=""checkbox""> Passio (Passenger Intelligence &amp; Vehicle Tracking)</li>
+  <li><input type=""checkbox""> TripMaster (Transit Software)</li>
+  <li><input type=""checkbox""> MJM Innovations (Innovation Solutions)</li>
+  <li><input type=""checkbox""> FASTER Asset Solutions (Fleet Management)</li>
+  <li><input type=""checkbox""> TripShot (Trip Management)</li>
+  <li><input type=""checkbox""> ByteCurve/BusHive (Technology Platforms)</li>
+</ul>
+
+<h3>Proposed Value Proposition</h3>
+<p>[How TT solutions address their specific challenges]</p>
+
+<h3>Estimated Deal Size</h3>
+<ul>
+  <li><strong>Initial Implementation:</strong> $[Amount]</li>
+  <li><strong>Annual Recurring:</strong> $[Amount]</li>
+  <li><strong>Total Contract Value:</strong> $[Amount over X years]</li>
+</ul>
+
+<h2>Relationship History</h2>
+
+<h3>Interaction Timeline</h3>
+<ul>
+  <li><strong>First Contact:</strong> [Date and method]</li>
+  <li><strong>Key Meetings:</strong> [Dates and outcomes]</li>
+  <li><strong>Proposals Submitted:</strong> [Dates and status]</li>
+  <li><strong>Site Visits:</strong> [Dates and attendees]</li>
+</ul>
+
+<h3>Relationship Status</h3>
+<ul>
+  <li><input type=""checkbox""> Cold Lead</li>
+  <li><input type=""checkbox""> Initial Contact Made</li>
+  <li><input type=""checkbox""> Discovery Phase</li>
+  <li><input type=""checkbox""> Proposal Submitted</li>
+  <li><input type=""checkbox""> Under Evaluation</li>
+  <li><input type=""checkbox""> Contract Negotiation</li>
+  <li><input type=""checkbox""> Active Customer</li>
+  <li><input type=""checkbox""> Lost Opportunity</li>
+</ul>
+
+<h3>Win Probability</h3>
+<p>[Percentage and reasoning]</p>
+
+<h2>Next Steps</h2>
+<ul>
+  <li><input type=""checkbox""> [Action 1] - [Due Date]</li>
+  <li><input type=""checkbox""> [Action 2] - [Due Date]</li>
+  <li><input type=""checkbox""> [Action 3] - [Due Date]</li>
+</ul>
+
+<hr>
+
+<p><strong>Created:</strong> [Date]<br>
+<strong>Last Updated:</strong> [Date]<br>
+<strong>Account Owner:</strong> [Your Name]</p>
+
+";;Playbooks;0;2025-11-13 18:08:55.656174+00;2025-11-13 18:08:55.656174+00
