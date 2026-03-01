@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
+import { FunctionsHttpError } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -228,7 +229,16 @@ export default function TransitChat() {
       }
     } catch (error: any) {
       console.error("Chat error:", error);
-      toast.error(error.message || "Failed to get response");
+      let displayMessage = error.message || "Failed to get response";
+      if (error instanceof FunctionsHttpError && error.context) {
+        try {
+          const body = await error.context.json();
+          if (body?.error) displayMessage = body.error;
+        } catch {
+          // Ignore parse errors; fall back to generic message
+        }
+      }
+      toast.error(displayMessage);
     } finally {
       setIsLoading(false);
     }

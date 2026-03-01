@@ -7,7 +7,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-async function processArticle(articleId: string, supabaseClient: any, LOVABLE_API_KEY: string) {
+async function processArticle(articleId: string, supabaseClient: any, GOOGLE_AI_API_KEY: string) {
   try {
     // Mark as processing
     await supabaseClient
@@ -115,14 +115,14 @@ Return format:
     while (iteration < maxIterations) {
       iteration++;
       
-      const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      const aiResponse = await fetch("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+          "Authorization": `Bearer ${GOOGLE_AI_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
+          model: "gemini-2.5-flash",
           messages,
           tools,
           tool_choice: iteration === 1 ? "auto" : "auto"
@@ -556,9 +556,9 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY not configured");
+    const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
+    if (!GOOGLE_AI_API_KEY) {
+      throw new Error("GOOGLE_AI_API_KEY not configured");
     }
 
     // Get all articles that need processing
@@ -586,7 +586,7 @@ serve(async (req) => {
 
     // Process articles in background
     const processingPromises = (articles || []).map(article => 
-      processArticle(article.id, supabaseClient, LOVABLE_API_KEY)
+      processArticle(article.id, supabaseClient, GOOGLE_AI_API_KEY)
     );
 
     // Use background task to not block response

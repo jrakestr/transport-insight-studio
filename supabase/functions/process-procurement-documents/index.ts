@@ -13,11 +13,11 @@ serve(async (req) => {
 
   try {
     const FIRECRAWL_API_KEY = Deno.env.get('FIRECRAWL_API_KEY_1') || Deno.env.get('FIRECRAWL_API_KEY');
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    const GOOGLE_AI_API_KEY = Deno.env.get('GOOGLE_AI_API_KEY');
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
-    if (!FIRECRAWL_API_KEY || !LOVABLE_API_KEY) {
+    if (!FIRECRAWL_API_KEY || !GOOGLE_AI_API_KEY) {
       throw new Error('Missing required API keys');
     }
 
@@ -96,7 +96,7 @@ serve(async (req) => {
         }
 
         // Use AI to extract structured data from the document
-        const extractedData = await extractDocumentDataWithAI(content, doc.url, LOVABLE_API_KEY);
+        const extractedData = await extractDocumentDataWithAI(content, doc.url, GOOGLE_AI_API_KEY);
 
         // Update document with extracted content
         await supabase
@@ -190,14 +190,14 @@ async function extractDocumentDataWithAI(
   apiKey: string
 ): Promise<any> {
   try {
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'gemini-2.5-flash',
         messages: [
           {
             role: 'system',

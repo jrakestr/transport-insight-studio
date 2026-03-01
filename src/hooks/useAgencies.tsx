@@ -2,6 +2,19 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
+export interface TransitAgency {
+  id: string;
+  agency_name: string;
+  doing_business_as?: string | null;
+  city?: string | null;
+  state?: string | null;
+  total_voms?: number | null;
+  ntd_id?: string | null;
+  url?: string | null;
+  notes?: string | null;
+  [key: string]: unknown;
+}
+
 interface AgenciesQueryParams {
   page?: number;
   limit?: number;
@@ -9,13 +22,24 @@ interface AgenciesQueryParams {
   sortOrder?: 'asc' | 'desc';
   search?: string;
   state?: string;
+  groupByState?: boolean;
 }
 
 export function useAgencies(params: AgenciesQueryParams = {}) {
-  const { page = 1, limit = 20, sortBy = 'agency_name', sortOrder = 'asc', search, state } = params;
-  
+  const {
+    page = 1,
+    limit = 20,
+    sortBy = 'agency_name',
+    sortOrder = 'asc',
+    search,
+    state,
+    groupByState = false,
+  } = params;
+
+  const fetchLimit = groupByState ? 500 : limit;
+
   return useQuery({
-    queryKey: ["agencies", page, limit, sortBy, sortOrder, search, state],
+    queryKey: ["agencies", page, limit, sortBy, sortOrder, search, state, groupByState],
     queryFn: async () => {
       let query = supabase
         .from("transit_agencies")
@@ -34,9 +58,9 @@ export function useAgencies(params: AgenciesQueryParams = {}) {
       // Apply sorting
       query = query.order(sortBy, { ascending: sortOrder === 'asc', nullsFirst: false });
 
-      // Only apply pagination for smaller limits (normal list views)
-      // For large limits (10000+), fetch all without range to avoid pagination
-      if (limit <= 1000) {
+      if (groupByState) {
+        query = query.range(0, fetchLimit - 1);
+      } else {
         const from = (page - 1) * limit;
         const to = from + limit - 1;
         query = query.range(from, to);
@@ -45,13 +69,34 @@ export function useAgencies(params: AgenciesQueryParams = {}) {
       const { data, error, count } = await query;
 
       if (error) throw error;
-      
+
+      const agencies = (data || []) as TransitAgency[];
+
+      if (groupByState) {
+        const groupedByState = agencies.reduce<Record<string, TransitAgency[]>>((acc, a) => {
+          const s = (a.state || 'Other').toUpperCase();
+          if (!acc[s]) acc[s] = [];
+          acc[s].push(a);
+          return acc;
+        }, {});
+
+        return {
+          agencies,
+          total: count || 0,
+          page: 1,
+          limit: fetchLimit,
+          totalPages: 1,
+          groupedByState,
+          truncated: (count || 0) > fetchLimit,
+        };
+      }
+
       return {
-        agencies: data,
+        agencies,
         total: count || 0,
         page,
         limit,
-        totalPages: Math.ceil((count || 0) / limit)
+        totalPages: Math.ceil((count || 0) / limit),
       };
     },
   });

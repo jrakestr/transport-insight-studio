@@ -127,12 +127,12 @@ serve(async (req) => {
     const { agencyId, mode = 'single' } = await req.json();
     
     const FIRECRAWL_API_KEY = Deno.env.get('FIRECRAWL_API_KEY_1') || Deno.env.get('FIRECRAWL_API_KEY');
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    const GOOGLE_AI_API_KEY = Deno.env.get('GOOGLE_AI_API_KEY');
     const EXA_API_KEY = Deno.env.get('EXA_API_KEY');
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
-    if (!FIRECRAWL_API_KEY || !LOVABLE_API_KEY) {
+    if (!FIRECRAWL_API_KEY || !GOOGLE_AI_API_KEY) {
       throw new Error('Missing required API keys');
     }
 
@@ -191,20 +191,20 @@ serve(async (req) => {
 
       try {
         // ===== PHASE 1: Direct Agency Website Scrape =====
-        const phase1Result = await executePhase1(agency, FIRECRAWL_API_KEY, LOVABLE_API_KEY, supabase);
+        const phase1Result = await executePhase1(agency, FIRECRAWL_API_KEY, GOOGLE_AI_API_KEY, supabase);
         phaseResults.push(phase1Result);
         opportunities.push(...(phase1Result as any).opportunities || []);
         overallConfidence = Math.max(overallConfidence, phase1Result.confidence);
         console.log(`Phase 1 complete: ${phase1Result.opportunitiesFound} opportunities, confidence: ${phase1Result.confidence}`);
 
         // ===== PHASE 2: Board Minutes & Plan Documents =====
-        const phase2Result = await executePhase2BoardAndPlans(agency, FIRECRAWL_API_KEY, LOVABLE_API_KEY, supabase);
+        const phase2Result = await executePhase2BoardAndPlans(agency, FIRECRAWL_API_KEY, GOOGLE_AI_API_KEY, supabase);
         phaseResults.push(phase2Result);
         console.log(`Phase 2 (Board/Plans): ${(phase2Result as any).boardActionsFound || 0} board actions, ${(phase2Result as any).plansFound || 0} plans`);
 
         // ===== PHASE 3: Procurement Portal Search (if needed) =====
         if (overallConfidence < CONFIDENCE_THRESHOLD && EXA_API_KEY) {
-          const phase3Result = await executePhase3Portals(agency, EXA_API_KEY, FIRECRAWL_API_KEY, LOVABLE_API_KEY);
+          const phase3Result = await executePhase3Portals(agency, EXA_API_KEY, FIRECRAWL_API_KEY, GOOGLE_AI_API_KEY);
           phaseResults.push(phase3Result);
           opportunities.push(...(phase3Result as any).opportunities || []);
           overallConfidence = Math.max(overallConfidence, phase3Result.confidence);
@@ -213,7 +213,7 @@ serve(async (req) => {
 
         // ===== PHASE 4: Open Web Discovery (if still need more) =====
         if (overallConfidence < CONFIDENCE_THRESHOLD && EXA_API_KEY) {
-          const phase4Result = await executePhase4OpenWeb(agency, EXA_API_KEY, LOVABLE_API_KEY, supabase);
+          const phase4Result = await executePhase4OpenWeb(agency, EXA_API_KEY, GOOGLE_AI_API_KEY, supabase);
           phaseResults.push(phase4Result);
           opportunities.push(...(phase4Result as any).opportunities || []);
           overallConfidence = Math.max(overallConfidence, phase4Result.confidence);
@@ -332,7 +332,7 @@ function buildAdaParatransitSearchTerms(): string {
 async function executePhase1(
   agency: any, 
   firecrawlKey: string, 
-  lovableKey: string,
+  googleAiKey: string,
   supabaseClient: any
 ): Promise<SearchPhaseResult & { opportunities: ProcurementOpportunity[] }> {
   const opportunities: ProcurementOpportunity[] = [];
@@ -441,7 +441,7 @@ async function executePhase1(
         sources.push(url);
 
         // Use AI to extract ADA paratransit procurement opportunities
-        const extracted = await extractAdaParatransitProcurement(content, url, lovableKey);
+        const extracted = await extractAdaParatransitProcurement(content, url, googleAiKey);
         if (extracted && extracted.opportunities?.length > 0) {
           for (const opp of extracted.opportunities) {
             if (opp.title) {
@@ -543,7 +543,7 @@ async function executePhase1(
 async function executePhase2BoardAndPlans(
   agency: any,
   firecrawlKey: string,
-  lovableKey: string,
+  googleAiKey: string,
   supabaseClient: any
 ): Promise<SearchPhaseResult & { boardActionsFound: number; plansFound: number }> {
   const sources: string[] = [];
@@ -623,7 +623,7 @@ async function executePhase2BoardAndPlans(
         sources.push(url);
 
         // Extract board actions
-        const boardActions = await extractBoardActions(content, url, agency.agency_name, lovableKey);
+        const boardActions = await extractBoardActions(content, url, agency.agency_name, googleAiKey);
         if (boardActions && boardActions.length > 0) {
           for (const action of boardActions) {
             await supabaseClient
@@ -703,7 +703,7 @@ async function executePhase2BoardAndPlans(
         sources.push(url);
 
         // Check if this is a plan document listing page
-        const planDocs = await identifyPlanDocuments(content, url, agency.agency_name, lovableKey);
+        const planDocs = await identifyPlanDocuments(content, url, agency.agency_name, googleAiKey);
         if (planDocs && planDocs.length > 0) {
           for (const plan of planDocs) {
             await supabaseClient
@@ -790,7 +790,7 @@ async function executePhase3Portals(
   agency: any,
   exaKey: string,
   firecrawlKey: string,
-  lovableKey: string
+  googleAiKey: string
 ): Promise<SearchPhaseResult & { opportunities: ProcurementOpportunity[] }> {
   const opportunities: ProcurementOpportunity[] = [];
   const sources: string[] = [];
@@ -891,7 +891,7 @@ async function executePhase3Portals(
 async function executePhase4OpenWeb(
   agency: any,
   exaKey: string,
-  lovableKey: string,
+  googleAiKey: string,
   supabaseClient: any
 ): Promise<SearchPhaseResult & { opportunities: ProcurementOpportunity[] }> {
   const opportunities: ProcurementOpportunity[] = [];
@@ -940,7 +940,7 @@ async function executePhase4OpenWeb(
         
         if (isComplaint) {
           // Extract and store pain points
-          const painPoints = await extractPainPoints(result.title, result.text || '', agency.agency_name, lovableKey);
+          const painPoints = await extractPainPoints(result.title, result.text || '', agency.agency_name, googleAiKey);
           if (painPoints && painPoints.length > 0) {
             for (const pain of painPoints) {
               await supabaseClient
@@ -966,7 +966,7 @@ async function executePhase4OpenWeb(
           result.title,
           result.text || '',
           agency.agency_name,
-          lovableKey
+          googleAiKey
         );
 
         if (isRelevant) {
@@ -1098,14 +1098,14 @@ async function extractAdaParatransitProcurement(
   apiKey: string
 ): Promise<{ opportunities: any[]; vendors: any[] } | null> {
   try {
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'gemini-2.5-flash',
         messages: [
           {
             role: 'system',
@@ -1175,14 +1175,14 @@ async function extractBoardActions(
   apiKey: string
 ): Promise<any[]> {
   try {
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'gemini-2.5-flash',
         messages: [
           {
             role: 'system',
@@ -1242,14 +1242,14 @@ async function identifyPlanDocuments(
   apiKey: string
 ): Promise<any[]> {
   try {
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'gemini-2.5-flash',
         messages: [
           {
             role: 'system',
@@ -1308,14 +1308,14 @@ async function extractPainPoints(
   apiKey: string
 ): Promise<any[]> {
   try {
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'gemini-2.5-flash',
         messages: [
           {
             role: 'system',
@@ -1365,14 +1365,14 @@ async function verifyRelevanceWithAI(
   apiKey: string
 ): Promise<boolean> {
   try {
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'gemini-2.5-flash',
         messages: [
           {
             role: 'system',

@@ -1,5 +1,8 @@
 project_id = "cahndbfxkcukcendkcud"
 
+[api]
+max_rows = 10000
+
 [functions.scrape-agency-website]
 verify_jwt = true
 

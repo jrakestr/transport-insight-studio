@@ -57,7 +57,7 @@ const tools = [
     type: "function",
     function: {
       name: "search_providers",
-      description: "Search for service providers (contractors that operate transit services) by name, type, or location. You can search by name, filter by provider_type, or both.",
+      description: "Search for service providers (contractors that operate transit services) by name, type, state, or city. You can combine filters.",
       parameters: {
         type: "object",
         properties: {
@@ -68,6 +68,14 @@ const tools = [
           provider_type: {
             type: "string",
             description: "Optional: Filter by exact provider type (e.g., 'operator', 'technology', 'tnc', 'other')"
+          },
+          state: {
+            type: "string",
+            description: "Optional: Filter by US state (e.g., 'TX', 'CA', 'NY')"
+          },
+          city: {
+            type: "string",
+            description: "Optional: Filter by city name"
           },
           limit: {
             type: "number",
@@ -204,7 +212,10 @@ async function executeSearchAgencies(supabase: any, args: any) {
   }
   
   const { data, error } = await dbQuery;
-  if (error) throw error;
+  if (error) {
+    console.error("search_agencies error:", error);
+    return { error: error.message, results: [], count: 0, source: "transit_agencies table" };
+  }
   
   return {
     results: data,
@@ -227,7 +238,10 @@ async function executeGetAgencyDetails(supabase: any, args: any) {
   }
   
   const { data: agency, error } = await query.limit(1).single();
-  if (error) throw error;
+  if (error) {
+    console.error("get_agency_details error:", error);
+    return { error: error.message, agency: null, related_articles: [], contracts: [], source: "transit_agencies" };
+  }
   
   // Get related articles
   const { data: articleLinks } = await supabase
@@ -252,29 +266,96 @@ async function executeGetAgencyDetails(supabase: any, args: any) {
 }
 
 async function executeSearchProviders(supabase: any, args: any) {
-  const { query, provider_type, limit = 10 } = args;
-  
+  const { query, provider_type, state, city, limit = 10 } = args;
+
+  // When state or city is provided, query transportation_providers (contract data) joined with
+  // transit_agencies to find providers that operate in that state/city
+  const stateFilter = state?.toUpperCase().replace(/\s+/g, "").slice(0, 2) || null;
+  const hasLocationFilter = stateFilter || city;
+
+  if (hasLocationFilter) {
+    // Get agency IDs in the target state/city first
+    let agenciesQuery = supabase.from("transit_agencies").select("id");
+    if (stateFilter) agenciesQuery = agenciesQuery.eq("state", stateFilter);
+    if (city) agenciesQuery = agenciesQuery.ilike("city", `%${city}%`);
+    const { data: agencyIds } = await agenciesQuery;
+    const ids = agencyIds?.map((a: any) => a.id).filter(Boolean) || [];
+
+    if (ids.length > 0) {
+      let tpQuery = supabase
+        .from("transportation_providers")
+        .select("id, contractee_operator_name, agency_name, total_operating_expenses, unlinked_passenger_trips, mode, agency_id")
+        .in("agency_id", ids)
+        .not("contractee_operator_name", "is", null)
+        .order("total_operating_expenses", { ascending: false, nullsFirst: false })
+        .limit(limit * 2);
+
+      if (query) {
+        tpQuery = tpQuery.ilike("contractee_operator_name", `%${query}%`);
+      }
+
+      const { data: tpData, error: tpError } = await tpQuery;
+      if (!tpError && tpData?.length > 0) {
+        const seen = new Set<string>();
+        const results = tpData
+          .filter((r: any) => {
+            const name = r.contractee_operator_name?.trim();
+            if (!name || seen.has(name.toLowerCase())) return false;
+            seen.add(name.toLowerCase());
+            return true;
+          })
+          .slice(0, limit)
+          .map((r: any) => ({
+            id: r.id,
+            name: r.contractee_operator_name,
+            provider_type: r.mode || "operator",
+            agency_name: r.agency_name,
+            state: stateFilter || undefined,
+            total_operating_expenses: r.total_operating_expenses,
+            unlinked_passenger_trips: r.unlinked_passenger_trips,
+          }));
+
+        return {
+          results,
+          count: results.length,
+          source: "transportation_providers (contracts with agencies in " + (stateFilter || city) + ")"
+        };
+      }
+    }
+  }
+
+  // Fallback: agency_vendors (vendor registry)
   let dbQuery = supabase
     .from("agency_vendors")
     .select("id, name, provider_type, location, website, state, city, total_operating_expenses, unlinked_passenger_trips")
     .order("total_operating_expenses", { ascending: false, nullsFirst: false })
     .limit(limit);
-  
-  // Allow searching by name OR provider_type (or both)
+
   if (query) {
     dbQuery = dbQuery.ilike("name", `%${query}%`);
   }
-  
+
   if (provider_type) {
-    // Use exact match for provider_type to properly filter
     dbQuery = dbQuery.eq("provider_type", provider_type);
   }
-  
+
+  if (state) {
+    const s = state.toUpperCase().replace(/\s+/g, "").slice(0, 2);
+    dbQuery = dbQuery.or(`state.eq.${s},state.ilike.%${state}%`);
+  }
+
+  if (city) {
+    dbQuery = dbQuery.ilike("city", `%${city}%`);
+  }
+
   const { data, error } = await dbQuery;
-  if (error) throw error;
-  
+  if (error) {
+    console.error("search_providers error:", error);
+    return { error: error.message, results: [], count: 0, source: "agency_vendors table" };
+  }
+
   return {
-    results: data,
+    results: data || [],
     count: data?.length || 0,
     source: "agency_vendors table"
   };
@@ -297,7 +378,10 @@ async function executeGetAgencyContracts(supabase: any, args: any) {
   }
   
   const { data, error } = await query;
-  if (error) throw error;
+  if (error) {
+    console.error("get_agency_contracts error:", error);
+    return { error: error.message, contracts: [], count: 0, source: "transportation_providers table" };
+  }
   
   return {
     contracts: data,
@@ -320,7 +404,10 @@ async function executeSearchArticles(supabase: any, args: any) {
   }
   
   const { data, error } = await dbQuery;
-  if (error) throw error;
+  if (error) {
+    console.error("search_articles error:", error);
+    return { error: error.message, articles: [], count: 0, source: "articles table" };
+  }
   
   return {
     articles: data,
@@ -334,13 +421,23 @@ async function executeGetStatistics(supabase: any, args: any) {
   
   switch (metric) {
     case "agencies_by_state": {
-      const { data } = await supabase
-        .from("transit_agencies")
-        .select("state")
-        .not("state", "is", null);
+      const pageSize = 1000;
+      let allData: any[] = [];
+      let offset = 0;
+      while (true) {
+        const { data } = await supabase
+          .from("transit_agencies")
+          .select("state")
+          .not("state", "is", null)
+          .range(offset, offset + pageSize - 1);
+        if (!data?.length) break;
+        allData = allData.concat(data);
+        if (data.length < pageSize) break;
+        offset += pageSize;
+      }
       
       const counts: Record<string, number> = {};
-      data?.forEach((a: any) => {
+      allData.forEach((a: any) => {
         counts[a.state] = (counts[a.state] || 0) + 1;
       });
       
@@ -350,7 +447,7 @@ async function executeGetStatistics(supabase: any, args: any) {
       
       return { 
         statistics: Object.fromEntries(sorted), 
-        total_agencies: data?.length,
+        total_agencies: allData.length,
         source: "transit_agencies table aggregation" 
       };
     }
@@ -375,35 +472,45 @@ async function executeGetStatistics(supabase: any, args: any) {
     }
     
     case "total_fleet_size": {
-      let query = supabase
-        .from("transit_agencies")
-        .select("total_voms, state");
-      
-      if (state) {
-        query = query.eq("state", state.toUpperCase());
+      const pageSize = 1000;
+      let allData: any[] = [];
+      let offset = 0;
+      let baseQuery = supabase.from("transit_agencies").select("total_voms, state");
+      if (state) baseQuery = baseQuery.eq("state", state.toUpperCase());
+      while (true) {
+        const { data } = await baseQuery.range(offset, offset + pageSize - 1);
+        if (!data?.length) break;
+        allData = allData.concat(data);
+        if (data.length < pageSize) break;
+        offset += pageSize;
       }
-      
-      const { data } = await query;
-      const total = data?.reduce((sum: number, a: any) => sum + (a.total_voms || 0), 0);
-      
+      const total = allData.reduce((sum: number, a: any) => sum + (a.total_voms || 0), 0);
       return { 
         total_fleet_size: total, 
-        agency_count: data?.length,
+        agency_count: allData.length,
         source: "transit_agencies table sum of VOMS" 
       };
     }
     
     case "agencies_by_type": {
-      const { data } = await supabase
-        .from("transit_agencies")
-        .select("organization_type")
-        .not("organization_type", "is", null);
-      
+      const pageSize = 1000;
+      let allData: any[] = [];
+      let offset = 0;
+      while (true) {
+        const { data } = await supabase
+          .from("transit_agencies")
+          .select("organization_type")
+          .not("organization_type", "is", null)
+          .range(offset, offset + pageSize - 1);
+        if (!data?.length) break;
+        allData = allData.concat(data);
+        if (data.length < pageSize) break;
+        offset += pageSize;
+      }
       const counts: Record<string, number> = {};
-      data?.forEach((a: any) => {
+      allData.forEach((a: any) => {
         counts[a.organization_type] = (counts[a.organization_type] || 0) + 1;
       });
-      
       return { 
         by_type: counts, 
         source: "transit_agencies table aggregation by organization_type" 
@@ -559,9 +666,9 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
     
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
+    if (!GOOGLE_AI_API_KEY) {
+      throw new Error("GOOGLE_AI_API_KEY is not configured");
     }
 
     const systemPrompt = `You are an expert transit industry analyst with access to a comprehensive database of US public transit agencies and service providers, plus web search capabilities. Your role is to provide accurate, data-driven answers about transit agencies, their operations, contractors, and industry trends.
@@ -600,14 +707,14 @@ When presenting results:
 - Use plain text formatting only`;
 
     // Initial API call with tools
-    let response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    let response = await fetch("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${GOOGLE_AI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
           ...messages
@@ -634,11 +741,25 @@ When presenting results:
         });
       }
       
-      throw new Error(`AI gateway error: ${response.status}`);
+      let errDetail = response.status.toString();
+      try {
+        const errBody = JSON.parse(errorText);
+        errDetail = errBody?.error?.message || errBody?.error || errorText || errDetail;
+      } catch {
+        errDetail = errorText || errDetail;
+      }
+      throw new Error(`AI gateway error: ${errDetail}`);
     }
 
     let data = await response.json();
-    let assistantMessage = data.choices[0].message;
+    if (data.error) {
+      throw new Error(`AI gateway error: ${data.error.message || JSON.stringify(data.error)}`);
+    }
+    const firstChoice = data.choices?.[0];
+    if (!firstChoice?.message) {
+      throw new Error(`AI gateway returned invalid response: no choices`);
+    }
+    let assistantMessage = firstChoice.message;
     
     const toolResults: any[] = [];
     const conversationMessages = [
@@ -654,7 +775,22 @@ When presenting results:
       
       for (const toolCall of assistantMessage.tool_calls) {
         const toolName = toolCall.function.name;
-        const toolArgs = JSON.parse(toolCall.function.arguments);
+        let toolArgs: any = {};
+        try {
+          toolArgs = JSON.parse(toolCall.function.arguments || "{}");
+        } catch {
+          toolResults.push({
+            tool: toolName,
+            args: {},
+            result: { error: "Invalid tool arguments (malformed JSON)", source: "transit-chat" }
+          });
+          conversationMessages.push({
+            role: "tool",
+            tool_call_id: toolCall.id,
+            content: JSON.stringify({ error: "Invalid tool arguments (malformed JSON)", source: "transit-chat" })
+          });
+          continue;
+        }
         
         console.log(`Executing tool: ${toolName}`, toolArgs);
         const result = await executeTool(supabase, toolName, toolArgs);
@@ -673,14 +809,14 @@ When presenting results:
       }
       
       // Get next response after tool execution
-      response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      response = await fetch("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          Authorization: `Bearer ${GOOGLE_AI_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
+          model: "gemini-2.5-flash",
           messages: conversationMessages,
           tools,
           tool_choice: "auto",
@@ -688,16 +824,31 @@ When presenting results:
       });
 
       if (!response.ok) {
-        throw new Error(`AI gateway error on tool response: ${response.status}`);
+        const errText = await response.text();
+        let errDetail = response.status.toString();
+        try {
+          const errBody = JSON.parse(errText);
+          errDetail = errBody?.error?.message || errBody?.error || errText || errDetail;
+        } catch {
+          errDetail = errText || errDetail;
+        }
+        throw new Error(`AI gateway error on tool response: ${errDetail}`);
       }
 
       data = await response.json();
-      assistantMessage = data.choices[0].message;
+      if (data.error) {
+        throw new Error(`AI gateway error: ${data.error.message || JSON.stringify(data.error)}`);
+      }
+      const nextChoice = data.choices?.[0];
+      if (!nextChoice?.message) {
+        throw new Error(`AI gateway returned invalid response: no choices`);
+      }
+      assistantMessage = nextChoice.message;
     }
 
     // Return final response with citations
     return new Response(JSON.stringify({
-      content: assistantMessage.content,
+      content: assistantMessage.content ?? "",
       toolsUsed: toolResults.map(t => ({
         tool: t.tool,
         args: t.args,

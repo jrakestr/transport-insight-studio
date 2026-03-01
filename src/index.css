@@ -56,6 +56,15 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 220 20% 25%;
     --sidebar-border: 220 15% 90%;
     --sidebar-ring: 220 85% 45%;
+
+    /* Hero flip-fade text – matches primary (button) in light mode */
+    --hero-flip-text: 220 85% 45%;
+
+    /* Aurora background – lighter primary/accent variants */
+    --aurora-1: 220 75% 58%;
+    --aurora-2: 195 70% 55%;
+    --aurora-3: 210 65% 68%;
+    --stripe-color: rgba(255, 255, 255, 0.1);
   }
 
   .dark {
@@ -105,6 +114,12 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 220 10% 90%;
     --sidebar-border: 220 15% 18%;
     --sidebar-ring: 215 85% 55%;
+
+    --hero-flip-text: 215 85% 55%;
+    --aurora-1: 215 75% 62%;
+    --aurora-2: 195 65% 58%;
+    --aurora-3: 220 70% 70%;
+    --stripe-color: rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -306,6 +321,106 @@ All colors MUST be HSL.
   .playbook-content td {
     @apply px-4 py-2 border border-border text-foreground/90;
   }
+}
+
+/* Aurora background animations (Vengeance UI) */
+@keyframes aurora-bg {
+  0% {
+    background-position: 0% 50%, 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%, 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%, 0% 50%;
+  }
+}
+
+@keyframes aurora-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.animate-aurora-bg {
+  animation: aurora-bg 15s ease infinite;
+}
+
+.animate-aurora-blink {
+  animation: aurora-blink 2s ease-in-out infinite;
+}
+
+/* PerspectiveGrid component styles (Vengeance UI) */
+.tile {
+  min-width: 1px;
+  min-height: 1px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+.dark .tile {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.tile:nth-child(4n):hover {
+  background-color: rgb(248 113 113);
+}
+
+.tile:nth-child(4n + 1):hover {
+  background-color: rgb(56 189 248);
+}
+
+.tile:nth-child(4n + 2):hover {
+  background-color: rgb(74 222 128);
+}
+
+.tile:nth-child(4n + 3):hover {
+  background-color: rgb(253 224 71);
+}
+
+.tile:nth-child(7n):hover {
+  background-color: rgb(56 189 248);
+}
+
+.tile:nth-child(7n + 3):hover {
+  background-color: rgb(74 222 128);
+}
+
+.tile:nth-child(7n + 5):hover {
+  background-color: rgb(253 224 71);
+}
+
+.tile:nth-child(7n + 6):hover {
+  background-color: rgb(248 113 113);
+}
+
+.tile:nth-child(11n + 1):hover {
+  background-color: rgb(248 113 113);
+}
+
+.tile:nth-child(11n + 4):hover {
+  background-color: rgb(56 189 248);
+}
+
+.tile:nth-child(11n + 7):hover {
+  background-color: rgb(74 222 128);
+}
+
+.tile:nth-child(11n + 10):hover {
+  background-color: rgb(253 224 71);
+}
+
+/* Staggered Grid (Vengeance UI) */
+.font-alt {
+  font-family: system-ui, sans-serif;
+  font-weight: 700;
 }
 
 /* Smooth transitions for theme switching */

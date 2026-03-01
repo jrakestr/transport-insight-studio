@@ -1,12 +1,16 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { AuroraBackground } from "@/components/AuroraBackground";
+import { FlipFadeText } from "@/components/ui/flip-fade-text";
+import { PerspectiveGrid } from "@/components/ui/perspective-grid";
+import { StaggeredGrid, type BentoItem, type GridImageItem } from "@/components/ui/staggered-grid";
+import { SmoothScroll } from "@/components/ui/smooth-scroll";
+import AnimatedButton from "@/components/ui/animated-button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { useArticles } from "@/hooks/useArticles";
-import { ArrowRight, Loader2 } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { format } from "date-fns";
+import { ArrowRight, Loader2, BarChart3, FileSearch, Building2, MessageSquare, BookOpen, FileText } from "lucide-react";
 import electricBus from "@/assets/electric-bus.jpg";
 import autonomousVehicle from "@/assets/autonomous-vehicle.jpg";
 import contactlessPayment from "@/assets/contactless-payment.jpg";
@@ -18,13 +22,38 @@ const Index = () => {
   const previousMonth = new Date();
   previousMonth.setMonth(previousMonth.getMonth() - 1);
   const reportMonthYear = format(previousMonth, "MMMM yyyy");
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+  const gridItems: GridImageItem[] =
+    articles && articles.length > 0
+      ? articles.slice(0, 5).map((a) => ({
+          url: a.image_url || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%231e293b' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' fill='%2364748b' text-anchor='middle' dominant-baseline='middle' font-size='14'%3EArticle%3C/text%3E%3C/svg%3E",
+          slug: a.slug,
+        }))
+      : [];
 
-      <main className="flex-1">
+  const bentoItems: BentoItem[] =
+    articles && articles.length > 0
+      ? articles.slice(0, 5).map((a) => ({
+          id: a.id,
+          title: a.title,
+          subtitle: a.category || "",
+          description: a.description || "",
+          icon: <FileText className="w-4 h-4" />,
+          image: a.image_url || undefined,
+          slug: a.slug,
+        }))
+      : [];
+
+  const images = gridItems.length > 0 ? gridItems.map((g) => g.url).filter(Boolean) : [];
+
+  return (
+    <SmoothScroll>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+
+        <main className="flex-1">
         {/* Hero Section */}
         <section className="relative isolate overflow-hidden">
+          <AuroraBackground />
           <svg aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)] stroke-border">
             <defs>
               <pattern id="transit-grid" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
@@ -44,17 +73,24 @@ const Index = () => {
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
                   <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-7xl">
-                    Real-time transit news and market insights
+                    Real-time{" "}
+                    <FlipFadeText
+                      words={["transit", "agency", "procurement", "fleet", "mobility"]}
+                      interval={3000}
+                      className="inline-flex min-h-0 min-w-[11ch] justify-start"
+                      textClassName="text-5xl sm:text-7xl text-[hsl(var(--hero-flip-text))] normal-case"
+                    />{" "}
+                    news and market insights
                   </h1>
                   <p className="mt-8 text-lg font-medium text-muted-foreground sm:max-w-md sm:text-xl/8 lg:max-w-none">
                     Breaking news, RFP opportunities, and competitive intelligence for transit technology companies. Stay informed with data-driven insights from industry sources across the transportation sector.
                   </p>
                   <div className="mt-10 flex items-center gap-x-6">
-                    <Button size="lg" asChild>
+                    <AnimatedButton size="lg" asChild>
                       <Link to="/reports">
                         View {reportMonthYear} Data Dispatch
                       </Link>
-                    </Button>
+                    </AnimatedButton>
                     <Link to="/procurement" className="text-sm/6 font-semibold text-foreground hover:text-primary transition-colors">
                       Browse Opportunities <span aria-hidden="true">→</span>
                     </Link>
@@ -93,125 +129,127 @@ const Index = () => {
           </div>
         </section>
 
-        {/* News Feed */}
-        <section className="py-16 lg:py-24">
-          <div className="section-container">
-            <div className="max-w-4xl mx-auto">
-              <div className="mb-12">
-                <h2 className="text-4xl font-bold mb-4">Latest Industry News</h2>
-                <p className="text-lg text-muted-foreground">
-                  Breaking developments in transit technology, policy, and market intelligence.
-                </p>
-              </div>
-
-              <div className="space-y-8 border-t border-border pt-10">
-                {isLoading ? (
-                  <div className="flex items-center justify-center py-12">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                  </div>
-                ) : articles && articles.length > 0 ? (
-                  articles.map((article) => (
-                    <article
-                      key={article.id}
-                      className="border border-border rounded-lg overflow-hidden hover:border-primary transition-colors"
-                    >
-                      <div className="flex flex-col lg:flex-row gap-6">
-                        {/* Article Image */}
-                        {article.image_url && (
-                          <div className="lg:w-80 shrink-0">
-                            <Link to={`/article/${article.slug}`}>
-                              <img
-                                src={article.image_url}
-                                alt={article.title}
-                                className="w-full h-48 lg:h-full object-cover hover:opacity-90 transition-opacity"
-                                loading="lazy"
-                                onError={(e) => {
-                                  e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23f3f4f6"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="18" fill="%239ca3af"%3EImage unavailable%3C/text%3E%3C/svg%3E';
-                                }}
-                              />
-                            </Link>
-                          </div>
-                        )}
-
-                        <div className="p-6 flex-1">
-                          {/* Author Info */}
-                          <div className="flex space-x-3 mb-4">
-                            <Avatar className="size-10">
-                              <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
-                                {article.author_name
-                                  ? article.author_name
-                                      .split(" ")
-                                      .map((n) => n[0])
-                                      .join("")
-                                      .toUpperCase()
-                                  : "TT"}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="min-w-0 flex-1">
-                              <p className="text-sm font-semibold">{article.author_name || "Transit Technologies"}</p>
-                              <p className="text-sm text-muted-foreground">
-                                <time dateTime={article.published_at}>
-                                  {format(new Date(article.published_at), "MMM d, yyyy")}
-                                </time>
-                                {article.author_role && (
-                                  <>
-                                    {" · "}
-                                    <span>{article.author_role}</span>
-                                  </>
-                                )}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Article Content */}
-                          {article.category && (
-                            <div className="mb-3">
-                              <Badge variant="outline">{article.category}</Badge>
-                            </div>
-                          )}
-
-                          <div className="group">
-                            <h3 className="text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                              <Link to={`/article/${article.slug}`}>{article.title}</Link>
-                            </h3>
-                            <p className="text-muted-foreground mb-4 line-clamp-3">{article.description}</p>
-                            <Link to={`/article/${article.slug}`}>
-                              <Button variant="ghost" size="sm">
-                                Read Full Article
-                                <ArrowRight className="ml-2 h-3 w-3" />
-                              </Button>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </article>
-                  ))
-                ) : (
-                  <div className="text-center py-12 text-muted-foreground">No articles published yet.</div>
-                )}
-              </div>
-
-              {/* View Full Report CTA */}
-              <div className="mt-16 p-8 border-2 border-primary/20 rounded-lg bg-primary/5">
+        {/* News Feed - Staggered Grid */}
+        <section className="py-8 lg:py-12">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-24">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <StaggeredGrid
+              images={images}
+              gridItems={gridItems.length > 0 ? gridItems : undefined}
+              bentoItems={bentoItems}
+              centerText="Latest News"
+              showFooter={true}
+              credits={{
+                madeBy: { text: "transit-track.ai", href: "/" },
+                moreDemos: { text: `View ${reportMonthYear} Report`, href: "/reports" },
+              }}
+            />
+          )}
+          {!isLoading && articles && articles.length > 0 && (
+            <div className="section-container mt-16">
+              <div className="max-w-4xl mx-auto p-8 border-2 border-primary/20 rounded-lg bg-primary/5">
                 <h3 className="text-2xl font-bold mb-4">Want the Complete {reportMonthYear} Data Dispatch?</h3>
                 <p className="text-muted-foreground mb-6">
                   Access a comprehensive analysis covering transit expansions, trend adoption, RFP opportunities, and
                   competitive intelligence across the transit sector.
                 </p>
-                <Link to="/reports">
-                  <Button size="lg">
+                <AnimatedButton size="lg" asChild>
+                  <Link to="/reports">
                     View Full Report
                     <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                  </Link>
+                </AnimatedButton>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* Explore Section - Perspective Grid + Feature Cards */}
+        <section className="relative min-h-[500px] overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <PerspectiveGrid
+              className="bg-background [--fade-stop:hsl(var(--background))]"
+              gridSize={40}
+              showOverlay={true}
+              fadeRadius={80}
+            />
+          </div>
+          <div className="relative z-20 flex items-center justify-center py-16 lg:py-24 pointer-events-none">
+            <div className="section-container pointer-events-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold mb-4">Explore more</h2>
+                <p className="text-lg text-muted-foreground">
+                  Data-driven tools and insights for transit technology professionals.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-6xl mx-auto">
+                <Link to="/reports">
+                  <Card className="h-full border-border/80 bg-card/95 backdrop-blur hover:border-primary/50 transition-colors">
+                    <CardHeader>
+                      <BarChart3 className="h-8 w-8 text-primary mb-2" />
+                      <CardTitle className="text-lg">Data Dispatch</CardTitle>
+                      <CardDescription>
+                        Monthly reports on transit expansions, trends, and market intelligence.
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </Link>
+                <Link to="/procurement">
+                  <Card className="h-full border-border/80 bg-card/95 backdrop-blur hover:border-primary/50 transition-colors">
+                    <CardHeader>
+                      <FileSearch className="h-8 w-8 text-primary mb-2" />
+                      <CardTitle className="text-lg">Procurement</CardTitle>
+                      <CardDescription>
+                        Discover RFPs, bids, and procurement opportunities from transit agencies.
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </Link>
+                <Link to="/agencies">
+                  <Card className="h-full border-border/80 bg-card/95 backdrop-blur hover:border-primary/50 transition-colors">
+                    <CardHeader>
+                      <Building2 className="h-8 w-8 text-primary mb-2" />
+                      <CardTitle className="text-lg">Transit Agencies</CardTitle>
+                      <CardDescription>
+                        Browse profiles of transit agencies across the United States.
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </Link>
+                <Link to="/chat">
+                  <Card className="h-full border-border/80 bg-card/95 backdrop-blur hover:border-primary/50 transition-colors">
+                    <CardHeader>
+                      <MessageSquare className="h-8 w-8 text-primary mb-2" />
+                      <CardTitle className="text-lg">AI Chat</CardTitle>
+                      <CardDescription>
+                        Ask questions about transit data, agencies, and market insights.
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </Link>
+                <Link to="/playbook">
+                  <Card className="h-full border-border/80 bg-card/95 backdrop-blur hover:border-primary/50 transition-colors">
+                    <CardHeader>
+                      <BookOpen className="h-8 w-8 text-primary mb-2" />
+                      <CardTitle className="text-lg">Sales Playbooks</CardTitle>
+                      <CardDescription>
+                        Strategic frameworks for winning transit technology deals.
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
                 </Link>
               </div>
             </div>
           </div>
         </section>
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </SmoothScroll>
   );
 };
 

@@ -4,7 +4,7 @@ import { corsHeaders } from '../_shared/cors.ts';
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY')!;
-const lovableApiKey = Deno.env.get('LOVABLE_API_KEY')!;
+const googleAiKey = Deno.env.get('GOOGLE_AI_API_KEY')!;
 
 interface ProcessingResult {
   resultId: string;
@@ -190,14 +190,14 @@ Provide your response as valid JSON with this exact structure:
   "summary": "2-3 sentence summary"
 }`;
 
-        const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        const aiResponse = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${lovableApiKey}`,
+            'Authorization': `Bearer ${googleAiKey}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: 'google/gemini-2.5-flash',
+            model: 'gemini-2.5-flash',
             messages: [
               {
                 role: 'system',

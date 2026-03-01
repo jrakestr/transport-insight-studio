@@ -17,9 +17,7 @@ export function useProviders(params?: { search?: string; limit?: number }) {
         query = query.or(`name.ilike.%${search}%,provider_type.ilike.%${search}%,location.ilike.%${search}%`);
       }
 
-      if (limit <= 1000) {
-        query = query.limit(limit);
-      }
+      query = query.limit(limit);
 
       const { data, error } = await query;
       if (error) throw error;
